@@ -17,6 +17,41 @@ public class Payment {
     private double amount;
     private Date dateOfPayment;
     private Member member;
+
+    public Payment() {
+    }
+
+    public MembershipFee getFee() {
+        return fee;
+    }
+
+    public void setFee(MembershipFee fee) {
+        this.fee = fee;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public Date getDateOfPayment() {
+        return dateOfPayment;
+    }
+
+    public void setDateOfPayment(Date dateOfPayment) {
+        this.dateOfPayment = dateOfPayment;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
     
     
 }
