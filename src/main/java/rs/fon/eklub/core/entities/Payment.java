@@ -6,6 +6,7 @@
 package rs.fon.eklub.core.entities;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  *
@@ -51,6 +52,32 @@ public class Payment {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.fee);
+        hash = 29 * hash + Objects.hashCode(this.member);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Payment other = (Payment) obj;
+        if (!Objects.equals(this.fee, other.fee)) {
+            return false;
+        }
+        if (!Objects.equals(this.member, other.member)) {
+            return false;
+        }
+        return true;
     }
     
     

@@ -1,0 +1,166 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package rs.fon.eklub.core.interactors;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import static org.junit.Assert.*;
+import org.junit.Test;
+import org.junit.Before;
+import rs.fon.eklub.core.dal.DataAccessService;
+import rs.fon.eklub.core.entities.Category;
+import rs.fon.eklub.core.entities.Group;
+import rs.fon.eklub.core.exceptions.DataAccessServiceException;
+import rs.fon.eklub.core.exceptions.ServiceException;
+import rs.fon.eklub.core.exceptions.ValidationException;
+import rs.fon.eklub.core.services.GroupService;
+import rs.fon.eklub.core.validators.EntityValidator;
+
+/**
+ *
+ * @author milos
+ */
+public class GroupInteractorTest {
+    
+    private GroupService gs;
+    
+    private DataAccessService<Group> dao;
+    private DataAccessService<Group> daoAllEntitiesError;
+    private EntityValidator<Group> validator;
+    
+    private List<Group> mockGroupRepository;
+    
+    public GroupInteractorTest() {
+    }
+    
+    @Before
+    public void setUp() {
+        
+        mockGroupRepository = new ArrayList<>();
+        Group g1 = new Group(1, "grupa1", "grupa1 remark", new Category(1, "kategorija1", "kategorija1 remark"));
+        Group g2 = new Group(2, "grupa2", "grupa2 remark", new Category(2, "kategorija2", "kategorija2 remark"));
+        Group g3 = new Group(3, "grupa3", "grupa3 remark", new Category(3, "kategorija3", "kategorija3 remark"));
+        mockGroupRepository.add(g1);
+        mockGroupRepository.add(g2);
+        mockGroupRepository.add(g3);
+        
+        dao = new DataAccessService<Group>() {
+
+            @Override
+            public Group getEntity(long id) throws DataAccessServiceException {
+                if(id != 13) {
+                    return new Group(id, "Grupa1", "grupa1 remark",
+                        new Category(1, "Kategorija1", "kategorija1 remark"));
+                }
+                if(id != 113)
+                    throw new DataAccessServiceException("Data access error!");
+                return null;
+            }
+
+            @Override
+            public List<Group> getAllEntities() throws DataAccessServiceException {
+                List<Group> groups = mockGroupRepository;
+                return groups;
+            }
+
+            @Override
+            public List<Group> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException{
+//                Group g1 = new Group(1, "grupa1", "grupa1 remark", new Category(1, "kategorija1", "kategorija1 remark"));
+//                Group g2 = new Group(2, "grupa2", "grupa2 remark", new Category(1, "kategorija1", "kategorija1 remark"));
+//                Group g3 = new Group(3, "grupa3", "grupa3 remark", new Category(1, "kategorija1", "kategorija1 remark"));
+//                List<Group> groups = new ArrayList<>();
+//                Category c = (Category) searchCriteria.get("category");
+//                if(c != null && c.getId() == 1) {
+//                    groups.add(g1);
+//                    groups.add(g2);
+//                    groups.add(g3);
+//                    return groups;
+//                }
+//                if((long) searchCriteria.get("id") == 2) {
+//                    groups.add(g2);
+//                    return groups;
+//                }
+//                if(searchCriteria == null) {
+//                    throw new DataAccessServiceException("Data access error!");
+//                }
+//                return null;
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void insertOrUpdateEntity(Group entity) throws DataAccessServiceException {
+                if(entity.getId() == 13) {
+                    throw new DataAccessServiceException("Data access error!");
+                }
+                mockGroupRepository.add(entity);
+            }
+
+            @Override
+            public void deleteEntity(Group entity) throws DataAccessServiceException {
+                if(entity.getId() == 13) {
+                    throw new DataAccessServiceException("Data access error!");
+                }
+                mockGroupRepository.remove(entity);
+            }
+        };
+        
+        daoAllEntitiesError = new DataAccessService<Group>() {
+
+            @Override
+            public Group getEntity(long id) throws DataAccessServiceException {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public List<Group> getAllEntities() throws DataAccessServiceException {
+                throw new DataAccessServiceException("Data access error!");
+            }
+
+            @Override
+            public List<Group> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void insertOrUpdateEntity(Group entity) throws DataAccessServiceException {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void deleteEntity(Group entity) throws DataAccessServiceException {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
+        
+        validator = new EntityValidator<Group>() {
+
+            @Override
+            public boolean validateEntity(Group entity) throws ValidationException {
+                if(entity.getId() == 13) {
+                    throw new ValidationException("Validation exception, wrong group name.");
+                }
+                return true;
+            }
+        };
+    }
+    
+    @Test
+    public void initializeGroupInteractorOkTest() {
+        gs = new GroupInteractor(dao, validator);
+        assertNotNull(gs);
+    }
+    
+    @Test
+    public void saveGroupOkTest() throws ServiceException {
+        gs = new GroupInteractor(dao, validator);
+        Group g = new Group(10, "Grupa10", "grupa10 remark", 
+                new Category(1, "Kategorija1", "kategorija1 remark"));
+        gs.saveGroup(g);
+        assertTrue(mockGroupRepository.contains(g));
+    }
+}

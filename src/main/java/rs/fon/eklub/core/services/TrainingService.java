@@ -8,6 +8,7 @@ package rs.fon.eklub.core.services;
 import java.util.List;
 import java.util.Map;
 import rs.fon.eklub.core.entities.Training;
+import rs.fon.eklub.core.exceptions.ServiceException;
 
 /**
  *
@@ -15,7 +16,7 @@ import rs.fon.eklub.core.entities.Training;
  */
 public interface TrainingService {
     
-    public void saveTraining(Training training);
-    public Training getTrainingById(long id);
-    public List<Training> getTrainings(Map<String, Object> searchCriteria);
+    public void saveTraining(Training training) throws ServiceException;
+    public Training getTrainingById(long id) throws ServiceException;
+    public List<Training> getTrainings(Map<String, Object> searchCriteria) throws ServiceException;
 }

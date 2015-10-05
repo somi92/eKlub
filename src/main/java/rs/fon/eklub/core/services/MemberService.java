@@ -8,6 +8,7 @@ package rs.fon.eklub.core.services;
 import java.util.List;
 import java.util.Map;
 import rs.fon.eklub.core.entities.Member;
+import rs.fon.eklub.core.exceptions.ServiceException;
 
 /**
  *
@@ -15,9 +16,9 @@ import rs.fon.eklub.core.entities.Member;
  */
 public interface MemberService {
     
-    public void saveMember(Member member);
-    public Member getMemberById(long id);
-    public void deleteMember(long id);
-    public List<Member> getAllMembers();
-    public List<Member> getMembers(Map<String, Object> searchCriteria);
+    public void saveMember(Member member) throws ServiceException;
+    public Member getMemberById(long id) throws ServiceException;
+    public void deleteMember(long id) throws ServiceException;
+    public List<Member> getAllMembers() throws ServiceException;
+    public List<Member> getMembers(Map<String, Object> searchCriteria) throws ServiceException;
 }

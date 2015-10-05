@@ -7,6 +7,7 @@ package rs.fon.eklub.core.services;
 
 import java.util.List;
 import rs.fon.eklub.core.entities.Group;
+import rs.fon.eklub.core.exceptions.ServiceException;
 
 /**
  *
@@ -14,6 +15,6 @@ import rs.fon.eklub.core.entities.Group;
  */
 public interface GroupService {
     
-    public void saveGroup(Group group);
-    public List<Group> getAllGroups();
+    public void saveGroup(Group group) throws ServiceException;
+    public List<Group> getAllGroups() throws ServiceException;
 }

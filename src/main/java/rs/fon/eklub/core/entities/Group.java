@@ -19,6 +19,13 @@ public class Group {
     public Group() {
     }
 
+    public Group(long id, String name, String remark, Category category) {
+        this.id = id;
+        this.name = name;
+        this.remark = remark;
+        this.category = category;
+    }
+
     public long getId() {
         return id;
     }
@@ -49,6 +56,28 @@ public class Group {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + (int) (this.id ^ (this.id >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Group other = (Group) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
     }
     
     

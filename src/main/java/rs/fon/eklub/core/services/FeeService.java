@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import rs.fon.eklub.core.entities.MembershipFee;
 import rs.fon.eklub.core.entities.Payment;
+import rs.fon.eklub.core.exceptions.ServiceException;
 
 /**
  *
@@ -18,5 +19,5 @@ public interface FeeService {
     
     public void saveFee(List<Payment> payments);
     public MembershipFee getFeeById(long id);
-    public List<MembershipFee> getMembershipFees(Map<String, Object> searchCriteria);
+    public List<MembershipFee> getMembershipFees(Map<String, Object> searchCriteria) throws ServiceException;
 }

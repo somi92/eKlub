@@ -5,6 +5,8 @@
  */
 package rs.fon.eklub.core.entities;
 
+import java.util.Objects;
+
 /**
  *
  * @author milos
@@ -40,6 +42,32 @@ public class EmployeeEngagement {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 31 * hash + Objects.hashCode(this.group);
+        hash = 31 * hash + Objects.hashCode(this.employee);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final EmployeeEngagement other = (EmployeeEngagement) obj;
+        if (!Objects.equals(this.group, other.group)) {
+            return false;
+        }
+        if (!Objects.equals(this.employee, other.employee)) {
+            return false;
+        }
+        return true;
     }
     
     

@@ -3,17 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.fon.eklub.core.services;
+package rs.fon.eklub.core.validators;
 
-import rs.fon.eklub.core.entities.Employee;
-import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.exceptions.ValidationException;
 
 /**
  *
  * @author milos
  */
-public interface AdminService {
+public interface EntityValidator<T> {
     
-    public Employee getAdmin(Employee admin) throws ServiceException;
+    public boolean validateEntity(T entity) throws ValidationException;
 }

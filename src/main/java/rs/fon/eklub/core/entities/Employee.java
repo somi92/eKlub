@@ -86,6 +86,28 @@ public class Employee {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 59 * hash + (int) (this.id ^ (this.id >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Employee other = (Employee) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
     
     
 }

@@ -7,6 +7,7 @@ package rs.fon.eklub.core.dal;
 
 import java.util.List;
 import java.util.Map;
+import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 
 /**
  *
@@ -14,9 +15,9 @@ import java.util.Map;
  */
 public interface DataAccessService<T> {
     
-    public T getEntity(long id);
-    public List<T> getAllEntities();
-    public List<T> getEntities(Map<String, Object> searchCriteria);
-    public void insertOrUpdateEntity(T entity);
-    public void deleteEntity(T entity);
+    public T getEntity(long id) throws DataAccessServiceException;
+    public List<T> getAllEntities() throws DataAccessServiceException;
+    public List<T> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException;
+    public void insertOrUpdateEntity(T entity) throws DataAccessServiceException;
+    public void deleteEntity(T entity) throws DataAccessServiceException;
 }

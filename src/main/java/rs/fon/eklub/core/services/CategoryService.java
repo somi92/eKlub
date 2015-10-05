@@ -7,6 +7,7 @@ package rs.fon.eklub.core.services;
 
 import java.util.List;
 import rs.fon.eklub.core.entities.Category;
+import rs.fon.eklub.core.exceptions.ServiceException;
 
 /**
  *
@@ -14,6 +15,6 @@ import rs.fon.eklub.core.entities.Category;
  */
 public interface CategoryService {
     
-    public List<Category> getAllCategories();
+    public List<Category> getAllCategories() throws ServiceException;
     
 }
