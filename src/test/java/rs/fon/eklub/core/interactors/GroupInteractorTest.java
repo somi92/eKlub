@@ -69,26 +69,7 @@ public class GroupInteractorTest {
             }
 
             @Override
-            public List<Group> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException{
-//                Group g1 = new Group(1, "grupa1", "grupa1 remark", new Category(1, "kategorija1", "kategorija1 remark"));
-//                Group g2 = new Group(2, "grupa2", "grupa2 remark", new Category(1, "kategorija1", "kategorija1 remark"));
-//                Group g3 = new Group(3, "grupa3", "grupa3 remark", new Category(1, "kategorija1", "kategorija1 remark"));
-//                List<Group> groups = new ArrayList<>();
-//                Category c = (Category) searchCriteria.get("category");
-//                if(c != null && c.getId() == 1) {
-//                    groups.add(g1);
-//                    groups.add(g2);
-//                    groups.add(g3);
-//                    return groups;
-//                }
-//                if((long) searchCriteria.get("id") == 2) {
-//                    groups.add(g2);
-//                    return groups;
-//                }
-//                if(searchCriteria == null) {
-//                    throw new DataAccessServiceException("Data access error!");
-//                }
-//                return null;
+            public List<Group> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
