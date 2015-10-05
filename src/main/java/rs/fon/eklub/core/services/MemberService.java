@@ -13,7 +13,7 @@ import rs.fon.eklub.core.entities.Member;
  *
  * @author milos
  */
-public interface MembersService {
+public interface MemberService {
     
     public void saveMember(Member member);
     public Member getMemberById(long id);

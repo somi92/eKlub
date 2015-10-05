@@ -5,10 +5,13 @@
  */
 package rs.fon.eklub.core.services;
 
+import rs.fon.eklub.core.entities.Employee;
+
 /**
  *
  * @author milos
  */
-public interface GroupsService {
+public interface AdminService {
     
+    public Employee getAdmin(Employee admin);
 }
