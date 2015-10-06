@@ -52,13 +52,7 @@ public class GroupInteractorTest {
 
             @Override
             public Group getEntity(long id) throws DataAccessServiceException {
-                if(id != 13) {
-                    return new Group(id, "Grupa1", "grupa1 remark",
-                        new Category(1, "Kategorija1", "kategorija1 remark"));
-                }
-                if(id != 113)
-                    throw new DataAccessServiceException("Data access error!");
-                return null;
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
             @Override
@@ -82,10 +76,7 @@ public class GroupInteractorTest {
 
             @Override
             public void deleteEntity(Group entity) throws DataAccessServiceException {
-                if(entity.getId() == 13) {
-                    throw new DataAccessServiceException("Data access error!");
-                }
-                mockGroupRepository.remove(entity);
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
         
@@ -122,7 +113,7 @@ public class GroupInteractorTest {
             @Override
             public boolean validateEntity(Group entity) throws ValidationException {
                 if(entity.getId() == 113) {
-                    throw new ValidationException("Validation exception, wrong group name.");
+                    throw new ValidationException("Validation exception!");
                 }
                 return true;
             }
