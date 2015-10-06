@@ -127,6 +127,8 @@ public class GroupInteractorTest {
                 return true;
             }
         };
+        
+        gs = new GroupInteractor(dao, validator);
     }
     
     @Test
@@ -137,7 +139,6 @@ public class GroupInteractorTest {
     
     @Test
     public void saveGroupOkTest() throws ServiceException {
-        gs = new GroupInteractor(dao, validator);
         Group g = new Group(10, "Grupa10", "grupa10 remark", 
                 new Category(1, "Kategorija1", "kategorija1 remark"));
         gs.saveGroup(g);
@@ -146,7 +147,6 @@ public class GroupInteractorTest {
     
     @Test(expected = ServiceException.class)
     public void saveGroupNullEntityTest() throws ServiceException {
-        gs = new GroupInteractor(dao, validator);
         Group g = null;
         gs.saveGroup(g);
         assertFalse(mockGroupRepository.contains(g));
@@ -154,7 +154,6 @@ public class GroupInteractorTest {
     
     @Test(expected = DataAccessServiceException.class)
     public void saveGroupDataExceptionTest() throws ServiceException {
-        gs = new GroupInteractor(dao, validator);
         Group g = new Group(13, "Grupa13", "grupa13 remark", 
                 new Category(1, "Kategorija1", "kategorija1 remark"));
         gs.saveGroup(g);
@@ -163,7 +162,6 @@ public class GroupInteractorTest {
     
     @Test(expected = ValidationException.class)
     public void saveGroupValidationExceptionTest() throws ServiceException {
-        gs = new GroupInteractor(dao, validator);
         Group g = new Group(113, "Grupa113", "grupa113 remark", 
                 new Category(1, "Kategorija1", "kategorija1 remark"));
         gs.saveGroup(g);
@@ -172,7 +170,6 @@ public class GroupInteractorTest {
     
     @Test
     public void getAllGroupsOkTest() throws ServiceException {
-        gs = new GroupInteractor(dao, validator);
         List<Group> groups = gs.getAllGroups();
         assertNotNull(groups);
         assertArrayEquals(mockGroupRepository.toArray(), groups.toArray());
