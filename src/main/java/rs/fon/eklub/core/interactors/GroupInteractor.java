@@ -57,6 +57,7 @@ public class GroupInteractor implements GroupService {
 
     @Override
     public List<Group> getAllGroups() throws ServiceException {
-        return null;
+        List<Group> groups = dao.getAllEntities();
+        return groups;
     }
 }

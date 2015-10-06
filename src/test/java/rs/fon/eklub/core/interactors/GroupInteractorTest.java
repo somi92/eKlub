@@ -5,7 +5,6 @@
  */
 package rs.fon.eklub.core.interactors;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -122,7 +121,7 @@ public class GroupInteractorTest {
 
             @Override
             public boolean validateEntity(Group entity) throws ValidationException {
-                if(entity.getId() == 13) {
+                if(entity.getId() == 113) {
                     throw new ValidationException("Validation exception, wrong group name.");
                 }
                 return true;
@@ -143,5 +142,46 @@ public class GroupInteractorTest {
                 new Category(1, "Kategorija1", "kategorija1 remark"));
         gs.saveGroup(g);
         assertTrue(mockGroupRepository.contains(g));
+    }
+    
+    @Test(expected = ServiceException.class)
+    public void saveGroupNullEntityTest() throws ServiceException {
+        gs = new GroupInteractor(dao, validator);
+        Group g = null;
+        gs.saveGroup(g);
+        assertFalse(mockGroupRepository.contains(g));
+    }
+    
+    @Test(expected = DataAccessServiceException.class)
+    public void saveGroupDataExceptionTest() throws ServiceException {
+        gs = new GroupInteractor(dao, validator);
+        Group g = new Group(13, "Grupa13", "grupa13 remark", 
+                new Category(1, "Kategorija1", "kategorija1 remark"));
+        gs.saveGroup(g);
+        assertFalse(mockGroupRepository.contains(g));
+    }
+    
+    @Test(expected = ValidationException.class)
+    public void saveGroupValidationExceptionTest() throws ServiceException {
+        gs = new GroupInteractor(dao, validator);
+        Group g = new Group(113, "Grupa113", "grupa113 remark", 
+                new Category(1, "Kategorija1", "kategorija1 remark"));
+        gs.saveGroup(g);
+        assertFalse(mockGroupRepository.contains(g));
+    }
+    
+    @Test
+    public void getAllGroupsOkTest() throws ServiceException {
+        gs = new GroupInteractor(dao, validator);
+        List<Group> groups = gs.getAllGroups();
+        assertNotNull(groups);
+        assertArrayEquals(mockGroupRepository.toArray(), groups.toArray());
+    }
+    
+    @Test(expected = DataAccessServiceException.class)
+    public void getAllGroupsDataExceptionTest() throws ServiceException {
+        gs = new GroupInteractor(daoAllEntitiesError, validator);
+        List<Group> groups = gs.getAllGroups();
+        assertNull(groups);
     }
 }
