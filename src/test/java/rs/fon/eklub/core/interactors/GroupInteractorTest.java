@@ -75,7 +75,7 @@ public class GroupInteractorTest {
             }
 
             @Override
-            public void deleteEntity(Group entity) throws DataAccessServiceException {
+            public boolean deleteEntity(long id) throws DataAccessServiceException {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
@@ -103,7 +103,7 @@ public class GroupInteractorTest {
             }
 
             @Override
-            public void deleteEntity(Group entity) throws DataAccessServiceException {
+            public boolean deleteEntity(long id) throws DataAccessServiceException {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };

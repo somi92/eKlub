@@ -64,8 +64,8 @@ public class MemberInteractor implements MemberService {
     }
 
     @Override
-    public void deleteMember(long id) throws ServiceException {
-        
+    public boolean deleteMember(long id) throws ServiceException {
+        return dao.deleteEntity(id);
     }
 
     @Override

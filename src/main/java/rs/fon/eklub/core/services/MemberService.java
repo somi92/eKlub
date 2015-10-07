@@ -18,7 +18,7 @@ public interface MemberService {
     
     public void saveMember(Member member) throws ServiceException;
     public Member getMemberById(long id) throws ServiceException;
-    public void deleteMember(long id) throws ServiceException;
+    public boolean deleteMember(long id) throws ServiceException;
     public List<Member> getAllMembers() throws ServiceException;
     public List<Member> getMembers(Map<String, Object> searchCriteria) throws ServiceException;
 }

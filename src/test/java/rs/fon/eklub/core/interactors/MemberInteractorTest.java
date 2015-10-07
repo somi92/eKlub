@@ -96,11 +96,17 @@ public class MemberInteractorTest {
             }
 
             @Override
-            public void deleteEntity(Member entity) throws DataAccessServiceException {
-                if(entity.getId() == 13) {
+            public boolean deleteEntity(long id) throws DataAccessServiceException {
+                if(id == 13) {
                     throw new DataAccessServiceException("Data access error!");
                 }
-                mockMemberRepository.remove(entity);
+                for(Member m : mockMemberRepository) {
+                    if(m.getId() == id) {
+                        mockMemberRepository.remove(m);
+                        return true;
+                    }
+                }
+                return false;
             }
         };
         
@@ -127,7 +133,7 @@ public class MemberInteractorTest {
             }
 
             @Override
-            public void deleteEntity(Member entity) throws DataAccessServiceException {
+            public boolean deleteEntity(long id) throws DataAccessServiceException {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
@@ -206,7 +212,32 @@ public class MemberInteractorTest {
     }
     
     @Test
-    public void deleteMemberOkTest() {
-        
+    public void deleteMemberOkTest() throws ServiceException {
+        long id = 2;
+        Member m = new Member();
+        m.setId(id);
+        assertTrue(mockMemberRepository.contains(m));
+        boolean res = ms.deleteMember(id);
+        assertTrue(res);
+        assertFalse(mockMemberRepository.contains(m));
     }
+    
+    @Test
+    public void deleteMemberNotFoundTest() throws ServiceException {
+        long id = 10;
+        Member m = new Member();
+        m.setId(id);
+        assertFalse(mockMemberRepository.contains(m));
+        boolean res = ms.deleteMember(id);
+        assertFalse(res);
+        assertFalse(mockMemberRepository.contains(m));
+    }
+    
+    @Test(expected = DataAccessServiceException.class)
+    public void deleteMemberDataExceptionTest() throws ServiceException {
+        boolean res = ms.deleteMember(13);
+        assertFalse(res);
+    }
+    
+    
 }

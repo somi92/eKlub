@@ -19,5 +19,5 @@ public interface DataAccessService<T> {
     public List<T> getAllEntities() throws DataAccessServiceException;
     public List<T> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException;
     public void insertOrUpdateEntity(T entity) throws DataAccessServiceException;
-    public void deleteEntity(T entity) throws DataAccessServiceException;
+    public boolean deleteEntity(long id) throws DataAccessServiceException;
 }
