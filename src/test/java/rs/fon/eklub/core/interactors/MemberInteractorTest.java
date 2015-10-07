@@ -239,5 +239,17 @@ public class MemberInteractorTest {
         assertFalse(res);
     }
     
+    @Test
+    public void getAllMembersTestOk() throws ServiceException {
+        List<Member> members = ms.getAllMembers();
+        assertNotNull(members);
+        assertArrayEquals(mockMemberRepository.toArray(), members.toArray());
+    }
     
+    @Test(expected = DataAccessServiceException.class)
+    public void getAllMembersDataExceptionTest() throws ServiceException {
+        ms = new MemberInteractor(daoAllEntitiesError, validator);
+        List<Member> members = ms.getAllMembers();
+        assertNull(members);
+    }
 }

@@ -70,7 +70,8 @@ public class MemberInteractor implements MemberService {
 
     @Override
     public List<Member> getAllMembers() throws ServiceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Member> members = dao.getAllEntities();
+        return members;
     }
 
     @Override
