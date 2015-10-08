@@ -80,7 +80,7 @@ public class MemberInteractorTest {
             @Override
             public List<Member> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
                 List<Member> members = new ArrayList<>();
-                long id = searchCriteria.get("id") == null ? 0 : (long) searchCriteria.get("id");
+                long id = searchCriteria.get("id") == null ? 0 : Long.parseLong(searchCriteria.get("id").toString());
                 if(id == 13) {
                     throw new DataAccessServiceException("Data access error!");
                 }
@@ -265,4 +265,21 @@ public class MemberInteractorTest {
         List<Member> members = ms.getMembers(searchCriteria);
         assertTrue(members.size() == 2);
     }
+    
+    @Test
+    public void getMembersEmptyTest() throws ServiceException {
+        Map<String, Object> searchCriteria = new HashMap<>();
+        searchCriteria.put("gender", 'x');
+        List<Member> members = ms.getMembers(searchCriteria);
+        assertTrue(members.isEmpty());
+    }
+    
+    @Test(expected = DataAccessServiceException.class)
+    public void getMembersDataExceptionTest() throws ServiceException {
+        Map<String, Object> searchCriteria = new HashMap<>();
+        searchCriteria.put("id", 13);
+        List<Member> members = ms.getMembers(searchCriteria);
+        assertNull(members);
+    }
+    
 }
