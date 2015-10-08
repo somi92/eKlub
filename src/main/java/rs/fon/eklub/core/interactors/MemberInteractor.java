@@ -76,6 +76,7 @@ public class MemberInteractor implements MemberService {
 
     @Override
     public List<Member> getMembers(Map<String, Object> searchCriteria) throws ServiceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Member> members = dao.getEntities(searchCriteria);
+        return members;
     }
 }

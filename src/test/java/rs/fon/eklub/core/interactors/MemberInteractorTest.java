@@ -6,6 +6,7 @@
 package rs.fon.eklub.core.interactors;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static org.junit.Assert.*;
@@ -42,10 +43,13 @@ public class MemberInteractorTest {
         mockMemberRepository = new ArrayList<>();
         Member m1 = new Member();
         m1.setId(1);
+        m1.setGender('M');
         Member m2 = new Member();
         m2.setId(2);
+        m2.setGender('F');
         Member m3 = new Member();
         m3.setId(3);
+        m3.setGender('M');
         
         mockMemberRepository.add(m1);
         mockMemberRepository.add(m2);
@@ -76,11 +80,12 @@ public class MemberInteractorTest {
             @Override
             public List<Member> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
                 List<Member> members = new ArrayList<>();
-                if((long) searchCriteria.get("id") == 13) {
+                long id = searchCriteria.get("id") == null ? 0 : (long) searchCriteria.get("id");
+                if(id == 13) {
                     throw new DataAccessServiceException("Data access error!");
                 }
                 for(Member m : mockMemberRepository) {
-                    if(m.getId() == (long) searchCriteria.get("id")) {
+                    if(m.getGender() == (char) searchCriteria.get("gender")) {
                         members.add(m);
                     }
                 }
@@ -182,7 +187,7 @@ public class MemberInteractorTest {
     }
     
     @Test(expected = ValidationException.class)
-    public void saveMemberValidationException() throws ServiceException {
+    public void saveMemberValidationExceptionTest() throws ServiceException {
         Member m = new Member();
         m.setId(113);
         ms.saveMember(m);
@@ -240,7 +245,7 @@ public class MemberInteractorTest {
     }
     
     @Test
-    public void getAllMembersTestOk() throws ServiceException {
+    public void getAllMembersOkTest() throws ServiceException {
         List<Member> members = ms.getAllMembers();
         assertNotNull(members);
         assertArrayEquals(mockMemberRepository.toArray(), members.toArray());
@@ -251,5 +256,13 @@ public class MemberInteractorTest {
         ms = new MemberInteractor(daoAllEntitiesError, validator);
         List<Member> members = ms.getAllMembers();
         assertNull(members);
+    }
+    
+    @Test
+    public void getMembersOkTest() throws ServiceException {
+        Map<String, Object> searchCriteria = new HashMap<>();
+        searchCriteria.put("gender", 'M');
+        List<Member> members = ms.getMembers(searchCriteria);
+        assertTrue(members.size() == 2);
     }
 }
