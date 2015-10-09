@@ -12,7 +12,8 @@ package rs.fon.eklub.core;
 @org.junit.runner.RunWith(org.junit.runners.Suite.class)
 @org.junit.runners.Suite.SuiteClasses({
     rs.fon.eklub.core.interactors.GroupInteractorTest.class,
-    rs.fon.eklub.core.interactors.MemberInteractorTest.class
+    rs.fon.eklub.core.interactors.MemberInteractorTest.class,
+    rs.fon.eklub.core.interactors.FeeInteractorTest.class
 })
 public class EKlubCoreTestSuite {
     
