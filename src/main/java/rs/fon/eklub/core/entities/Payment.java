@@ -22,6 +22,13 @@ public class Payment {
     public Payment() {
     }
 
+    public Payment(MembershipFee fee, double amount, Date dateOfPayment, Member member) {
+        this.fee = fee;
+        this.amount = amount;
+        this.dateOfPayment = dateOfPayment;
+        this.member = member;
+    }
+
     public MembershipFee getFee() {
         return fee;
     }

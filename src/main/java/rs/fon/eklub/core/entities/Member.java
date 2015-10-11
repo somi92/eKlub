@@ -34,6 +34,11 @@ public class Member {
         attendances = new ArrayList<>();
     }
 
+    public Member(long id) {
+        this();
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }

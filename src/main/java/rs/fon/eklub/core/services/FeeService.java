@@ -17,7 +17,7 @@ import rs.fon.eklub.core.exceptions.ServiceException;
  */
 public interface FeeService {
     
-    public void saveFee(List<Payment> payments);
-    public MembershipFee getFeeById(long id);
+    public void savePayments(List<Payment> payments) throws ServiceException;
+    public MembershipFee getFeeById(long id) throws ServiceException;
     public List<MembershipFee> getMembershipFees(Map<String, Object> searchCriteria) throws ServiceException;
 }

@@ -6,6 +6,7 @@
 package rs.fon.eklub.core.entities;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -17,6 +18,17 @@ public class MembershipFee {
     private Date dateFrom;
     private Date dateTo;
     private String remark;
+    private List<Payment> payments;
+
+    public MembershipFee() {
+    }
+
+    public MembershipFee(long id, Date dateFrom, Date dateTo, String remark) {
+        this.id = id;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+        this.remark = remark;
+    }
 
     public long getId() {
         return id;
@@ -49,6 +61,14 @@ public class MembershipFee {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+    
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
+    }
 
     @Override
     public int hashCode() {
@@ -71,6 +91,4 @@ public class MembershipFee {
         }
         return true;
     }
-    
-    
 }
