@@ -11,39 +11,39 @@ import rs.fon.eklub.core.dal.DataAccessService;
 import rs.fon.eklub.core.entities.MembershipFee;
 import rs.fon.eklub.core.entities.Payment;
 import rs.fon.eklub.core.exceptions.ServiceException;
-import rs.fon.eklub.core.services.FeeService;
+import rs.fon.eklub.core.services.PaymentService;
 import rs.fon.eklub.core.validators.EntityValidator;
 
 /**
  *
  * @author milos
  */
-public class FeeInteractor implements FeeService {
+public class PaymentInteractor implements PaymentService {
 
-    private DataAccessService<MembershipFee> dao;
-    private EntityValidator<MembershipFee> validator;
+    private DataAccessService<Payment> dao;
+    private EntityValidator<Payment> validator;
 
-    public FeeInteractor() {
+    public PaymentInteractor() {
     }
     
-    FeeInteractor(DataAccessService<MembershipFee> dao, EntityValidator<MembershipFee> validator) {
+    PaymentInteractor(DataAccessService<Payment> dao, EntityValidator<Payment> validator) {
         this.dao = dao;
         this.validator = validator;
     }
     
-    public DataAccessService<MembershipFee> getDao() {
+    public DataAccessService<Payment> getDao() {
         return dao;
     }
 
-    public void setDao(DataAccessService<MembershipFee> dao) {
+    public void setDao(DataAccessService<Payment> dao) {
         this.dao = dao;
     }
 
-    public EntityValidator<MembershipFee> getValidator() {
+    public EntityValidator<Payment> getValidator() {
         return validator;
     }
 
-    public void setValidator(EntityValidator<MembershipFee> validator) {
+    public void setValidator(EntityValidator<Payment> validator) {
         this.validator = validator;
     }
 
@@ -53,22 +53,14 @@ public class FeeInteractor implements FeeService {
             throw new ServiceException("Payments null or empty!");
         }
         for(Payment p : payments) {
-            List<Payment> curentFeePayments = p.getFee().getPayments();
-            curentFeePayments.add(p);
-            p.getFee().setPayments(curentFeePayments);
-            if(validator.validateEntity(p.getFee())) {
-                dao.insertOrUpdateEntity(p.getFee());
+            if(validator.validateEntity(p)) {
+                dao.insertOrUpdateEntity(p);
             }
         }
     }
 
     @Override
-    public MembershipFee getFeeById(long id) throws ServiceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<MembershipFee> getMembershipFees(Map<String, Object> searchCriteria) throws ServiceException {
+    public List<Payment> getPayments(Map<String, Object> searchCriteria) throws ServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

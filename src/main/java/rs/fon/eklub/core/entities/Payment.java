@@ -14,6 +14,7 @@ import java.util.Objects;
  */
 public class Payment {
     
+    private long id;
     private MembershipFee fee;
     private double amount;
     private Date dateOfPayment;
@@ -22,11 +23,20 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(MembershipFee fee, double amount, Date dateOfPayment, Member member) {
+    public Payment(long id, MembershipFee fee, double amount, Date dateOfPayment, Member member) {
+        this.id = id;
         this.fee = fee;
         this.amount = amount;
         this.dateOfPayment = dateOfPayment;
         this.member = member;
+    }
+    
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public MembershipFee getFee() {
@@ -63,9 +73,8 @@ public class Payment {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 29 * hash + Objects.hashCode(this.fee);
-        hash = 29 * hash + Objects.hashCode(this.member);
+        int hash = 7;
+        hash = 97 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
     }
 
@@ -78,10 +87,7 @@ public class Payment {
             return false;
         }
         final Payment other = (Payment) obj;
-        if (!Objects.equals(this.fee, other.fee)) {
-            return false;
-        }
-        if (!Objects.equals(this.member, other.member)) {
+        if (this.id != other.id) {
             return false;
         }
         return true;

@@ -18,7 +18,6 @@ public class MembershipFee {
     private Date dateFrom;
     private Date dateTo;
     private String remark;
-    private List<Payment> payments;
 
     public MembershipFee() {
     }
@@ -60,14 +59,6 @@ public class MembershipFee {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-    
-    public List<Payment> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(List<Payment> payments) {
-        this.payments = payments;
     }
 
     @Override

@@ -5,14 +5,10 @@
  */
 package rs.fon.eklub.core.services;
 
-import rs.fon.eklub.core.entities.Employee;
-import rs.fon.eklub.core.exceptions.ServiceException;
-
 /**
  *
  * @author milos
  */
-public interface AdminService {
+public interface MembershipFeeService {
     
-    public Employee getAdmin(Employee admin) throws ServiceException;
 }
