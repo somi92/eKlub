@@ -8,7 +8,6 @@ package rs.fon.eklub.core.interactors;
 import java.util.List;
 import java.util.Map;
 import rs.fon.eklub.core.dal.DataAccessService;
-import rs.fon.eklub.core.entities.MembershipFee;
 import rs.fon.eklub.core.entities.Payment;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.PaymentService;
@@ -61,6 +60,7 @@ public class PaymentInteractor implements PaymentService {
 
     @Override
     public List<Payment> getPayments(Map<String, Object> searchCriteria) throws ServiceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Payment> payments = dao.getEntities(searchCriteria);
+        return payments;
     }
 }

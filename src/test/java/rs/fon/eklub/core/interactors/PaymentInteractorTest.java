@@ -7,6 +7,7 @@ package rs.fon.eklub.core.interactors;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static org.junit.Assert.*;
@@ -28,10 +29,9 @@ import rs.fon.eklub.core.validators.EntityValidator;
  */
 public class PaymentInteractorTest {
     
-    private PaymentService fs;
+    private PaymentService ps;
     
     private DataAccessService<Payment> dao;
-    private DataAccessService<Payment> daoAllEntitiesError;
     private EntityValidator<Payment> validator;
     
     private List<MembershipFee> mockFeeRepository;
@@ -52,8 +52,8 @@ public class PaymentInteractorTest {
         c2.set(2015, Calendar.OCTOBER, 31);
         MembershipFee mf1 = new MembershipFee(1, c1.getTime(), c2.getTime(), null);
         Payment p11 = new Payment(1, mf1, 1000, null, new Member(3));
-        Payment p12 = new Payment(2, mf1, 1000, null, new Member(2));
-        Payment p13 = new Payment(3, mf1, 1000, null, new Member(1));
+        Payment p12 = new Payment(2, mf1, 2000, null, new Member(2));
+        Payment p13 = new Payment(3, mf1, 2000, null, new Member(1));
         mockPaymentsRepository.add(p11);
         mockPaymentsRepository.add(p12);
         mockPaymentsRepository.add(p13);
@@ -65,7 +65,7 @@ public class PaymentInteractorTest {
         MembershipFee mf2 = new MembershipFee(2, c3.getTime(), c4.getTime(), null);
         Payment p21 = new Payment(4, mf2, 1000, null, new Member(4));
         Payment p22 = new Payment(5, mf2, 1000, null, new Member(5));
-        Payment p23 = new Payment(6, mf2, 1000, null, new Member(5));
+        Payment p23 = new Payment(6, mf2, 2000, null, new Member(5));
         mockPaymentsRepository.add(p21);
         mockPaymentsRepository.add(p22);
         mockPaymentsRepository.add(p23);
@@ -136,13 +136,13 @@ public class PaymentInteractorTest {
             }
         };
         
-        fs = new PaymentInteractor(dao, validator);
+        ps = new PaymentInteractor(dao, validator);
     }
     
     @Test
     public void initializeFeeInteractorTest() {
-        fs = new PaymentInteractor(dao, validator);
-        assertNotNull(fs);
+        ps = new PaymentInteractor(dao, validator);
+        assertNotNull(ps);
     }
     
     @Test
@@ -156,7 +156,7 @@ public class PaymentInteractorTest {
         payments.add(p1);
         payments.add(p2);
         payments.add(p3);
-        fs.savePayments(payments);
+        ps.savePayments(payments);
         assertTrue(mockPaymentsRepository.contains(p1));
         assertTrue(mockPaymentsRepository.contains(p2));
         assertTrue(mockPaymentsRepository.contains(p3));
@@ -165,7 +165,7 @@ public class PaymentInteractorTest {
     @Test(expected = ServiceException.class)
     public void savePaymentsNullEntityTest() throws ServiceException {
         List<Payment> payments = null;
-        fs.savePayments(payments);
+        ps.savePayments(payments);
         assertNull(payments);
     }
     
@@ -174,7 +174,7 @@ public class PaymentInteractorTest {
         List<Payment> payments = new ArrayList<>();
         Payment p = new Payment(13, null, 2000, null, new Member(10));
         payments.add(p);
-        fs.savePayments(payments);
+        ps.savePayments(payments);
         assertFalse(mockPaymentsRepository.contains(p));
     }
     
@@ -183,7 +183,31 @@ public class PaymentInteractorTest {
         List<Payment> payments = new ArrayList<>();
         Payment p = new Payment(13, null, -2000, null, new Member(10));
         payments.add(p);
-        fs.savePayments(payments);
+        ps.savePayments(payments);
         assertFalse(mockPaymentsRepository.contains(p));
+    }
+    
+    @Test
+    public void getPaymentsOkTest() throws ServiceException {
+        Map<String, Object> searchCriteria = new HashMap<>();
+        searchCriteria.put("amount", 2000);
+        List<Payment> payments = ps.getPayments(searchCriteria);
+        assertTrue(payments.size() == 3);
+    }
+    
+    @Test
+    public void getPaymentsEmptyTest() throws ServiceException {
+        Map<String, Object> searchCriteria = new HashMap<>();
+        searchCriteria.put("amount", 3000);
+        List<Payment> payments = ps.getPayments(searchCriteria);
+        assertTrue(payments.isEmpty());
+    }
+    
+    @Test(expected = DataAccessServiceException.class)
+    public void getPaymentsDataExceptionTest() throws ServiceException {
+        Map<String, Object> searchCriteria = new HashMap<>();
+        searchCriteria.put("id", 13);
+        List<Payment> payments = ps.getPayments(searchCriteria);
+        assertNull(payments);
     }
 }
