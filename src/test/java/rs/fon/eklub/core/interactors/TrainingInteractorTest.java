@@ -32,7 +32,6 @@ public class TrainingInteractorTest {
     private TrainingService ts;
     
     private DataAccessService<Training> dao;
-    private DataAccessService<Training> daoAllEntitiesError;
     private EntityValidator<Training> validator;
     
     private List<Training> mockTrainingRepository;
