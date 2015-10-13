@@ -14,7 +14,8 @@ package rs.fon.eklub.core;
     rs.fon.eklub.core.interactors.GroupInteractorTest.class,
     rs.fon.eklub.core.interactors.MemberInteractorTest.class,
     rs.fon.eklub.core.interactors.PaymentInteractorTest.class,
-    rs.fon.eklub.core.interactors.TrainingInteractorTest.class
+    rs.fon.eklub.core.interactors.TrainingInteractorTest.class,
+    rs.fon.eklub.core.interactors.CategoryInteractorTest.class
 })
 public class EKlubCoreTestSuite {
     

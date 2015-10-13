@@ -147,7 +147,7 @@ public class TrainingInteractorTest {
     }
     
     @Test
-    public void initializeTrainingInteractorTest() {
+    public void initializeTrainingInteractorOkTest() {
         ts = new TrainingInteractor(dao, validator);
         assertNotNull(ts);
     }
