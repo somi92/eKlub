@@ -26,7 +26,7 @@ public class MemberInteractor implements MemberService {
     
     }
 
-    MemberInteractor(DataAccessService<Member> dao, EntityValidator<Member> validator) {
+    public MemberInteractor(DataAccessService<Member> dao, EntityValidator<Member> validator) {
         this.dao = dao;
         this.validator = validator;
     }

@@ -6,6 +6,7 @@
 package rs.fon.eklub.core.entities;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -18,6 +19,7 @@ public class Training {
     private int durationMinutes;
     private String description;
     private Group group;
+    private List<Attendance> attendaces;
 
     public Training() {
     }
@@ -61,6 +63,14 @@ public class Training {
     public void setGroup(Group group) {
         this.group = group;
     }
+    
+    public List<Attendance> getAttendaces() {
+        return attendaces;
+    }
+
+    public void setAttendaces(List<Attendance> attendaces) {
+        this.attendaces = attendaces;
+    }
 
     @Override
     public int hashCode() {
@@ -82,7 +92,5 @@ public class Training {
             return false;
         }
         return true;
-    }
-    
-    
+    } 
 }

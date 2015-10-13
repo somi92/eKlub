@@ -99,7 +99,7 @@ public class PaymentInteractorTest {
                 List<Payment> payments = new ArrayList<>();
                 long id = searchCriteria.get("id") == null ? 0 : Long.parseLong(searchCriteria.get("id").toString());
                 if(id == 13) {
-                    throw new DataAccessServiceException("Data access service!");
+                    throw new DataAccessServiceException("Data access error!");
                 }
                 for(Payment p : mockPaymentsRepository) {
                     if(p.getAmount() == Double.parseDouble(searchCriteria.get("amount").toString())) {

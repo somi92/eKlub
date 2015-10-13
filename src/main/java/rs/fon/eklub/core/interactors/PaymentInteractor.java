@@ -25,7 +25,7 @@ public class PaymentInteractor implements PaymentService {
     public PaymentInteractor() {
     }
     
-    PaymentInteractor(DataAccessService<Payment> dao, EntityValidator<Payment> validator) {
+    public PaymentInteractor(DataAccessService<Payment> dao, EntityValidator<Payment> validator) {
         this.dao = dao;
         this.validator = validator;
     }

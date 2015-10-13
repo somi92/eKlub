@@ -5,20 +5,35 @@
  */
 package rs.fon.eklub.core.entities;
 
-import java.util.Objects;
-
 /**
  *
  * @author milos
  */
 public class Attendance {
     
+    private long id;
     private Member member;
     private Training training;
     private boolean isAttendant;
     private int lateMin;
 
     public Attendance() {
+    }
+
+    public Attendance(long id, Member member, Training training, boolean isAttendant, int lateMin) {
+        this.id = id;
+        this.member = member;
+        this.training = training;
+        this.isAttendant = isAttendant;
+        this.lateMin = lateMin;
+    }
+    
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Member getMember() {
@@ -55,9 +70,8 @@ public class Attendance {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 43 * hash + Objects.hashCode(this.member);
-        hash = 43 * hash + Objects.hashCode(this.training);
+        int hash = 7;
+        hash = 23 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
     }
 
@@ -70,10 +84,7 @@ public class Attendance {
             return false;
         }
         final Attendance other = (Attendance) obj;
-        if (!Objects.equals(this.member, other.member)) {
-            return false;
-        }
-        if (!Objects.equals(this.training, other.training)) {
+        if (this.id != other.id) {
             return false;
         }
         return true;

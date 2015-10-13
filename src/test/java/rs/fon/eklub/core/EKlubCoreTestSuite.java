@@ -13,7 +13,8 @@ package rs.fon.eklub.core;
 @org.junit.runners.Suite.SuiteClasses({
     rs.fon.eklub.core.interactors.GroupInteractorTest.class,
     rs.fon.eklub.core.interactors.MemberInteractorTest.class,
-    rs.fon.eklub.core.interactors.PaymentInteractorTest.class
+    rs.fon.eklub.core.interactors.PaymentInteractorTest.class,
+    rs.fon.eklub.core.interactors.TrainingInteractorTest.class
 })
 public class EKlubCoreTestSuite {
     
