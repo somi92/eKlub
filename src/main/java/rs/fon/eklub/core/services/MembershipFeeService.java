@@ -5,10 +5,15 @@
  */
 package rs.fon.eklub.core.services;
 
+import java.util.List;
+import rs.fon.eklub.core.entities.MembershipFee;
+import rs.fon.eklub.core.exceptions.ServiceException;
+
 /**
  *
  * @author milos
  */
 public interface MembershipFeeService {
     
+    public List<MembershipFee> getAllMembershipFees() throws ServiceException;
 }
