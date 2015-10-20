@@ -140,7 +140,7 @@ public class PaymentInteractorTest {
     }
     
     @Test
-    public void initializeFeeInteractorTest() {
+    public void initializePaymentInteractorTest() {
         ps = new PaymentInteractor(dao, validator);
         assertNotNull(ps);
     }
