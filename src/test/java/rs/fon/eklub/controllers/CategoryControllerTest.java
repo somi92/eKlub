@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -21,10 +20,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import rs.fon.eklub.boot.Main;
-import rs.fon.eklub.core.dal.DataAccessService;
-import rs.fon.eklub.core.entities.Category;
+import rs.fon.eklub.core.interactors.CategoryInteractor;
 import rs.fon.eklub.core.services.CategoryService;
-import rs.fon.eklub.repositories.MockCategoryRepository;
 
 /**
  *
@@ -37,6 +34,9 @@ import rs.fon.eklub.repositories.MockCategoryRepository;
 public class CategoryControllerTest {
     
     private MockMvc mockMvc;
+    
+    private CategoryService categoryService;
+    private CategoryController categoryController;
     
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -54,5 +54,11 @@ public class CategoryControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/categories"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", Is.is(1)));
+    }
+    
+    @Test
+    public void getAllCategoriesExceptionTest() {
+        categoryController = new CategoryController();
+        mockMvc = MockMvcBuilders.standaloneSetup(categoryController).build();
     }
 }
