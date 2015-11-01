@@ -5,7 +5,6 @@
  */
 package rs.fon.eklub.core.interactors;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.junit.Test;
@@ -16,6 +15,7 @@ import rs.fon.eklub.core.entities.Category;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.CategoryService;
+import rs.fon.eklub.repositories.MockCategoryRepository;
 
 /**
  *
@@ -28,50 +28,13 @@ public class CategoryInteractorTest {
     private DataAccessService<Category> dao;
     private DataAccessService<Category> daoAllEntitiesError;
     
-    private List<Category> mockCategoryRepository;
-    
     public CategoryInteractorTest() {
     }
     
     @Before
     public void setUp() {
         
-        mockCategoryRepository = new ArrayList<>();
-        Category c1 = new Category(1, "cat1", null);
-        Category c2 = new Category(2, "cat2", null);
-        Category c3 = new Category(3, "cat3", null);
-        mockCategoryRepository.add(c1);
-        mockCategoryRepository.add(c2);
-        mockCategoryRepository.add(c3);
-        
-        dao = new DataAccessService<Category>() {
-
-            @Override
-            public Category getEntity(long id) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public List<Category> getAllEntities() throws DataAccessServiceException {
-                List<Category> categories = mockCategoryRepository;
-                return categories;
-            }
-
-            @Override
-            public List<Category> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void insertOrUpdateEntity(Category entity) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public boolean deleteEntity(long id) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
+        dao = new MockCategoryRepository();
         
         daoAllEntitiesError = new DataAccessService<Category>() {
 
@@ -114,7 +77,7 @@ public class CategoryInteractorTest {
     public void getAllCategoriesOkTest() throws ServiceException {
         List<Category> categories = cs.getAllCategories();
         assertNotNull(categories);
-        assertArrayEquals(mockCategoryRepository.toArray(), categories.toArray());
+        assertArrayEquals(dao.getAllEntities().toArray(), categories.toArray());
     }
     
     @Test(expected = DataAccessServiceException.class)

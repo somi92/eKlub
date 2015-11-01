@@ -5,12 +5,15 @@
  */
 package rs.fon.eklub.core;
         
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite.SuiteClasses;
+
 /**
  *
  * @author milos
  */
-@org.junit.runner.RunWith(org.junit.runners.Suite.class)
-@org.junit.runners.Suite.SuiteClasses({
+@RunWith(org.junit.runners.Suite.class)
+@SuiteClasses({
     rs.fon.eklub.core.interactors.GroupInteractorTest.class,
     rs.fon.eklub.core.interactors.MemberInteractorTest.class,
     rs.fon.eklub.core.interactors.PaymentInteractorTest.class,

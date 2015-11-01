@@ -17,5 +17,6 @@ public class ServiceAPI {
     public static final String DELETE_MEMBER_BY_ID = "/members/{id}";
     public static final String GET_SEARCH_MEMBERS = "/members";
     
+    public static final String GET_ALL_CATEGORIES = "/categories";
     
 }
