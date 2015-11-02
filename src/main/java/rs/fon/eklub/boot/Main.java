@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import rs.fon.eklub.core.interactors.CategoryInteractor;
-import rs.fon.eklub.repositories.MockCategoryRepository;
+import rs.fon.eklub.repositories.mocks.MockCategoryRepository;
 
 /**
  *
