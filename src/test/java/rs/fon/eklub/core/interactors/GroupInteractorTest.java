@@ -19,6 +19,9 @@ import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.exceptions.ValidationException;
 import rs.fon.eklub.core.services.GroupService;
 import rs.fon.eklub.core.validators.EntityValidator;
+import rs.fon.eklub.core.validators.MockGroupValidator;
+import rs.fon.eklub.repositories.mocks.MockGroupExceptionRepository;
+import rs.fon.eklub.repositories.mocks.MockGroupRepository;
 
 /**
  *
@@ -32,93 +35,15 @@ public class GroupInteractorTest {
     private DataAccessService<Group> daoAllEntitiesError;
     private EntityValidator<Group> validator;
     
-    private List<Group> mockGroupRepository;
-    
     public GroupInteractorTest() {
     }
     
     @Before
     public void setUp() {
         
-        mockGroupRepository = new ArrayList<>();
-        Group g1 = new Group(1, "grupa1", "grupa1 remark", new Category(1, "kategorija1", "kategorija1 remark"));
-        Group g2 = new Group(2, "grupa2", "grupa2 remark", new Category(2, "kategorija2", "kategorija2 remark"));
-        Group g3 = new Group(3, "grupa3", "grupa3 remark", new Category(3, "kategorija3", "kategorija3 remark"));
-        mockGroupRepository.add(g1);
-        mockGroupRepository.add(g2);
-        mockGroupRepository.add(g3);
-        
-        dao = new DataAccessService<Group>() {
-
-            @Override
-            public Group getEntity(long id) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public List<Group> getAllEntities() throws DataAccessServiceException {
-                List<Group> groups = mockGroupRepository;
-                return groups;
-            }
-
-            @Override
-            public List<Group> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void insertOrUpdateEntity(Group entity) throws DataAccessServiceException {
-                if(entity.getId() == 13) {
-                    throw new DataAccessServiceException("Data access error!");
-                }
-                mockGroupRepository.add(entity);
-            }
-
-            @Override
-            public boolean deleteEntity(long id) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-        
-        daoAllEntitiesError = new DataAccessService<Group>() {
-
-            @Override
-            public Group getEntity(long id) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public List<Group> getAllEntities() throws DataAccessServiceException {
-                throw new DataAccessServiceException("Data access error!");
-            }
-
-            @Override
-            public List<Group> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void insertOrUpdateEntity(Group entity) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public boolean deleteEntity(long id) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-        
-        validator = new EntityValidator<Group>() {
-
-            @Override
-            public boolean validateEntity(Group entity) throws ValidationException {
-                if(entity.getId() == 113) {
-                    throw new ValidationException("Validation exception!");
-                }
-                return true;
-            }
-        };
-        
+        dao = new MockGroupRepository();
+        daoAllEntitiesError = new MockGroupExceptionRepository();
+        validator = new MockGroupValidator();
         gs = new GroupInteractor(dao, validator);
     }
     
@@ -133,14 +58,14 @@ public class GroupInteractorTest {
         Group g = new Group(10, "Grupa10", "grupa10 remark", 
                 new Category(1, "Kategorija1", "kategorija1 remark"));
         gs.saveGroup(g);
-        assertTrue(mockGroupRepository.contains(g));
+        assertTrue(dao.getAllEntities().contains(g));
     }
     
     @Test(expected = ServiceException.class)
     public void saveGroupNullEntityTest() throws ServiceException {
         Group g = null;
         gs.saveGroup(g);
-        assertFalse(mockGroupRepository.contains(g));
+        assertFalse(dao.getAllEntities().contains(g));
     }
     
     @Test(expected = DataAccessServiceException.class)
@@ -148,7 +73,7 @@ public class GroupInteractorTest {
         Group g = new Group(13, "Grupa13", "grupa13 remark", 
                 new Category(1, "Kategorija1", "kategorija1 remark"));
         gs.saveGroup(g);
-        assertFalse(mockGroupRepository.contains(g));
+        assertFalse(dao.getAllEntities().contains(g));
     }
     
     @Test(expected = ValidationException.class)
@@ -156,14 +81,14 @@ public class GroupInteractorTest {
         Group g = new Group(113, "Grupa113", "grupa113 remark", 
                 new Category(1, "Kategorija1", "kategorija1 remark"));
         gs.saveGroup(g);
-        assertFalse(mockGroupRepository.contains(g));
+        assertFalse(dao.getAllEntities().contains(g));
     }
     
     @Test
     public void getAllGroupsOkTest() throws ServiceException {
         List<Group> groups = gs.getAllGroups();
         assertNotNull(groups);
-        assertArrayEquals(mockGroupRepository.toArray(), groups.toArray());
+        assertArrayEquals(dao.getAllEntities().toArray(), groups.toArray());
     }
     
     @Test(expected = DataAccessServiceException.class)

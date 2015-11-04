@@ -11,12 +11,21 @@ package rs.fon.eklub.constants;
  */
 public class ServiceAPI {
     
-    public static final String GET_ALL_MEMBERS = "/members";
-    public static final String GET_MEMBER_BY_ID = "/members/{id}";
-    public static final String POST_SAVE_MEMBER = "/members";
-    public static final String DELETE_MEMBER_BY_ID = "/members/{id}";
-    public static final String GET_SEARCH_MEMBERS = "/members";
+    public class Group {
+        public static final String GET_ALL_GROUPS = "/groups";
+        public static final String POST_SAVE_GROUP = "/groups";
+    }
     
-    public static final String GET_ALL_CATEGORIES = "/categories";
+    public class Member {
+        public static final String GET_MEMBER_BY_ID = "/members/{id}";
+        public static final String DELETE_MEMBER_BY_ID = "/members/{id}";
+        public static final String GET_ALL_MEMBERS = "/members";
+        public static final String GET_SEARCH_MEMBERS = "/members";
+        public static final String POST_SAVE_MEMBER = "/members";
+    }
+    
+    public class Category {
+        public static final String GET_ALL_CATEGORIES = "/categories";
+    }
     
 }

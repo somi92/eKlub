@@ -32,7 +32,7 @@ public class CategoryController {
     @Autowired
     private CategoryService interactor;
     
-    @RequestMapping(ServiceAPI.GET_ALL_CATEGORIES)
+    @RequestMapping(ServiceAPI.Category.GET_ALL_CATEGORIES)
     @ResponseBody
     public List<Category> getAllCategories() throws ServiceException {
         List<Category> categories = interactor.getAllCategories();

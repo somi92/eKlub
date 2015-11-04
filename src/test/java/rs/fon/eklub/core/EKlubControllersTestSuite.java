@@ -14,7 +14,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(org.junit.runners.Suite.class)
 @Suite.SuiteClasses({
-    rs.fon.eklub.controllers.CategoryControllerTest.class
+    rs.fon.eklub.controllers.CategoryControllerTest.class,
+    rs.fon.eklub.controllers.GroupControllerTest.class
 })
 public class EKlubControllersTestSuite {
     

@@ -13,7 +13,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import rs.fon.eklub.core.interactors.CategoryInteractor;
+import rs.fon.eklub.core.interactors.GroupInteractor;
+import rs.fon.eklub.core.validators.MockGroupValidator;
+import rs.fon.eklub.repositories.mocks.MockCategoryExceptionRepository;
 import rs.fon.eklub.repositories.mocks.MockCategoryRepository;
+import rs.fon.eklub.repositories.mocks.MockGroupRepository;
 
 /**
  *
@@ -43,6 +47,12 @@ public class Main {
     @Bean
     CategoryInteractor getCategoryInteractor() {
         return new CategoryInteractor(new MockCategoryRepository());
+    }
+    
+    @Bean
+    GroupInteractor getGroupInteractor() {
+        return new GroupInteractor(new MockGroupRepository(), 
+                new MockGroupValidator());
     }
     
     public static void main(String[] args) {
