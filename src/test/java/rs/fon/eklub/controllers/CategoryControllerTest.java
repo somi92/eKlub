@@ -6,6 +6,8 @@
 package rs.fon.eklub.controllers;
 
 import org.hamcrest.core.Is;
+import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -15,21 +17,23 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 import org.springframework.web.context.WebApplicationContext;
 import rs.fon.eklub.boot.Main;
+import rs.fon.eklub.constants.ServiceAPI;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.interactors.CategoryInteractor;
@@ -42,43 +46,58 @@ import rs.fon.eklub.repositories.mocks.MockCategoryRepository;
  * @author milos
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Main.class)
+@SpringApplicationConfiguration(classes = CategoryControllerTest.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {Main.class})
+@ContextConfiguration(classes = {CategoryControllerTest.class})
 public class CategoryControllerTest {
     
     private MockMvc mockMvc;
     
-    @Mock
-    private CategoryService categoryService;
+//    private CategoryService categoryService;
     
-    @InjectMocks
-    private CategoryController categoryController;
+    @Bean
+    CategoryService getCategoryInteractor() {
+        return new CategoryInteractor(new MockCategoryExceptionRepository());
+    }
     
     @Autowired
-    private WebApplicationContext webApplicationContext;
+    private CategoryController categoryController;
+    
+//    @Autowired
+//    private WebApplicationContext webApplicationContext;
     
     public CategoryControllerTest() {
     }
     
     @Before
     public void setUp() {
-        mockMvc = webAppContextSetup(this.webApplicationContext).build();
+//        MockitoAnnotations.initMocks(this);
+        mockMvc = standaloneSetup(categoryController).build();
     }
     
     @Test
     public void getAllCategoriesOkTest() throws Exception {
-        mockMvc.perform(get("/categories"))
+        mockMvc.perform(get(ServiceAPI.Category.GET_ALL_CATEGORIES))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", Is.is(1)));
+                .andExpect(jsonPath("$[0].id", Is.is(1)))
+                .andExpect(jsonPath("$[1].id", Is.is(2)))
+                .andExpect(jsonPath("$[2].id", Is.is(3)));
     }
     
-    @Test(expected = ServiceException.class)
+    @Test
     public void getAllCategoriesExceptionTest() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        categoryService = new CategoryInteractor(new MockCategoryExceptionRepository());
-        mockMvc = standaloneSetup(categoryController).build();
-        Mockito.when(categoryService.getAllCategories()).thenReturn(null);
-        mockMvc.perform(get("/categories")).andExpect(status().isNotFound());
+        mockMvc.perform(get(ServiceAPI.Category.GET_ALL_CATEGORIES))
+                .andExpect(status().isNotFound());
     }
+    
+//    @Test
+//    public void getAllCategoriesExceptionTest() throws Exception {
+////            MockitoAnnotations.initMocks(this);
+//        categoryService = new CategoryInteractor(new MockCategoryExceptionRepository());
+////        categoryService = Mockito.mock(CategoryInteractor.class);
+////        mockMvc = standaloneSetup(categoryController).build();
+////            Mockito.when(categoryService.getAllCategories()).thenThrow(new DataAccessServiceException("Message"));
+//        ResultActions perform = mockMvc.perform(get(ServiceAPI.Category.GET_ALL_CATEGORIES));
+//        
+//    }
 }
