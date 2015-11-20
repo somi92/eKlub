@@ -16,7 +16,6 @@ import rs.fon.eklub.core.interactors.CategoryInteractor;
 import rs.fon.eklub.core.interactors.GroupInteractor;
 import rs.fon.eklub.core.services.CategoryService;
 import rs.fon.eklub.core.validators.MockGroupValidator;
-import rs.fon.eklub.repositories.mocks.MockCategoryExceptionRepository;
 import rs.fon.eklub.repositories.mocks.MockCategoryRepository;
 import rs.fon.eklub.repositories.mocks.MockGroupRepository;
 

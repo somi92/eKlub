@@ -29,20 +29,25 @@ import rs.fon.eklub.exceptions.ServiceErrorDescriptor;
 @Component
 public class CategoryController {
     
-    @Autowired
     private CategoryService interactor;
+    
+    @Autowired
+    public CategoryController(CategoryService interactor) {
+        this.interactor = interactor;
+    }
     
     @RequestMapping(ServiceAPI.Category.GET_ALL_CATEGORIES)
     @ResponseBody
     public List<Category> getAllCategories() throws ServiceException {
         List<Category> categories = interactor.getAllCategories();
         return categories;
+//        throw new ServiceException("EXC");
     }
     
-    @ExceptionHandler(ServiceException.class)
-    public ResponseEntity<ServiceException> categoriesNotFound(HttpServletRequest rq, ServiceException e) {
-        return new ResponseEntity(
-                new ServiceErrorDescriptor(e.getClass().getSimpleName(), e.getMessage(), rq.getRequestURI()), 
-                HttpStatus.NOT_FOUND);
-    }         
+//    @ExceptionHandler(ServiceException.class)
+//    public ResponseEntity<ServiceException> categoriesNotFound(HttpServletRequest rq, ServiceException e) {
+//        return new ResponseEntity(
+//                new ServiceErrorDescriptor(e.getClass().getSimpleName(), e.getMessage(), rq.getRequestURI()), 
+//                HttpStatus.NOT_FOUND);
+//    }         
 }
