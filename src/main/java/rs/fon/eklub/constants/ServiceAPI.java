@@ -11,6 +11,10 @@ package rs.fon.eklub.constants;
  */
 public class ServiceAPI {
     
+    public class Headers {
+        public static final String CONTENT_TYPE = "Content-type=application/json";
+    }
+    
     public class Group {
         public static final String GET_ALL_GROUPS = "/groups";
         public static final String POST_SAVE_GROUP = "/groups";

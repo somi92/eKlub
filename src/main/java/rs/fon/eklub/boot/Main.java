@@ -12,12 +12,16 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.interactors.CategoryInteractor;
 import rs.fon.eklub.core.interactors.GroupInteractor;
+import rs.fon.eklub.core.interactors.MemberInteractor;
 import rs.fon.eklub.core.services.CategoryService;
 import rs.fon.eklub.core.validators.MockGroupValidator;
+import rs.fon.eklub.core.validators.MockMemberValidator;
 import rs.fon.eklub.repositories.mocks.MockCategoryRepository;
 import rs.fon.eklub.repositories.mocks.MockGroupRepository;
+import rs.fon.eklub.repositories.mocks.MockMemberRepository;
 
 /**
  *
@@ -45,14 +49,20 @@ public class Main {
     }
     
     @Bean
-    CategoryService getCategoryInteractor() {
+    public CategoryService getCategoryInteractor() {
         return new CategoryInteractor(new MockCategoryRepository());
     }
     
     @Bean
-    GroupInteractor getGroupInteractor() {
+    public GroupInteractor getGroupInteractor() {
         return new GroupInteractor(new MockGroupRepository(), 
                 new MockGroupValidator());
+    }
+    
+    @Bean
+    public MemberInteractor getMemberInteractor() {
+        return new MemberInteractor(new MockMemberRepository(),
+                new MockMemberValidator());
     }
     
     public static void main(String[] args) {

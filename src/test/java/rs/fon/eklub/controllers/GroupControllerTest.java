@@ -5,68 +5,71 @@
  */
 package rs.fon.eklub.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.support.StaticApplicationContext;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
-import org.springframework.web.context.WebApplicationContext;
-import rs.fon.eklub.boot.Main;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import rs.fon.eklub.constants.ServiceAPI;
+import rs.fon.eklub.core.entities.Group;
 import rs.fon.eklub.core.exceptions.ServiceException;
-import rs.fon.eklub.core.interactors.GroupInteractor;
 import rs.fon.eklub.core.services.GroupService;
-import rs.fon.eklub.core.validators.MockGroupValidator;
-import rs.fon.eklub.repositories.mocks.MockGroupExceptionRepository;
+import rs.fon.eklub.repositories.mocks.MockGroupRepository;
 
 /**
  *
  * @author milos
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Main.class)
+@RunWith(MockitoJUnitRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {Main.class})
 public class GroupControllerTest {
     
     private MockMvc mockMvc;
     
+    private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+            MediaType.APPLICATION_JSON.getSubtype(),
+            Charset.forName("utf8"));
+    
     @Mock
     private GroupService groupService;
-    
-    @InjectMocks
-    private GroupController groupController;
-    
-    @Autowired
-    private WebApplicationContext webApplicationContext;
     
     public GroupControllerTest() {
     }
     
     @Before
     public void setUp() {
-        mockMvc = webAppContextSetup(webApplicationContext).build();
+        groupService = Mockito.mock(GroupService.class);
+        
+        StaticApplicationContext staticApplicationContext = new StaticApplicationContext();
+        staticApplicationContext.registerSingleton("exceptionHandler", ExceptionHandlingController.class);
+
+        WebMvcConfigurationSupport webMvcConfigurationSupport = new WebMvcConfigurationSupport();
+        webMvcConfigurationSupport.setApplicationContext(staticApplicationContext);
+        
+        mockMvc = MockMvcBuilders.standaloneSetup(new GroupController(groupService))
+                .setHandlerExceptionResolvers(webMvcConfigurationSupport.handlerExceptionResolver())
+                .build();
     }
     
     @Test
     public void getAllGroupsOkTest() throws Exception {
+        Mockito.when(groupService.getAllGroups()).thenReturn(new MockGroupRepository().getAllEntities());
         mockMvc.perform(get(ServiceAPI.Group.GET_ALL_GROUPS))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", Is.is(1)))
@@ -74,13 +77,46 @@ public class GroupControllerTest {
                 .andExpect(jsonPath("$[2].id", Is.is(3)));
     }
     
-//    @Test(expected = ServiceException.class)
-//    public void getAllGroupsExceptionTest() throws Exception {
-//        MockitoAnnotations.initMocks(this);
-//        groupService = new GroupInteractor(new MockGroupExceptionRepository(),
-//                new MockGroupValidator());
-//        mockMvc = standaloneSetup(groupController).build();
-//        Mockito.when(groupService.getAllGroups()).thenReturn(null);
-//        mockMvc.perform(get(ServiceAPI.Group.GET_ALL_GROUPS)).andExpect(status().isNotFound());
-//    }
+    @Test
+    public void getAllGroupsExceptionTest() throws Exception {
+        Mockito.when(groupService.getAllGroups()).thenThrow(new ServiceException("GroupsException"));
+        mockMvc.perform(get(ServiceAPI.Group.GET_ALL_GROUPS))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.errorType", Is.is("ServiceException")))
+                .andExpect(jsonPath("$.errorMessage", Is.is("GroupsException")))
+                .andExpect(jsonPath("$.requestUri", Is.is("/groups")));
+    }
+    
+    @Test
+    public void saveGroupOkTest() throws Exception {
+        Group g = new Group();
+        g.setId(1);
+        String jsonGroup = convertEntityToJson(g);
+        Mockito.doNothing().when(groupService).saveGroup(g);
+        mockMvc.perform(post(ServiceAPI.Group.POST_SAVE_GROUP)
+            .contentType(contentType)
+            .content(jsonGroup))
+            .andExpect(jsonPath("$.responseStatus", Is.is("OK")))
+            .andExpect(jsonPath("$.responseMessage", Is.is("Group saved.")))
+            .andExpect(jsonPath("$.requestUri", Is.is("/groups")));
+    }
+    
+    @Test
+    public void saveGroupExceptionTest() throws Exception {
+        Group g = new Group();
+        g.setId(1);
+        String jsonGroup = convertEntityToJson(g);
+        Mockito.doThrow(new ServiceException("Group not saved.")).when(groupService).saveGroup(g);
+        mockMvc.perform(post(ServiceAPI.Group.POST_SAVE_GROUP)
+            .contentType(contentType)
+            .content(jsonGroup))
+            .andExpect(jsonPath("$.errorType", Is.is("ServiceException")))
+            .andExpect(jsonPath("$.errorMessage", Is.is("Group not saved.")))
+            .andExpect(jsonPath("$.requestUri", Is.is("/groups")));
+    }
+    
+    private String convertEntityToJson(Group g) throws JsonProcessingException {
+        ObjectMapper om = new ObjectMapper();
+        return om.writeValueAsString(g);
+    }
 }

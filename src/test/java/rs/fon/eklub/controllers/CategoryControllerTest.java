@@ -45,11 +45,11 @@ public class CategoryControllerTest {
     public void setUp() {
         categoryService = Mockito.mock(CategoryService.class);
         
-        final StaticApplicationContext applicationContext = new StaticApplicationContext();
-        applicationContext.registerSingleton("exceptionHandler", ExceptionHandlingController.class);
+        StaticApplicationContext staticApplicationContext = new StaticApplicationContext();
+        staticApplicationContext.registerSingleton("exceptionHandler", ExceptionHandlingController.class);
 
-        final WebMvcConfigurationSupport webMvcConfigurationSupport = new WebMvcConfigurationSupport();
-        webMvcConfigurationSupport.setApplicationContext(applicationContext);
+        WebMvcConfigurationSupport webMvcConfigurationSupport = new WebMvcConfigurationSupport();
+        webMvcConfigurationSupport.setApplicationContext(staticApplicationContext);
         
         mockMvc = MockMvcBuilders.standaloneSetup(new CategoryController(categoryService))
                 .setHandlerExceptionResolvers(webMvcConfigurationSupport.handlerExceptionResolver())

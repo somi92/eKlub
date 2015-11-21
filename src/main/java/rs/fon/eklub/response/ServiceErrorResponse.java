@@ -3,22 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.fon.eklub.exceptions;
+package rs.fon.eklub.response;
 
 /**
  *
  * @author milos
  */
-public class ServiceErrorDescriptor {
+public class ServiceErrorResponse {
     
     private String errorType;
     private String errorMessage;
     private String requestUri;
 
-    public ServiceErrorDescriptor() {
+    public ServiceErrorResponse() {
     }
 
-    public ServiceErrorDescriptor(String errorType, String errorMessage, String requestUri) {
+    public ServiceErrorResponse(String errorType, String errorMessage, String requestUri) {
         this.errorType = errorType;
         this.errorMessage = errorMessage;
         this.requestUri = requestUri;

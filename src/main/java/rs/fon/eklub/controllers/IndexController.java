@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import rs.fon.eklub.exceptions.ServiceErrorDescriptor;
+import rs.fon.eklub.response.ServiceErrorResponse;
 
 /**
  *
@@ -45,7 +45,7 @@ public class IndexController {
     @ResponseBody
     public ResponseEntity<String> notFoundException(HttpServletRequest rq) {
         return new ResponseEntity(
-                new ServiceErrorDescriptor("404", "Resource not found.", rq.getRequestURI()), 
+                new ServiceErrorResponse("404", "Resource not found.", rq.getRequestURI()), 
                 HttpStatus.NOT_FOUND);
     }
 }

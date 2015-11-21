@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import rs.fon.eklub.core.exceptions.ServiceException;
-import rs.fon.eklub.exceptions.ServiceErrorDescriptor;
+import rs.fon.eklub.response.ServiceErrorResponse;
 
 /**
  *
@@ -23,9 +23,9 @@ public class ExceptionHandlingController {
     
     @ExceptionHandler(ServiceException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ServiceException> categoriesNotFound(HttpServletRequest rq, ServiceException e) {
+    public ResponseEntity<ServiceException> handleServiceException(HttpServletRequest rq, ServiceException e) {
         return new ResponseEntity(
-                new ServiceErrorDescriptor(e.getClass().getSimpleName(), e.getMessage(), rq.getRequestURI()), 
+                new ServiceErrorResponse(e.getClass().getSimpleName(), e.getMessage(), rq.getRequestURI()), 
                 HttpStatus.NOT_FOUND);
     }
 }
