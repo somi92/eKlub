@@ -7,6 +7,8 @@ package rs.fon.eklub.controllers;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,15 +35,26 @@ public class CategoryController {
         this.interactor = interactor;
     }
     
+//    @RequestMapping(value = ServiceAPI.Category.GET_ALL_CATEGORIES,
+//                    method = RequestMethod.GET)
+//    @ResponseBody
+//    public ServiceResponse<List<Category>> getAllCategories() throws ServiceException {
+//        List<Category> categories = interactor.getAllCategories();
+//        ServiceResponse<List<Category>> response = new ServiceResponse();
+//        response.setResponseStatus("OK");
+//        response.setResponseUri(ServiceAPI.Category.GET_ALL_CATEGORIES);
+//        response.setResponseContent(categories);
+//        return response;
+//    } 
+    
     @RequestMapping(value = ServiceAPI.Category.GET_ALL_CATEGORIES,
                     method = RequestMethod.GET)
-    @ResponseBody
-    public ServiceResponse<List<Category>> getAllCategories() throws ServiceException {
+    public ResponseEntity<ServiceResponse<List<Category>>> getAllCategories() throws ServiceException {
         List<Category> categories = interactor.getAllCategories();
         ServiceResponse<List<Category>> response = new ServiceResponse();
         response.setResponseStatus("OK");
         response.setResponseUri(ServiceAPI.Category.GET_ALL_CATEGORIES);
         response.setResponseContent(categories);
-        return response;
-    }         
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    } 
 }

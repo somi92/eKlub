@@ -124,6 +124,12 @@ public class MemberControllerTest {
                 
     }
     
+    @Test
+    public void deleteMemberOkTest() throws Exception {
+        
+    }
+    
+    
     private String convertEntityToJson(Member m) throws JsonProcessingException {
         ObjectMapper om = new ObjectMapper();
         return om.writeValueAsString(m);
