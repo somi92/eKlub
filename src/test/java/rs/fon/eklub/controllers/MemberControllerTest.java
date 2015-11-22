@@ -19,6 +19,7 @@ import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,10 +27,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import rs.fon.eklub.constants.ServiceAPI;
-import rs.fon.eklub.core.entities.Group;
+import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.exceptions.ServiceException;
-import rs.fon.eklub.core.services.GroupService;
-import rs.fon.eklub.repositories.mocks.MockGroupRepository;
+import rs.fon.eklub.core.services.MemberService;
 
 /**
  *
@@ -37,7 +37,7 @@ import rs.fon.eklub.repositories.mocks.MockGroupRepository;
  */
 @RunWith(MockitoJUnitRunner.class)
 @WebAppConfiguration
-public class GroupControllerTest {
+public class MemberControllerTest {
     
     private MockMvc mockMvc;
     
@@ -46,14 +46,14 @@ public class GroupControllerTest {
             Charset.forName("utf8"));
     
     @Mock
-    private GroupService groupService;
-    
-    public GroupControllerTest() {
+    private MemberService memberService;
+
+    public MemberControllerTest() {
     }
     
     @Before
     public void setUp() {
-        groupService = Mockito.mock(GroupService.class);
+        memberService = Mockito.mock(MemberService.class);
         
         StaticApplicationContext staticApplicationContext = new StaticApplicationContext();
         staticApplicationContext.registerSingleton("exceptionHandler", ExceptionHandlingController.class);
@@ -61,63 +61,55 @@ public class GroupControllerTest {
         WebMvcConfigurationSupport webMvcConfigurationSupport = new WebMvcConfigurationSupport();
         webMvcConfigurationSupport.setApplicationContext(staticApplicationContext);
         
-        mockMvc = MockMvcBuilders.standaloneSetup(new GroupController(groupService))
+        mockMvc = MockMvcBuilders.standaloneSetup(new MemberController(memberService))
                 .setHandlerExceptionResolvers(webMvcConfigurationSupport.handlerExceptionResolver())
                 .build();
     }
     
     @Test
-    public void getAllGroupsOkTest() throws Exception {
-        Mockito.when(groupService.getAllGroups()).thenReturn(new MockGroupRepository().getAllEntities());
-        mockMvc.perform(get(ServiceAPI.Group.GET_ALL_GROUPS))
+    public void saveMemberOkTest() throws Exception {
+        Member m = new Member();
+        m.setId(10);
+        String jsonMember = convertEntityToJson(m);
+        Mockito.doNothing().when(memberService).saveMember(m);
+        mockMvc.perform(post(ServiceAPI.Member.POST_SAVE_MEMBER)
+                .contentType(contentType)
+                .content(jsonMember))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", Is.is(1)))
-                .andExpect(jsonPath("$[1].id", Is.is(2)))
-                .andExpect(jsonPath("$[2].id", Is.is(3)));
+                .andExpect(jsonPath("$.responseStatus", Is.is("OK")))
+                .andExpect(jsonPath("$.responseMessage", Is.is("Member saved.")))
+                .andExpect(jsonPath("$.requestUri", Is.is("/members")));
     }
     
     @Test
-    public void getAllGroupsExceptionTest() throws Exception {
-        Mockito.when(groupService.getAllGroups()).thenThrow(new ServiceException("GroupsException"));
-        mockMvc.perform(get(ServiceAPI.Group.GET_ALL_GROUPS))
+    public void saveMemberExceptionTest() throws Exception {
+        Member m = new Member();
+        m.setId(10);
+        String jsonMember = convertEntityToJson(m);
+        Mockito.doThrow(new ServiceException("Member not saved.")).when(memberService).saveMember(m);
+        mockMvc.perform(post(ServiceAPI.Member.POST_SAVE_MEMBER)
+                .contentType(contentType)
+                .content(jsonMember))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.errorType", Is.is("ServiceException")))
-                .andExpect(jsonPath("$.errorMessage", Is.is("GroupsException")))
-                .andExpect(jsonPath("$.requestUri", Is.is("/groups")));
+                .andExpect(jsonPath("$.errorMessage", Is.is("Member not saved.")))
+                .andExpect(jsonPath("$.requestUri", Is.is("/members")));
     }
     
     @Test
-    public void saveGroupOkTest() throws Exception {
-        Group g = new Group();
-        g.setId(1);
-        String jsonGroup = convertEntityToJson(g);
-        Mockito.doNothing().when(groupService).saveGroup(g);
-        mockMvc.perform(post(ServiceAPI.Group.POST_SAVE_GROUP)
-            .contentType(contentType)
-            .content(jsonGroup))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.responseStatus", Is.is("OK")))
-            .andExpect(jsonPath("$.responseMessage", Is.is("Group saved.")))
-            .andExpect(jsonPath("$.requestUri", Is.is("/groups")));
+    public void getMemberByIdOkTest() throws Exception {
+        Member m = new Member();
+        m.setId(10);
+        m.setNameSurname("Petar Petrovic");
+        Mockito.when(memberService.getMemberById(10)).thenReturn(m);
+        mockMvc.perform(get("/members/10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", Is.is(m.getId())))
+                .andExpect(jsonPath("$.nameSurname", Is.is(m.getNameSurname())));
     }
     
-    @Test
-    public void saveGroupExceptionTest() throws Exception {
-        Group g = new Group();
-        g.setId(1);
-        String jsonGroup = convertEntityToJson(g);
-        Mockito.doThrow(new ServiceException("Group not saved.")).when(groupService).saveGroup(g);
-        mockMvc.perform(post(ServiceAPI.Group.POST_SAVE_GROUP)
-            .contentType(contentType)
-            .content(jsonGroup))
-            .andExpect(status().isNotFound())
-            .andExpect(jsonPath("$.errorType", Is.is("ServiceException")))
-            .andExpect(jsonPath("$.errorMessage", Is.is("Group not saved.")))
-            .andExpect(jsonPath("$.requestUri", Is.is("/groups")));
-    }
-    
-    private String convertEntityToJson(Group g) throws JsonProcessingException {
+    private String convertEntityToJson(Member m) throws JsonProcessingException {
         ObjectMapper om = new ObjectMapper();
-        return om.writeValueAsString(g);
+        return om.writeValueAsString(m);
     }
 }

@@ -12,7 +12,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.interactors.CategoryInteractor;
 import rs.fon.eklub.core.interactors.GroupInteractor;
 import rs.fon.eklub.core.interactors.MemberInteractor;
