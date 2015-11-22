@@ -77,8 +77,8 @@ public class MemberControllerTest {
                 .content(jsonMember))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.responseStatus", Is.is("OK")))
-                .andExpect(jsonPath("$.responseMessage", Is.is("Member saved.")))
-                .andExpect(jsonPath("$.requestUri", Is.is("/members")));
+                .andExpect(jsonPath("$.responseUri", Is.is(ServiceAPI.Member.POST_SAVE_MEMBER)))
+                .andExpect(jsonPath("$.responseContent", Is.is("Member "+m.getId()+" saved.")));
     }
     
     @Test
@@ -93,7 +93,7 @@ public class MemberControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.errorType", Is.is("ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("Member not saved.")))
-                .andExpect(jsonPath("$.requestUri", Is.is("/members")));
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.POST_SAVE_MEMBER)));
     }
     
     @Test
@@ -104,8 +104,24 @@ public class MemberControllerTest {
         Mockito.when(memberService.getMemberById(10)).thenReturn(m);
         mockMvc.perform(get("/members/10"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(m.getId())))
-                .andExpect(jsonPath("$.nameSurname", Is.is(m.getNameSurname())));
+                .andExpect(jsonPath("$.responseStatus", Is.is("OK")))
+                .andExpect(jsonPath("$.responseUri", Is.is(ServiceAPI.Member.GET_MEMBER_BY_ID)))
+                .andExpect(jsonPath("$.responseContent.id", Is.is((int)m.getId())))
+                .andExpect(jsonPath("$.responseContent.nameSurname", Is.is(m.getNameSurname())));
+    }
+    
+    @Test
+    public void getMemberByIdExceptionTest() throws Exception {
+        Member m = new Member();
+        m.setId(10);
+        m.setNameSurname("Petar Petrovic");
+        Mockito.doThrow(new ServiceException("Get member by id error.")).when(memberService).getMemberById(10);
+        mockMvc.perform(get("/members/10"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.errorType", Is.is("ServiceException")))
+                .andExpect(jsonPath("$.errorMessage", Is.is("Get member by id error.")))
+                .andExpect(jsonPath("$.requestUri", Is.is("/members/10")));
+                
     }
     
     private String convertEntityToJson(Member m) throws JsonProcessingException {

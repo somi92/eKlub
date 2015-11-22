@@ -9,19 +9,19 @@ package rs.fon.eklub.response;
  *
  * @author milos
  */
-public class ServiceResponse {
+public class ServiceResponse<T> {
     
     private String responseStatus;
-    private String responseMessage;
-    private String requestUri;
+    private String responseUri;
+    private T responseContent;
 
     public ServiceResponse() {
     }
 
-    public ServiceResponse(String responseStatus, String responseMessage, String requestUri) {
+    public ServiceResponse(String responseStatus, String requestUri, T responseContent) {
         this.responseStatus = responseStatus;
-        this.responseMessage = responseMessage;
-        this.requestUri = requestUri;
+        this.responseUri = requestUri;
+        this.responseContent = responseContent;
     }
 
     public String getResponseStatus() {
@@ -32,19 +32,21 @@ public class ServiceResponse {
         this.responseStatus = responseStatus;
     }
 
-    public String getResponseMessage() {
-        return responseMessage;
+    public String getResponseUri() {
+        return responseUri;
     }
 
-    public void setResponseMessage(String responseMessage) {
-        this.responseMessage = responseMessage;
+    public void setResponseUri(String responseUri) {
+        this.responseUri = responseUri;
     }
 
-    public String getRequestUri() {
-        return requestUri;
+    public T getResponseContent() {
+        return responseContent;
     }
 
-    public void setRequestUri(String requestUri) {
-        this.requestUri = requestUri;
+    public void setResponseContent(T responseContent) {
+        this.responseContent = responseContent;
     }
+    
+    
 }

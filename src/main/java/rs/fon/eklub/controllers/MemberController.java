@@ -38,20 +38,24 @@ public class MemberController {
                     method = RequestMethod.POST,
                     headers = {ServiceAPI.Headers.CONTENT_TYPE})
     @ResponseBody
-    public ServiceResponse saveMember(@RequestBody Member m) throws ServiceException {
-        interactor.saveMember(m);
-        ServiceResponse response = new ServiceResponse();
+    public ServiceResponse<String> saveMember(@RequestBody Member member) throws ServiceException {
+        interactor.saveMember(member);
+        ServiceResponse<String> response = new ServiceResponse();
         response.setResponseStatus("OK");
-        response.setResponseMessage("Member saved.");
-        response.setRequestUri(ServiceAPI.Member.POST_SAVE_MEMBER);
+        response.setResponseUri(ServiceAPI.Member.POST_SAVE_MEMBER);
+        response.setResponseContent("Member "+member.getId()+" saved.");
         return response;
     }
     
     @RequestMapping(value = ServiceAPI.Member.GET_MEMBER_BY_ID,
                     method = RequestMethod.GET)
     @ResponseBody
-    public Member getMemberById(@PathVariable long id) throws Exception {
+    public ServiceResponse<Member> getMemberById(@PathVariable long id) throws Exception {
         Member member = interactor.getMemberById(id);
-        return member;
+        ServiceResponse<Member> response = new ServiceResponse();
+        response.setResponseStatus("OK");
+        response.setResponseUri(ServiceAPI.Member.GET_MEMBER_BY_ID);
+        response.setResponseContent(member);
+        return response;
     }
 }

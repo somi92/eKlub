@@ -37,21 +37,25 @@ public class GroupController {
     @RequestMapping(value = ServiceAPI.Group.GET_ALL_GROUPS,
                     method = RequestMethod.GET)
     @ResponseBody
-    public List<Group> getAllGroups() throws ServiceException {
+    public ServiceResponse<List<Group>> getAllGroups() throws ServiceException {
         List<Group> groups = interactor.getAllGroups();
-        return groups;
+        ServiceResponse<List<Group>> response = new ServiceResponse();
+        response.setResponseStatus("OK");
+        response.setResponseUri(ServiceAPI.Group.GET_ALL_GROUPS);
+        response.setResponseContent(groups);
+        return response;
     }
     
     @RequestMapping(value = ServiceAPI.Group.POST_SAVE_GROUP,
                     method = RequestMethod.POST,
                     headers = {ServiceAPI.Headers.CONTENT_TYPE})
     @ResponseBody
-    public ServiceResponse saveGroup(@RequestBody Group group) throws ServiceException {
+    public ServiceResponse<String> saveGroup(@RequestBody Group group) throws ServiceException {
         interactor.saveGroup(group);
-        ServiceResponse response = new ServiceResponse();
+        ServiceResponse<String> response = new ServiceResponse();
         response.setResponseStatus("OK");
-        response.setResponseMessage("Group saved.");
-        response.setRequestUri(ServiceAPI.Group.POST_SAVE_GROUP);
+        response.setResponseUri(ServiceAPI.Group.POST_SAVE_GROUP);
+        response.setResponseContent("Group "+group.getId()+" saved.");
         return response;
     }
 }

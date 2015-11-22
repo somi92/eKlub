@@ -16,6 +16,7 @@ import rs.fon.eklub.constants.ServiceAPI;
 import rs.fon.eklub.core.entities.Category;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.CategoryService;
+import rs.fon.eklub.response.ServiceResponse;
 
 /**
  *
@@ -35,8 +36,12 @@ public class CategoryController {
     @RequestMapping(value = ServiceAPI.Category.GET_ALL_CATEGORIES,
                     method = RequestMethod.GET)
     @ResponseBody
-    public List<Category> getAllCategories() throws ServiceException {
+    public ServiceResponse<List<Category>> getAllCategories() throws ServiceException {
         List<Category> categories = interactor.getAllCategories();
-        return categories;
+        ServiceResponse<List<Category>> response = new ServiceResponse();
+        response.setResponseStatus("OK");
+        response.setResponseUri(ServiceAPI.Category.GET_ALL_CATEGORIES);
+        response.setResponseContent(categories);
+        return response;
     }         
 }

@@ -71,9 +71,11 @@ public class GroupControllerTest {
         Mockito.when(groupService.getAllGroups()).thenReturn(new MockGroupRepository().getAllEntities());
         mockMvc.perform(get(ServiceAPI.Group.GET_ALL_GROUPS))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", Is.is(1)))
-                .andExpect(jsonPath("$[1].id", Is.is(2)))
-                .andExpect(jsonPath("$[2].id", Is.is(3)));
+                .andExpect(jsonPath("$.responseStatus", Is.is("OK")))
+                .andExpect(jsonPath("$.responseUri", Is.is(ServiceAPI.Group.GET_ALL_GROUPS)))
+                .andExpect(jsonPath("$.responseContent[0].id", Is.is(1)))
+                .andExpect(jsonPath("$.responseContent[1].id", Is.is(2)))
+                .andExpect(jsonPath("$.responseContent[2].id", Is.is(3)));
     }
     
     @Test
@@ -83,7 +85,7 @@ public class GroupControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.errorType", Is.is("ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("GroupsException")))
-                .andExpect(jsonPath("$.requestUri", Is.is("/groups")));
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Group.GET_ALL_GROUPS)));
     }
     
     @Test
@@ -97,8 +99,8 @@ public class GroupControllerTest {
             .content(jsonGroup))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.responseStatus", Is.is("OK")))
-            .andExpect(jsonPath("$.responseMessage", Is.is("Group saved.")))
-            .andExpect(jsonPath("$.requestUri", Is.is("/groups")));
+            .andExpect(jsonPath("$.responseUri", Is.is(ServiceAPI.Group.POST_SAVE_GROUP)))
+            .andExpect(jsonPath("$.responseContent", Is.is("Group "+g.getId()+" saved.")));
     }
     
     @Test
@@ -113,7 +115,7 @@ public class GroupControllerTest {
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("$.errorType", Is.is("ServiceException")))
             .andExpect(jsonPath("$.errorMessage", Is.is("Group not saved.")))
-            .andExpect(jsonPath("$.requestUri", Is.is("/groups")));
+            .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Group.POST_SAVE_GROUP)));
     }
     
     private String convertEntityToJson(Group g) throws JsonProcessingException {

@@ -61,9 +61,11 @@ public class CategoryControllerTest {
         Mockito.when(categoryService.getAllCategories()).thenReturn(new MockCategoryRepository().getAllEntities());
         mockMvc.perform(get(ServiceAPI.Category.GET_ALL_CATEGORIES))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", Is.is(1)))
-                .andExpect(jsonPath("$[1].id", Is.is(2)))
-                .andExpect(jsonPath("$[2].id", Is.is(3)));
+                .andExpect(jsonPath("$.responseStatus", Is.is("OK")))
+                .andExpect(jsonPath("$.responseUri", Is.is(ServiceAPI.Category.GET_ALL_CATEGORIES)))
+                .andExpect(jsonPath("$.responseContent[0].id", Is.is(1)))
+                .andExpect(jsonPath("$.responseContent[1].id", Is.is(2)))
+                .andExpect(jsonPath("$.responseContent[2].id", Is.is(3)));
     }
     
     @Test
@@ -73,6 +75,6 @@ public class CategoryControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.errorType", Is.is("ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("CategoriesException")))
-                .andExpect(jsonPath("$.requestUri", Is.is("/categories")));
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Category.GET_ALL_CATEGORIES)));
     }
 }
