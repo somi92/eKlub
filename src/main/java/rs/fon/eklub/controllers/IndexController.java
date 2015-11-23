@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import rs.fon.eklub.response.ServiceErrorResponse;
+import rs.fon.eklub.envelopes.ServiceErrorResponse;
 
 /**
  *

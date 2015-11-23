@@ -7,6 +7,8 @@ package rs.fon.eklub.controllers;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,7 @@ import rs.fon.eklub.constants.ServiceAPI;
 import rs.fon.eklub.core.entities.Group;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.GroupService;
-import rs.fon.eklub.response.ServiceResponse;
+import rs.fon.eklub.envelopes.ServiceResponse;
 
 /**
  *
@@ -36,26 +38,26 @@ public class GroupController {
     
     @RequestMapping(value = ServiceAPI.Group.GET_ALL_GROUPS,
                     method = RequestMethod.GET)
-    @ResponseBody
-    public ServiceResponse<List<Group>> getAllGroups() throws ServiceException {
+    public ResponseEntity getAllGroups() throws ServiceException {
         List<Group> groups = interactor.getAllGroups();
         ServiceResponse<List<Group>> response = new ServiceResponse();
-        response.setResponseStatus("OK");
-        response.setResponseUri(ServiceAPI.Group.GET_ALL_GROUPS);
-        response.setResponseContent(groups);
-        return response;
+        response.setStatus(HttpStatus.OK.toString());
+        response.setMessage(ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND);
+        response.setRequestUri(ServiceAPI.Group.GET_ALL_GROUPS);
+        response.setPayload(groups);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
     @RequestMapping(value = ServiceAPI.Group.POST_SAVE_GROUP,
                     method = RequestMethod.POST,
                     headers = {ServiceAPI.Headers.CONTENT_TYPE})
-    @ResponseBody
-    public ServiceResponse<String> saveGroup(@RequestBody Group group) throws ServiceException {
+    public ResponseEntity saveGroup(@RequestBody Group group) throws ServiceException {
         interactor.saveGroup(group);
         ServiceResponse<String> response = new ServiceResponse();
-        response.setResponseStatus("OK");
-        response.setResponseUri(ServiceAPI.Group.POST_SAVE_GROUP);
-        response.setResponseContent("Group "+group.getId()+" saved.");
-        return response;
+        response.setStatus(HttpStatus.OK.toString());
+        response.setMessage(ServiceAPI.DefaultResponseMessages.RESOURCE_SAVED);
+        response.setRequestUri(ServiceAPI.Group.POST_SAVE_GROUP);
+        response.setPayload("Group "+group.getId()+" saved.");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

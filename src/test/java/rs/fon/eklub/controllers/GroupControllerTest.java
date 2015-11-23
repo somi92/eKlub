@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.support.StaticApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -71,11 +72,12 @@ public class GroupControllerTest {
         Mockito.when(groupService.getAllGroups()).thenReturn(new MockGroupRepository().getAllEntities());
         mockMvc.perform(get(ServiceAPI.Group.GET_ALL_GROUPS))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.responseStatus", Is.is("OK")))
-                .andExpect(jsonPath("$.responseUri", Is.is(ServiceAPI.Group.GET_ALL_GROUPS)))
-                .andExpect(jsonPath("$.responseContent[0].id", Is.is(1)))
-                .andExpect(jsonPath("$.responseContent[1].id", Is.is(2)))
-                .andExpect(jsonPath("$.responseContent[2].id", Is.is(3)));
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.OK.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Group.GET_ALL_GROUPS)))
+                .andExpect(jsonPath("$.payload[0].id", Is.is(1)))
+                .andExpect(jsonPath("$.payload[1].id", Is.is(2)))
+                .andExpect(jsonPath("$.payload[2].id", Is.is(3)));
     }
     
     @Test
@@ -98,9 +100,10 @@ public class GroupControllerTest {
             .contentType(contentType)
             .content(jsonGroup))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.responseStatus", Is.is("OK")))
-            .andExpect(jsonPath("$.responseUri", Is.is(ServiceAPI.Group.POST_SAVE_GROUP)))
-            .andExpect(jsonPath("$.responseContent", Is.is("Group "+g.getId()+" saved.")));
+            .andExpect(jsonPath("$.status", Is.is(HttpStatus.OK.toString())))
+            .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_SAVED)))
+            .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Group.POST_SAVE_GROUP)))
+            .andExpect(jsonPath("$.payload", Is.is("Group "+g.getId()+" saved.")));
     }
     
     @Test

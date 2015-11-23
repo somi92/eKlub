@@ -11,6 +11,18 @@ package rs.fon.eklub.constants;
  */
 public class ServiceAPI {
     
+    public class DefaultResponseMessages {
+        public static final String RESOURCE_FOUND = "Resource found.";
+        public static final String RESOURCE_NOT_FOUND = "Resource does not exist.";
+        public static final String RESOURCE_SAVED = "Resource saved.";
+        public static final String RESOURCE_DELETED = "Resource deleted.";
+    }
+    
+    public class DefaultErrorMessages {
+        public static final String DATABASE_ERROR = "Database error.";
+        public static final String SERVICE_ERROR = "Service error.";
+    }
+    
     public class Headers {
         public static final String CONTENT_TYPE = "Content-type=application/json";
     }

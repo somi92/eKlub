@@ -6,6 +6,8 @@
 package rs.fon.eklub.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +19,7 @@ import rs.fon.eklub.constants.ServiceAPI;
 import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.MemberService;
-import rs.fon.eklub.response.ServiceResponse;
+import rs.fon.eklub.envelopes.ServiceResponse;
 
 /**
  *
@@ -37,25 +39,25 @@ public class MemberController {
     @RequestMapping(value = ServiceAPI.Member.POST_SAVE_MEMBER,
                     method = RequestMethod.POST,
                     headers = {ServiceAPI.Headers.CONTENT_TYPE})
-    @ResponseBody
-    public ServiceResponse<String> saveMember(@RequestBody Member member) throws ServiceException {
+    public ResponseEntity saveMember(@RequestBody Member member) throws ServiceException {
         interactor.saveMember(member);
         ServiceResponse<String> response = new ServiceResponse();
-        response.setResponseStatus("OK");
-        response.setResponseUri(ServiceAPI.Member.POST_SAVE_MEMBER);
-        response.setResponseContent("Member "+member.getId()+" saved.");
-        return response;
+        response.setStatus(HttpStatus.OK.toString());
+        response.setMessage(ServiceAPI.DefaultResponseMessages.RESOURCE_SAVED);
+        response.setRequestUri(ServiceAPI.Member.POST_SAVE_MEMBER);
+        response.setPayload("Member "+member.getId()+" saved.");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
     @RequestMapping(value = ServiceAPI.Member.GET_MEMBER_BY_ID,
                     method = RequestMethod.GET)
-    @ResponseBody
-    public ServiceResponse<Member> getMemberById(@PathVariable long id) throws Exception {
+    public ResponseEntity getMemberById(@PathVariable long id) throws Exception {
         Member member = interactor.getMemberById(id);
         ServiceResponse<Member> response = new ServiceResponse();
-        response.setResponseStatus("OK");
-        response.setResponseUri(ServiceAPI.Member.GET_MEMBER_BY_ID);
-        response.setResponseContent(member);
-        return response;
+        response.setStatus(HttpStatus.OK.toString());
+        response.setMessage(ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND);
+        response.setRequestUri(ServiceAPI.Member.GET_MEMBER_BY_ID);
+        response.setPayload(member);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

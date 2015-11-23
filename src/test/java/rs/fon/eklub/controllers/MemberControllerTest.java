@@ -16,10 +16,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.support.StaticApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -76,9 +76,10 @@ public class MemberControllerTest {
                 .contentType(contentType)
                 .content(jsonMember))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.responseStatus", Is.is("OK")))
-                .andExpect(jsonPath("$.responseUri", Is.is(ServiceAPI.Member.POST_SAVE_MEMBER)))
-                .andExpect(jsonPath("$.responseContent", Is.is("Member "+m.getId()+" saved.")));
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.OK.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_SAVED)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.POST_SAVE_MEMBER)))
+                .andExpect(jsonPath("$.payload", Is.is("Member "+m.getId()+" saved.")));
     }
     
     @Test
@@ -104,10 +105,11 @@ public class MemberControllerTest {
         Mockito.when(memberService.getMemberById(10)).thenReturn(m);
         mockMvc.perform(get("/members/10"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.responseStatus", Is.is("OK")))
-                .andExpect(jsonPath("$.responseUri", Is.is(ServiceAPI.Member.GET_MEMBER_BY_ID)))
-                .andExpect(jsonPath("$.responseContent.id", Is.is((int)m.getId())))
-                .andExpect(jsonPath("$.responseContent.nameSurname", Is.is(m.getNameSurname())));
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.OK.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.GET_MEMBER_BY_ID)))
+                .andExpect(jsonPath("$.payload.id", Is.is((int)m.getId())))
+                .andExpect(jsonPath("$.payload.nameSurname", Is.is(m.getNameSurname())));
     }
     
     @Test

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import rs.fon.eklub.core.exceptions.ServiceException;
-import rs.fon.eklub.response.ServiceErrorResponse;
+import rs.fon.eklub.envelopes.ServiceErrorResponse;
 
 /**
  *
