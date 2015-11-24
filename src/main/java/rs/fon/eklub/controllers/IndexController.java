@@ -8,14 +8,11 @@ package rs.fon.eklub.controllers;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import rs.fon.eklub.envelopes.ServiceErrorResponse;
 
 /**
@@ -44,8 +41,11 @@ public class IndexController {
                               RequestMethod.HEAD})
     @ResponseBody
     public ResponseEntity<String> notFoundException(HttpServletRequest rq) {
-        return new ResponseEntity(
-                new ServiceErrorResponse("404", "Resource not found.", rq.getRequestURI()), 
-                HttpStatus.NOT_FOUND);
+        ServiceErrorResponse error = new ServiceErrorResponse();
+        error.setStatus(HttpStatus.NOT_FOUND.toString());
+        error.setErrorType("Not Found");
+        error.setErrorMessage("The requested URI was not found on this server.");
+        error.setRequestUri(rq.getRequestURI());
+        return new ResponseEntity(error, HttpStatus.NOT_FOUND);
     }
 }

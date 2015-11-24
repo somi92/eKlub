@@ -11,6 +11,7 @@ package rs.fon.eklub.envelopes;
  */
 public class ServiceErrorResponse {
     
+    private String status;
     private String errorType;
     private String errorMessage;
     private String requestUri;
@@ -18,10 +19,19 @@ public class ServiceErrorResponse {
     public ServiceErrorResponse() {
     }
 
-    public ServiceErrorResponse(String errorType, String errorMessage, String requestUri) {
+    public ServiceErrorResponse(String status, String errorType, String errorMessage, String requestUri) {
+        this.status = status;
         this.errorType = errorType;
         this.errorMessage = errorMessage;
         this.requestUri = requestUri;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getErrorType() {
@@ -47,6 +57,4 @@ public class ServiceErrorResponse {
     public void setRequestUri(String requestUri) {
         this.requestUri = requestUri;
     }
-    
-    
 }

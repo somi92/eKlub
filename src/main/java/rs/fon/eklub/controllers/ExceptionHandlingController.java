@@ -24,8 +24,11 @@ public class ExceptionHandlingController {
     @ExceptionHandler(ServiceException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ServiceException> handleServiceException(HttpServletRequest rq, ServiceException e) {
-        return new ResponseEntity(
-                new ServiceErrorResponse(e.getClass().getSimpleName(), e.getMessage(), rq.getRequestURI()), 
-                HttpStatus.NOT_FOUND);
+        ServiceErrorResponse error = new ServiceErrorResponse();
+        error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+        error.setErrorType(e.getClass().getName());
+        error.setErrorMessage(e.getMessage());
+        error.setRequestUri(rq.getRequestURI());
+        return new ResponseEntity(error, HttpStatus.NOT_FOUND);
     }
 }
