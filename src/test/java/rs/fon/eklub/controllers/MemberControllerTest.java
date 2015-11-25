@@ -92,7 +92,8 @@ public class MemberControllerTest {
                 .contentType(contentType)
                 .content(jsonMember))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.errorType", Is.is("ServiceException")))
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
+                .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("Member not saved.")))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.POST_SAVE_MEMBER)));
     }
@@ -120,7 +121,8 @@ public class MemberControllerTest {
         Mockito.doThrow(new ServiceException("Get member by id error.")).when(memberService).getMemberById(10);
         mockMvc.perform(get("/members/10"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.errorType", Is.is("ServiceException")))
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
+                .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("Get member by id error.")))
                 .andExpect(jsonPath("$.requestUri", Is.is("/members/10")));
                 

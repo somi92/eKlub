@@ -75,7 +75,8 @@ public class CategoryControllerTest {
         Mockito.when(categoryService.getAllCategories()).thenThrow(new ServiceException("CategoriesException"));
         mockMvc.perform(get(ServiceAPI.Category.GET_ALL_CATEGORIES))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.errorType", Is.is("ServiceException")))
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
+                .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("CategoriesException")))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Category.GET_ALL_CATEGORIES)));
     }
