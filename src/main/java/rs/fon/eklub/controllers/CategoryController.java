@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import rs.fon.eklub.constants.ServiceAPI;
 import rs.fon.eklub.core.entities.Category;
+import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.CategoryService;
 import rs.fon.eklub.envelopes.ServiceResponse;

@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.core.exceptions.ServiceException;
+import rs.fon.eklub.core.exceptions.ValidationException;
 import rs.fon.eklub.envelopes.ServiceErrorResponse;
 
 /**
@@ -21,11 +23,33 @@ import rs.fon.eklub.envelopes.ServiceErrorResponse;
 @ControllerAdvice
 public class ExceptionHandlingController {
     
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ServiceException> handleValidationException(HttpServletRequest rq, ServiceException e) {
+        ServiceErrorResponse error = new ServiceErrorResponse();
+        error.setStatus(HttpStatus.BAD_REQUEST.toString());
+        error.setErrorType(e.getClass().getName());
+        error.setErrorMessage(e.getMessage());
+        error.setRequestUri(rq.getRequestURI());
+        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
+    }
+    
+    @ExceptionHandler(DataAccessServiceException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<ServiceException> handleDataAccessServiceException(HttpServletRequest rq, ServiceException e) {
+        ServiceErrorResponse error = new ServiceErrorResponse();
+        error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+        error.setErrorType(e.getClass().getName());
+        error.setErrorMessage(e.getMessage());
+        error.setRequestUri(rq.getRequestURI());
+        return new ResponseEntity(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
     @ExceptionHandler(ServiceException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ServiceException> handleServiceException(HttpServletRequest rq, ServiceException e) {
         ServiceErrorResponse error = new ServiceErrorResponse();
-        error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+        error.setStatus(HttpStatus.NOT_FOUND.toString());
         error.setErrorType(e.getClass().getName());
         error.setErrorMessage(e.getMessage());
         error.setRequestUri(rq.getRequestURI());

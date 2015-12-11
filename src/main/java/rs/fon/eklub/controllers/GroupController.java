@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import rs.fon.eklub.constants.ServiceAPI;
 import rs.fon.eklub.core.entities.Group;
 import rs.fon.eklub.core.exceptions.ServiceException;
+import rs.fon.eklub.core.exceptions.ValidationException;
 import rs.fon.eklub.core.services.GroupService;
 import rs.fon.eklub.envelopes.ServiceResponse;
 
