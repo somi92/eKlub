@@ -71,6 +71,17 @@ public class CategoryControllerTest {
     }
     
     @Test
+    public void getAllCategoriesNotFoundTest() throws Exception {
+        Mockito.when(categoryService.getAllCategories()).thenReturn(null);
+        mockMvc.perform(get(ServiceAPI.Category.GET_ALL_CATEGORIES))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Category.GET_ALL_CATEGORIES)))
+                .andExpect(jsonPath("$.payload", Is.is("null")));
+    }
+    
+    @Test
     public void getAllCategoriesExceptionTest() throws Exception {
         Mockito.when(categoryService.getAllCategories()).thenThrow(new ServiceException("CategoriesException"));
         mockMvc.perform(get(ServiceAPI.Category.GET_ALL_CATEGORIES))
