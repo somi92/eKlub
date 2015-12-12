@@ -13,12 +13,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import rs.fon.eklub.constants.ServiceAPI;
 import rs.fon.eklub.core.entities.Group;
 import rs.fon.eklub.core.exceptions.ServiceException;
-import rs.fon.eklub.core.exceptions.ValidationException;
 import rs.fon.eklub.core.services.GroupService;
 import rs.fon.eklub.envelopes.ServiceResponse;
 

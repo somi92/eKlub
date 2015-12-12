@@ -85,7 +85,7 @@ public class GroupControllerTest {
         Mockito.when(groupService.getAllGroups()).thenThrow(new ServiceException("GroupsException"));
         mockMvc.perform(get(ServiceAPI.Group.GET_ALL_GROUPS))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("GroupsException")))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Group.GET_ALL_GROUPS)));
@@ -117,7 +117,7 @@ public class GroupControllerTest {
             .contentType(contentType)
             .content(jsonGroup))
             .andExpect(status().isNotFound())
-            .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
+            .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
             .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
             .andExpect(jsonPath("$.errorMessage", Is.is("Group not saved.")))
             .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Group.POST_SAVE_GROUP)));

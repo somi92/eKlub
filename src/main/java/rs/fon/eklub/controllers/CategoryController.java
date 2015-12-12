@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import rs.fon.eklub.constants.ServiceAPI;
 import rs.fon.eklub.core.entities.Category;
-import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.CategoryService;
 import rs.fon.eklub.envelopes.ServiceResponse;
+import rs.fon.eklub.envelopes.ServiceResponseFactory;
 
 /**
  *
@@ -39,11 +39,8 @@ public class CategoryController {
                     method = RequestMethod.GET)
     public ResponseEntity getAllCategories() throws ServiceException {
         List<Category> categories = interactor.getAllCategories();
-        ServiceResponse<List<Category>> response = new ServiceResponse();
-        response.setStatus(HttpStatus.OK.toString());
-        response.setMessage(ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND);
-        response.setRequestUri(ServiceAPI.Category.GET_ALL_CATEGORIES);
-        response.setPayload(categories);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        ServiceResponse<List<Category>> response = ServiceResponseFactory.createResponse(categories);
+        HttpStatus httpStatus = (categories != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, httpStatus);
     } 
 }

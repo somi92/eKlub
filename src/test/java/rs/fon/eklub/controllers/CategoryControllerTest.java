@@ -6,6 +6,7 @@
 package rs.fon.eklub.controllers;
 
 import org.hamcrest.core.Is;
+import org.hamcrest.core.IsNull;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -78,7 +79,7 @@ public class CategoryControllerTest {
                 .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
                 .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND)))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Category.GET_ALL_CATEGORIES)))
-                .andExpect(jsonPath("$.payload", Is.is("null")));
+                .andExpect(jsonPath("$.payload", Is.is(IsNull.nullValue())));
     }
     
     @Test
@@ -86,7 +87,7 @@ public class CategoryControllerTest {
         Mockito.when(categoryService.getAllCategories()).thenThrow(new ServiceException("CategoriesException"));
         mockMvc.perform(get(ServiceAPI.Category.GET_ALL_CATEGORIES))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("CategoriesException")))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Category.GET_ALL_CATEGORIES)));
