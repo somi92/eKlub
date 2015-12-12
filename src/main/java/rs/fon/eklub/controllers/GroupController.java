@@ -39,12 +39,21 @@ public class GroupController {
                     method = RequestMethod.GET)
     public ResponseEntity getAllGroups() throws ServiceException {
         List<Group> groups = interactor.getAllGroups();
+        HttpStatus httpStatus = null;
+        String responseMessage = null;
+        if(groups == null) {
+            httpStatus = HttpStatus.NOT_FOUND;
+            responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND;
+        } else {
+            httpStatus = HttpStatus.OK;
+            responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND;
+        }
         ServiceResponse<List<Group>> response = new ServiceResponse();
-        response.setStatus(HttpStatus.OK.toString());
-        response.setMessage(ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND);
+        response.setStatus(httpStatus.toString());
+        response.setMessage(responseMessage);
         response.setRequestUri(ServiceAPI.Group.GET_ALL_GROUPS);
         response.setPayload(groups);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, httpStatus);
     }
     
     @RequestMapping(value = ServiceAPI.Group.POST_SAVE_GROUP,

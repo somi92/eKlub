@@ -18,7 +18,6 @@ import rs.fon.eklub.core.entities.Category;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.CategoryService;
 import rs.fon.eklub.envelopes.ServiceResponse;
-import rs.fon.eklub.envelopes.ServiceResponseFactory;
 
 /**
  *
@@ -39,8 +38,20 @@ public class CategoryController {
                     method = RequestMethod.GET)
     public ResponseEntity getAllCategories() throws ServiceException {
         List<Category> categories = interactor.getAllCategories();
-        ServiceResponse<List<Category>> response = ServiceResponseFactory.createResponse(categories);
-        HttpStatus httpStatus = (categories != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+        HttpStatus httpStatus = null;
+        String responseMessage = null;
+        if(categories == null) {
+            httpStatus = HttpStatus.NOT_FOUND;
+            responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND;
+        } else {
+            httpStatus = HttpStatus.OK;
+            responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND;
+        }
+        ServiceResponse<List<Category>> response = new ServiceResponse(); 
+        response.setStatus(httpStatus.toString());
+        response.setMessage(responseMessage);
+        response.setRequestUri(ServiceAPI.Category.GET_ALL_CATEGORIES);
+        response.setPayload(categories);
         return new ResponseEntity<>(response, httpStatus);
     } 
 }

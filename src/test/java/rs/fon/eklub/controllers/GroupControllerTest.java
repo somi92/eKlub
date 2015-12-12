@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.Charset;
 import org.hamcrest.core.Is;
+import org.hamcrest.core.IsNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -78,6 +79,17 @@ public class GroupControllerTest {
                 .andExpect(jsonPath("$.payload[0].id", Is.is(1)))
                 .andExpect(jsonPath("$.payload[1].id", Is.is(2)))
                 .andExpect(jsonPath("$.payload[2].id", Is.is(3)));
+    }
+    
+    @Test
+    public void getAllGroupsNotFoundTest() throws Exception {
+        Mockito.when(groupService.getAllGroups()).thenReturn(null);
+        mockMvc.perform(get(ServiceAPI.Group.GET_ALL_GROUPS))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Group.GET_ALL_GROUPS)))
+                .andExpect(jsonPath("$.payload", Is.is(IsNull.nullValue())));
     }
     
     @Test
