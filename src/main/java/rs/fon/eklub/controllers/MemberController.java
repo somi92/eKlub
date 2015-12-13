@@ -5,6 +5,9 @@
  */
 package rs.fon.eklub.controllers;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -89,4 +92,47 @@ public class MemberController {
         response.setPayload(result);
         return new ResponseEntity<>(response, httpStatus);
     }
+    
+    @RequestMapping(value = ServiceAPI.Member.GET_ALL_MEMBERS,
+                    method = RequestMethod.GET)
+    public ResponseEntity getAllMembers() throws ServiceException {
+        List<Member> members = interactor.getAllMembers();
+        HttpStatus httpStatus = null;
+        String responseMessage = null;
+        if(members == null) {
+            httpStatus = HttpStatus.NOT_FOUND;
+            responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND;
+        } else {
+            httpStatus = HttpStatus.OK;
+            responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND;
+        }
+        ServiceResponse<List<Member>> response = new ServiceResponse<>();
+        response.setStatus(httpStatus.toString());
+        response.setMessage(responseMessage);
+        response.setRequestUri(ServiceAPI.Member.GET_ALL_MEMBERS);
+        response.setPayload(members);
+        return new ResponseEntity<>(response, httpStatus);
+    }
+    
+    @RequestMapping(value = ServiceAPI.Member.POST_SEARCH_MEMBERS,
+                    method = RequestMethod.POST,
+                    headers = ServiceAPI.Headers.CONTENT_TYPE)
+    public ResponseEntity getMembers(@RequestBody HashMap<String, Object> searchCriteria) throws ServiceException {
+        List<Member> members = interactor.getMembers(searchCriteria);
+        HttpStatus httpStatus = null;
+        String responseMessage = null;
+        if(members == null) {
+            httpStatus = HttpStatus.NOT_FOUND;
+            responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND;
+        } else {
+            httpStatus = HttpStatus.OK;
+            responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND;
+        }
+        ServiceResponse<List<Member>> response = new ServiceResponse<>();
+        response.setStatus(httpStatus.toString());
+        response.setMessage(responseMessage);
+        response.setRequestUri(ServiceAPI.Member.POST_SEARCH_MEMBERS);
+        response.setPayload(members);
+        return new ResponseEntity<>(response, httpStatus);
+    }    
 }

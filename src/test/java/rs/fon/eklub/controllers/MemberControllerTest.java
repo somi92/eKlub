@@ -8,6 +8,10 @@ package rs.fon.eklub.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNull;
 import org.junit.Before;
@@ -29,9 +33,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import rs.fon.eklub.constants.ServiceAPI;
+import rs.fon.eklub.core.dal.DataAccessService;
 import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.MemberService;
+import rs.fon.eklub.repositories.mocks.MockMemberRepository;
 
 /**
  *
@@ -178,8 +184,90 @@ public class MemberControllerTest {
                 .andExpect(jsonPath("$.requestUri", Is.is("/members/100")));
     }
     
-    private String convertEntityToJson(Member m) throws JsonProcessingException {
+    @Test
+    public void getAllMembersOkTest() throws Exception {
+        Mockito.when(memberService.getAllMembers()).thenReturn(new MockMemberRepository().getAllEntities());
+        mockMvc.perform(get(ServiceAPI.Member.GET_ALL_MEMBERS))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.OK.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.GET_ALL_MEMBERS)))
+                .andExpect(jsonPath("$.payload[0].id", Is.is(1)))
+                .andExpect(jsonPath("$.payload[1].id", Is.is(2)))
+                .andExpect(jsonPath("$.payload[2].id", Is.is(3)));
+    }
+    
+    @Test
+    public void getAllMembersNotFoundTest() throws Exception {
+        Mockito.when(memberService.getAllMembers()).thenReturn(null);
+        mockMvc.perform(get(ServiceAPI.Member.GET_ALL_MEMBERS))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.GET_ALL_MEMBERS)))
+                .andExpect(jsonPath("$.payload", IsNull.nullValue()));
+    }
+    
+    @Test
+    public void getAllMembersExceptionTest() throws Exception {
+         Mockito.when(memberService.getAllMembers()).thenThrow(new ServiceException("MembersException"));
+         mockMvc.perform(get(ServiceAPI.Member.GET_ALL_MEMBERS))
+                 .andExpect(status().isNotFound())
+                 .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
+                 .andExpect(jsonPath("$.errorMessage", Is.is("MembersException")))
+                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.GET_ALL_MEMBERS)));
+    }
+    
+    @Test
+    public void getMembersOkTest() throws Exception {
+        Map<String, Object> searchCriteria = new HashMap<>();
+        searchCriteria.put("gender", "M");
+        List<Member> members = new MockMemberRepository().getEntities(searchCriteria);
+        Mockito.when(memberService.getMembers(searchCriteria)).thenReturn(members);
+        mockMvc.perform(post(ServiceAPI.Member.POST_SEARCH_MEMBERS)
+                .contentType(contentType)
+                .content(convertEntityToJson(searchCriteria)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.OK.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.POST_SEARCH_MEMBERS)))
+                .andExpect(jsonPath("$.payload[0].gender", Is.is("M")))
+                .andExpect(jsonPath("$.payload[1].gender", Is.is("M")));
+    }
+    
+    @Test
+    public void getMembersNotFoundTest() throws Exception {
+        Map<String, Object> searchCriteria = new HashMap<>();
+        searchCriteria.put("gender", "X");
+        Mockito.when(memberService.getMembers(searchCriteria)).thenReturn(null);
+        mockMvc.perform(post(ServiceAPI.Member.POST_SEARCH_MEMBERS)
+                .contentType(contentType)
+                .content(convertEntityToJson(searchCriteria)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.POST_SEARCH_MEMBERS)))
+                .andExpect(jsonPath("$.payload", Is.is(IsNull.nullValue())));
+    }
+    
+    @Test
+    public void getMembersExceptionTest() throws Exception {
+        Map<String, Object> searchCriteria = new HashMap<>();
+        searchCriteria.put("gender", "X");
+        Mockito.when(memberService.getMembers(searchCriteria)).thenThrow(new ServiceException("MembersException"));
+        mockMvc.perform(post(ServiceAPI.Member.POST_SEARCH_MEMBERS)
+                .contentType(contentType)
+                .content(convertEntityToJson(searchCriteria)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
+                .andExpect(jsonPath("$.errorMessage", Is.is("MembersException")))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.POST_SEARCH_MEMBERS)));
+    }
+    
+    private <T> String convertEntityToJson(T entity) throws JsonProcessingException {
         ObjectMapper om = new ObjectMapper();
-        return om.writeValueAsString(m);
+        return om.writeValueAsString(entity);
     }
 }

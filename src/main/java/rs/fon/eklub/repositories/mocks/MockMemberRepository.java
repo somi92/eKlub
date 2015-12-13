@@ -65,7 +65,7 @@ public class MockMemberRepository implements DataAccessService<Member> {
             throw new DataAccessServiceException("Data access error!");
         }
         for (Member m : mockMemberRepository) {
-            if (m.getGender() == (char) searchCriteria.get("gender")) {
+            if (m.getGender() == searchCriteria.get("gender").toString().charAt(0)) {
                 members.add(m);
             }
         }
