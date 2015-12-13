@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.Charset;
 import org.hamcrest.core.Is;
+import org.hamcrest.core.IsNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +23,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -114,6 +116,20 @@ public class MemberControllerTest {
     }
     
     @Test
+    public void getMemberByIdNotFoundTest() throws Exception {
+        Member m = new Member();
+        m.setId(100);
+        m.setNameSurname("Petar Petrovic");
+        Mockito.when(memberService.getMemberById(10)).thenReturn(m);
+        mockMvc.perform(get("/members/100"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.GET_MEMBER_BY_ID)))
+                .andExpect(jsonPath("$.payload", Is.is((IsNull.nullValue()))));
+    }
+    
+    @Test
     public void getMemberByIdExceptionTest() throws Exception {
         Member m = new Member();
         m.setId(10);
@@ -130,9 +146,37 @@ public class MemberControllerTest {
     
     @Test
     public void deleteMemberOkTest() throws Exception {
-        
+        Mockito.when(memberService.deleteMember(1)).thenReturn(true);
+        mockMvc.perform(delete("/members/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.OK.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_DELETED)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.DELETE_MEMBER_BY_ID)))
+                .andExpect(jsonPath("$.payload", Is.is(true)));
     }
     
+    
+    @Test
+    public void deleteMemberNotFoundTest() throws Exception {
+        Mockito.when(memberService.deleteMember(100)).thenReturn(false);
+        mockMvc.perform(delete("/members/100"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.DELETE_MEMBER_BY_ID)))
+                .andExpect(jsonPath("$.payload", Is.is(false)));
+    }
+    
+    @Test
+    public void deleteMemberExceptionTest() throws Exception {
+        Mockito.doThrow(new ServiceException("Delete member exception")).when(memberService).deleteMember(100);
+        mockMvc.perform(delete("/members/100"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
+                .andExpect(jsonPath("$.errorMessage", Is.is("Delete member exception")))
+                .andExpect(jsonPath("$.requestUri", Is.is("/members/100")));
+    }
     
     private String convertEntityToJson(Member m) throws JsonProcessingException {
         ObjectMapper om = new ObjectMapper();
