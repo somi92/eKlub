@@ -22,6 +22,8 @@ import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.exceptions.ValidationException;
 import rs.fon.eklub.core.services.TrainingService;
 import rs.fon.eklub.core.validators.EntityValidator;
+import rs.fon.eklub.core.validators.MockTrainingValidator;
+import rs.fon.eklub.repositories.mocks.MockTrainingRepository;
 
 /**
  *
@@ -34,114 +36,14 @@ public class TrainingInteractorTest {
     private DataAccessService<Training> dao;
     private EntityValidator<Training> validator;
     
-    private List<Training> mockTrainingRepository;
-    
     public TrainingInteractorTest() {
     }
     
     @Before
     public void setUp() {
         
-        mockTrainingRepository = new ArrayList<>();
-        
-        Training t1 = new Training();
-        t1.setId(1);
-        t1.setGroup(new Group(1, null, null, null));
-        Training t2 = new Training();
-        t2.setId(2);
-        t2.setGroup(new Group(2, null, null, null));
-        Training t3 = new Training();
-        t3.setId(3);
-        t3.setGroup(new Group(1, null, null, null));
-        
-        Attendance a11 = new Attendance(1, new Member(3), t1, true, 0);
-        Attendance a12 = new Attendance(2, new Member(2), t1, true, 0);
-        Attendance a21 = new Attendance(3, new Member(1), t2, true, 0);
-        Attendance a22 = new Attendance(4, new Member(4), t2, true, 0);
-        Attendance a31 = new Attendance(5, new Member(5), t3, true, 0);
-        Attendance a32 = new Attendance(6, new Member(6), t3, true, 0);
-        
-        List<Attendance> a1 = new ArrayList<>();
-        a1.add(a11);
-        a1.add(a12);
-        t1.setAttendaces(a1);
-        
-        List<Attendance> a2 = new ArrayList<>();
-        a2.add(a21);
-        a2.add(a22);
-        t2.setAttendaces(a2);
-        
-        List<Attendance> a3 = new ArrayList<>();
-        a3.add(a31);
-        a3.add(a32);
-        t3.setAttendaces(a3);
-        
-        mockTrainingRepository.add(t1);
-        mockTrainingRepository.add(t2);
-        mockTrainingRepository.add(t3);
-        
-        dao = new DataAccessService<Training>() {
-
-            @Override
-            public Training getEntity(long id) throws DataAccessServiceException {
-                if(id == 13) {
-                    throw new DataAccessServiceException("Data access error!");
-                } else {
-                    for(Training t : mockTrainingRepository) {
-                        if(t.getId() == id) {
-                            return t;
-                        }
-                    }
-                    return null;
-                }
-            }
-
-            @Override
-            public List<Training> getAllEntities() throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public List<Training> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
-                List<Training> trainings = new ArrayList<>();
-                long id = searchCriteria.get("id") == null ? 0 : Long.parseLong(searchCriteria.get("id").toString());
-                if(id == 13) {
-                    throw new DataAccessServiceException("Data access error!");
-                }
-                for(Training t : mockTrainingRepository) {
-                    if(t.getGroup().equals((Group) searchCriteria.get("group"))) {
-                        trainings.add(t);
-                    }
-                }
-                return trainings;
-            }
-
-            @Override
-            public void insertOrUpdateEntity(Training entity) throws DataAccessServiceException {
-                if(entity.getId() == 13) {
-                    throw new DataAccessServiceException("Data access error!");
-                }
-                if(!mockTrainingRepository.contains(entity)) {
-                    mockTrainingRepository.add(entity);
-                }
-            }
-
-            @Override
-            public boolean deleteEntity(long id) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-        
-        validator = new EntityValidator<Training>() {
-
-            @Override
-            public boolean validateEntity(Training entity) throws ValidationException {
-                if(entity.getDurationMinutes() < 0) {
-                    throw new ValidationException("Validation exception!");
-                }
-                return true;
-            }
-        };
+        dao = new MockTrainingRepository();
+        validator = new MockTrainingValidator();
         
         ts = new TrainingInteractor(dao, validator);
     }
@@ -163,14 +65,14 @@ public class TrainingInteractorTest {
         a.add(a2);
         t.setAttendaces(a);
         ts.saveTraining(t);
-        assertTrue(mockTrainingRepository.contains(t));
+        assertTrue(dao.getAllEntities().contains(t));
     }
     
     @Test(expected = ServiceException.class)
     public void saveTrainingNullEntityTest() throws ServiceException {
         Training t = null;
         ts.saveTraining(t);
-        assertFalse(mockTrainingRepository.contains(t));
+        assertFalse(dao.getAllEntities().contains(t));
     }
     
     @Test(expected = DataAccessServiceException.class)
@@ -178,7 +80,7 @@ public class TrainingInteractorTest {
         Training t = new Training();
         t.setId(13);
         ts.saveTraining(t);
-        assertFalse(mockTrainingRepository.contains(t));
+        assertFalse(dao.getAllEntities().contains(t));
     }
     
     @Test(expected = ValidationException.class)
@@ -187,7 +89,7 @@ public class TrainingInteractorTest {
         t.setId(100);
         t.setDurationMinutes(-1);
         ts.saveTraining(t);
-        assertFalse(mockTrainingRepository.contains(t));
+        assertFalse(dao.getAllEntities().contains(t));
     }
     
     @Test
@@ -196,8 +98,8 @@ public class TrainingInteractorTest {
         Training t2 = ts.getTrainingById(3);
         assertNotNull(t1);
         assertNotNull(t2);
-        assertTrue(mockTrainingRepository.contains(t1));
-        assertTrue(mockTrainingRepository.contains(t2));
+        assertTrue(dao.getAllEntities().contains(t1));
+        assertTrue(dao.getAllEntities().contains(t2));
     }
     
     @Test
