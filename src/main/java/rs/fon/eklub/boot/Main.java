@@ -15,12 +15,15 @@ import org.springframework.context.annotation.Configuration;
 import rs.fon.eklub.core.interactors.CategoryInteractor;
 import rs.fon.eklub.core.interactors.GroupInteractor;
 import rs.fon.eklub.core.interactors.MemberInteractor;
+import rs.fon.eklub.core.interactors.TrainingInteractor;
 import rs.fon.eklub.core.services.CategoryService;
 import rs.fon.eklub.core.validators.MockGroupValidator;
 import rs.fon.eklub.core.validators.MockMemberValidator;
+import rs.fon.eklub.core.validators.MockTrainingValidator;
 import rs.fon.eklub.repositories.mocks.MockCategoryRepository;
 import rs.fon.eklub.repositories.mocks.MockGroupRepository;
 import rs.fon.eklub.repositories.mocks.MockMemberRepository;
+import rs.fon.eklub.repositories.mocks.MockTrainingRepository;
 
 /**
  *
@@ -62,6 +65,12 @@ public class Main {
     public MemberInteractor getMemberInteractor() {
         return new MemberInteractor(new MockMemberRepository(),
                 new MockMemberValidator());
+    }
+    
+    @Bean
+    public TrainingInteractor getTrainingInteractor() {
+        return new TrainingInteractor(new MockTrainingRepository(),
+                new MockTrainingValidator());
     }
     
     public static void main(String[] args) {

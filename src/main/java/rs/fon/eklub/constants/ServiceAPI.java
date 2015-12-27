@@ -44,4 +44,9 @@ public class ServiceAPI {
         public static final String GET_ALL_CATEGORIES = "/categories";
     }
     
+    public class Training {
+        public static final String POST_SAVE_TRAINING = "/trainings";
+        public static final String GET_TRAINING_BY_ID = "/trainings/{id}";
+        public static final String POST_SEARCH_TRAINING = "/trainings/search";
+    }
 }

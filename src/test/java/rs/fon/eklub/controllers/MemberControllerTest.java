@@ -8,7 +8,6 @@ package rs.fon.eklub.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import rs.fon.eklub.constants.ServiceAPI;
-import rs.fon.eklub.core.dal.DataAccessService;
 import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.MemberService;
@@ -126,8 +124,8 @@ public class MemberControllerTest {
         Member m = new Member();
         m.setId(100);
         m.setNameSurname("Petar Petrovic");
-        Mockito.when(memberService.getMemberById(10)).thenReturn(m);
-        mockMvc.perform(get("/members/100"))
+        Mockito.when(memberService.getMemberById(10)).thenReturn(null);
+        mockMvc.perform(get("/members/10"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
                 .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND)))
