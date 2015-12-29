@@ -24,6 +24,7 @@ import rs.fon.eklub.core.services.TrainingService;
 import rs.fon.eklub.core.validators.EntityValidator;
 import rs.fon.eklub.core.validators.MockTrainingValidator;
 import rs.fon.eklub.repositories.mocks.MockTrainingRepository;
+import rs.fon.eklub.util.Util;
 
 /**
  *
@@ -116,24 +117,24 @@ public class TrainingInteractorTest {
     
     @Test
     public void getTrainingsOkTest() throws ServiceException {
-        Map<String, Object> searchCriteria = new HashMap<>();
-        searchCriteria.put("group", new Group(1, null, null, null));
+        Map<String, String> searchCriteria = new HashMap<>();
+        searchCriteria.put("group", Util.convertEntityToJson(new Group(1, null, null, null)));
         List<Training> trainings = ts.getTrainings(searchCriteria);
         assertTrue(trainings.size() == 2);
     }
     
     @Test
     public void getTrainingsEmptyTest() throws ServiceException {
-        Map<String, Object> searchCriteria = new HashMap<>();
-        searchCriteria.put("group", new Group(3, null, null, null));
+        Map<String, String> searchCriteria = new HashMap<>();
+        searchCriteria.put("group", Util.convertEntityToJson(new Group(3, null, null, null)));
         List<Training> trainings = ts.getTrainings(searchCriteria);
         assertTrue(trainings.isEmpty());
     }
     
     @Test(expected = DataAccessServiceException.class)
     public void getTrainingsDataExceptionTest() throws ServiceException {
-        Map<String, Object> searchCriteria = new HashMap<>();
-        searchCriteria.put("id", 13);
+        Map<String, String> searchCriteria = new HashMap<>();
+        searchCriteria.put("id", 13+"");
         List<Training> trainings = ts.getTrainings(searchCriteria);
         assertNull(trainings);
     }

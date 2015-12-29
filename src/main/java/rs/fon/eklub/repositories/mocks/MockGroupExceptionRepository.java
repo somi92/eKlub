@@ -28,7 +28,7 @@ public class MockGroupExceptionRepository implements DataAccessService<Group> {
     }
 
     @Override
-    public List<Group> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
+    public List<Group> getEntities(Map<String, String> searchCriteria) throws DataAccessServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

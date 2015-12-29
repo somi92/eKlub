@@ -28,7 +28,7 @@ public class MockCategoryExceptionRepository implements DataAccessService<Catego
     }
 
     @Override
-    public List<Category> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
+    public List<Category> getEntities(Map<String, String> searchCriteria) throws DataAccessServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

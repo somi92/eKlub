@@ -18,5 +18,5 @@ public interface TrainingService {
     
     public void saveTraining(Training training) throws ServiceException;
     public Training getTrainingById(long id) throws ServiceException;
-    public List<Training> getTrainings(Map<String, Object> searchCriteria) throws ServiceException;
+    public List<Training> getTrainings(Map<String, String> searchCriteria) throws ServiceException;
 }

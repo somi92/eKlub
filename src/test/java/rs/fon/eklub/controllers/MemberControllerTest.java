@@ -36,6 +36,7 @@ import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.MemberService;
 import rs.fon.eklub.repositories.mocks.MockMemberRepository;
+import rs.fon.eklub.util.Util;
 
 /**
  *
@@ -76,7 +77,7 @@ public class MemberControllerTest {
     public void saveMemberOkTest() throws Exception {
         Member m = new Member();
         m.setId(10);
-        String jsonMember = convertEntityToJson(m);
+        String jsonMember = Util.convertEntityToJson(m);
         Mockito.doNothing().when(memberService).saveMember(m);
         mockMvc.perform(post(ServiceAPI.Member.POST_SAVE_MEMBER)
                 .contentType(contentType)
@@ -92,7 +93,7 @@ public class MemberControllerTest {
     public void saveMemberExceptionTest() throws Exception {
         Member m = new Member();
         m.setId(10);
-        String jsonMember = convertEntityToJson(m);
+        String jsonMember = Util.convertEntityToJson(m);
         Mockito.doThrow(new ServiceException("Member not saved.")).when(memberService).saveMember(m);
         mockMvc.perform(post(ServiceAPI.Member.POST_SAVE_MEMBER)
                 .contentType(contentType)
@@ -219,13 +220,13 @@ public class MemberControllerTest {
     
     @Test
     public void getMembersOkTest() throws Exception {
-        Map<String, Object> searchCriteria = new HashMap<>();
+        Map<String, String> searchCriteria = new HashMap<>();
         searchCriteria.put("gender", "M");
         List<Member> members = new MockMemberRepository().getEntities(searchCriteria);
         Mockito.when(memberService.getMembers(searchCriteria)).thenReturn(members);
         mockMvc.perform(post(ServiceAPI.Member.POST_SEARCH_MEMBERS)
                 .contentType(contentType)
-                .content(convertEntityToJson(searchCriteria)))
+                .content(Util.convertEntityToJson(searchCriteria)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", Is.is(HttpStatus.OK.toString())))
                 .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND)))
@@ -236,12 +237,12 @@ public class MemberControllerTest {
     
     @Test
     public void getMembersNotFoundTest() throws Exception {
-        Map<String, Object> searchCriteria = new HashMap<>();
+        Map<String, String> searchCriteria = new HashMap<>();
         searchCriteria.put("gender", "X");
         Mockito.when(memberService.getMembers(searchCriteria)).thenReturn(null);
         mockMvc.perform(post(ServiceAPI.Member.POST_SEARCH_MEMBERS)
                 .contentType(contentType)
-                .content(convertEntityToJson(searchCriteria)))
+                .content(Util.convertEntityToJson(searchCriteria)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
                 .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND)))
@@ -251,21 +252,16 @@ public class MemberControllerTest {
     
     @Test
     public void getMembersExceptionTest() throws Exception {
-        Map<String, Object> searchCriteria = new HashMap<>();
+        Map<String, String> searchCriteria = new HashMap<>();
         searchCriteria.put("gender", "X");
         Mockito.when(memberService.getMembers(searchCriteria)).thenThrow(new ServiceException("MembersException"));
         mockMvc.perform(post(ServiceAPI.Member.POST_SEARCH_MEMBERS)
                 .contentType(contentType)
-                .content(convertEntityToJson(searchCriteria)))
+                .content(Util.convertEntityToJson(searchCriteria)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("MembersException")))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.POST_SEARCH_MEMBERS)));
-    }
-    
-    private <T> String convertEntityToJson(T entity) throws JsonProcessingException {
-        ObjectMapper om = new ObjectMapper();
-        return om.writeValueAsString(entity);
     }
 }

@@ -32,6 +32,7 @@ import rs.fon.eklub.core.entities.Group;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.GroupService;
 import rs.fon.eklub.repositories.mocks.MockGroupRepository;
+import rs.fon.eklub.util.Util;
 
 /**
  *
@@ -107,7 +108,7 @@ public class GroupControllerTest {
     public void saveGroupOkTest() throws Exception {
         Group g = new Group();
         g.setId(1);
-        String jsonGroup = convertEntityToJson(g);
+        String jsonGroup = Util.convertEntityToJson(g);
         Mockito.doNothing().when(groupService).saveGroup(g);
         mockMvc.perform(post(ServiceAPI.Group.POST_SAVE_GROUP)
             .contentType(contentType)
@@ -123,7 +124,7 @@ public class GroupControllerTest {
     public void saveGroupExceptionTest() throws Exception {
         Group g = new Group();
         g.setId(1);
-        String jsonGroup = convertEntityToJson(g);
+        String jsonGroup = Util.convertEntityToJson(g);
         Mockito.doThrow(new ServiceException("Group not saved.")).when(groupService).saveGroup(g);
         mockMvc.perform(post(ServiceAPI.Group.POST_SAVE_GROUP)
             .contentType(contentType)
@@ -133,10 +134,5 @@ public class GroupControllerTest {
             .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
             .andExpect(jsonPath("$.errorMessage", Is.is("Group not saved.")))
             .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Group.POST_SAVE_GROUP)));
-    }
-    
-    private String convertEntityToJson(Group g) throws JsonProcessingException {
-        ObjectMapper om = new ObjectMapper();
-        return om.writeValueAsString(g);
     }
 }

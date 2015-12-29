@@ -117,7 +117,7 @@ public class MemberController {
     @RequestMapping(value = ServiceAPI.Member.POST_SEARCH_MEMBERS,
                     method = RequestMethod.POST,
                     headers = ServiceAPI.Headers.CONTENT_TYPE)
-    public ResponseEntity getMembers(@RequestBody HashMap<String, Object> searchCriteria) throws ServiceException {
+    public ResponseEntity getMembers(@RequestBody HashMap<String, String> searchCriteria) throws ServiceException {
         List<Member> members = interactor.getMembers(searchCriteria);
         HttpStatus httpStatus = null;
         String responseMessage = null;

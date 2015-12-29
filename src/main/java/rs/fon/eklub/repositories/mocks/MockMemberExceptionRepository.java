@@ -28,7 +28,7 @@ public class MockMemberExceptionRepository implements DataAccessService<Member> 
     }
 
     @Override
-    public List<Member> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
+    public List<Member> getEntities(Map<String, String> searchCriteria) throws DataAccessServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -36,6 +36,7 @@ import rs.fon.eklub.core.entities.Training;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.TrainingService;
 import rs.fon.eklub.repositories.mocks.MockTrainingRepository;
+import rs.fon.eklub.util.Util;
 
 /**
  *
@@ -76,7 +77,7 @@ public class TrainingControllerTest {
     public void saveTrainingOkTest() throws Exception {
         Training t = new Training();
         t.setId(10);
-        String jsonTraining = convertEntityToJson(t);
+        String jsonTraining = Util.convertEntityToJson(t);
         Mockito.doNothing().when(trainingService).saveTraining(t);
         mockMvc.perform(post(ServiceAPI.Training.POST_SAVE_TRAINING)
                 .contentType(contentType)
@@ -92,7 +93,7 @@ public class TrainingControllerTest {
     public void saveTrainingExceptionTest() throws Exception {
         Training t = new Training();
         t.setId(10);
-        String jsonTraining = convertEntityToJson(t);
+        String jsonTraining = Util.convertEntityToJson(t);
         Mockito.doThrow(new ServiceException("Training not saved.")).when(trainingService).saveTraining(t);
         mockMvc.perform(post(ServiceAPI.Training.POST_SAVE_TRAINING)
                 .contentType(contentType)
@@ -149,24 +150,21 @@ public class TrainingControllerTest {
     
     @Test
     public void getTrainingsOkTest() throws Exception {
-        Map<String, Object> searchCriteria = new HashMap<>();
+        Map<String, String> searchCriteria = new HashMap<>();
+        Map<String, Object> searchCriteriaJson = new HashMap<>();
         Group g = new Group(1, null, null, null);
-        searchCriteria.put("group", g);
+        searchCriteria.put("group", Util.convertEntityToJson(g));
+        searchCriteriaJson.put("group", g);
         List<Training> trainings = new MockTrainingRepository().getEntities(searchCriteria);
         Mockito.when(trainingService.getTrainings(searchCriteria)).thenReturn(trainings);
         mockMvc.perform(post(ServiceAPI.Training.POST_SEARCH_TRAINING)
                 .contentType(contentType)
-                .content(convertEntityToJson(searchCriteria)))
+                .content(Util.convertEntityToJson(searchCriteriaJson)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", Is.is(HttpStatus.OK.toString())))
                 .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND)))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Training.POST_SEARCH_TRAINING)))
                 .andExpect(jsonPath("$.payload[0].group", Is.is(g)))
                 .andExpect(jsonPath("$.payload[1].group", Is.is(g)));
-    }
-    
-    private <T> String convertEntityToJson(T entity) throws JsonProcessingException {
-        ObjectMapper om = new ObjectMapper();
-        return om.writeValueAsString(entity);
     }
 }

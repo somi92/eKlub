@@ -95,14 +95,14 @@ public class PaymentInteractorTest {
             }
 
             @Override
-            public List<Payment> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
+            public List<Payment> getEntities(Map<String, String> searchCriteria) throws DataAccessServiceException {
                 List<Payment> payments = new ArrayList<>();
                 long id = searchCriteria.get("id") == null ? 0 : Long.parseLong(searchCriteria.get("id").toString());
                 if(id == 13) {
                     throw new DataAccessServiceException("Data access error!");
                 }
                 for(Payment p : mockPaymentsRepository) {
-                    if(p.getAmount() == Double.parseDouble(searchCriteria.get("amount").toString())) {
+                    if(p.getAmount() == Double.parseDouble(searchCriteria.get("amount"))) {
                         payments.add(p);
                     }
                 }
@@ -189,24 +189,24 @@ public class PaymentInteractorTest {
     
     @Test
     public void getPaymentsOkTest() throws ServiceException {
-        Map<String, Object> searchCriteria = new HashMap<>();
-        searchCriteria.put("amount", 2000);
+        Map<String, String> searchCriteria = new HashMap<>();
+        searchCriteria.put("amount", 2000+"");
         List<Payment> payments = ps.getPayments(searchCriteria);
         assertTrue(payments.size() == 3);
     }
     
     @Test
     public void getPaymentsEmptyTest() throws ServiceException {
-        Map<String, Object> searchCriteria = new HashMap<>();
-        searchCriteria.put("amount", 3000);
+        Map<String, String> searchCriteria = new HashMap<>();
+        searchCriteria.put("amount", 3000+"");
         List<Payment> payments = ps.getPayments(searchCriteria);
         assertTrue(payments.isEmpty());
     }
     
     @Test(expected = DataAccessServiceException.class)
     public void getPaymentsDataExceptionTest() throws ServiceException {
-        Map<String, Object> searchCriteria = new HashMap<>();
-        searchCriteria.put("id", 13);
+        Map<String, String> searchCriteria = new HashMap<>();
+        searchCriteria.put("id", 13+"");
         List<Payment> payments = ps.getPayments(searchCriteria);
         assertNull(payments);
     }

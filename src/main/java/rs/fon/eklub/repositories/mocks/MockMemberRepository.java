@@ -58,7 +58,7 @@ public class MockMemberRepository implements DataAccessService<Member> {
     }
 
     @Override
-    public List<Member> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
+    public List<Member> getEntities(Map<String, String> searchCriteria) throws DataAccessServiceException {
         List<Member> members = new ArrayList<>();
         long id = searchCriteria.get("id") == null ? 0 : Long.parseLong(searchCriteria.get("id").toString());
         if (id == 13) {

@@ -151,24 +151,24 @@ public class MemberInteractorTest {
     
     @Test
     public void getMembersOkTest() throws ServiceException {
-        Map<String, Object> searchCriteria = new HashMap<>();
-        searchCriteria.put("gender", 'M');
+        Map<String, String> searchCriteria = new HashMap<>();
+        searchCriteria.put("gender", 'M'+"");
         List<Member> members = ms.getMembers(searchCriteria);
         assertTrue(members.size() == 2);
     }
     
     @Test
     public void getMembersEmptyTest() throws ServiceException {
-        Map<String, Object> searchCriteria = new HashMap<>();
-        searchCriteria.put("gender", 'x');
+        Map<String, String> searchCriteria = new HashMap<>();
+        searchCriteria.put("gender", 'x'+"");
         List<Member> members = ms.getMembers(searchCriteria);
         assertTrue(members.isEmpty());
     }
     
     @Test(expected = DataAccessServiceException.class)
     public void getMembersDataExceptionTest() throws ServiceException {
-        Map<String, Object> searchCriteria = new HashMap<>();
-        searchCriteria.put("id", 13);
+        Map<String, String> searchCriteria = new HashMap<>();
+        searchCriteria.put("id", 13+"");
         List<Member> members = ms.getMembers(searchCriteria);
         assertNull(members);
     }

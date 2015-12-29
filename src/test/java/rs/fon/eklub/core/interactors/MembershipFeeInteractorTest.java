@@ -75,7 +75,7 @@ public class MembershipFeeInteractorTest {
             }
 
             @Override
-            public List<MembershipFee> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
+            public List<MembershipFee> getEntities(Map<String, String> searchCriteria) throws DataAccessServiceException {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
@@ -103,7 +103,7 @@ public class MembershipFeeInteractorTest {
             }
 
             @Override
-            public List<MembershipFee> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
+            public List<MembershipFee> getEntities(Map<String, String> searchCriteria) throws DataAccessServiceException {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 

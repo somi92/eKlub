@@ -14,6 +14,7 @@ import rs.fon.eklub.core.entities.Group;
 import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.entities.Training;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
+import rs.fon.eklub.util.Util;
 
 /**
  *
@@ -84,14 +85,14 @@ public class MockTrainingRepository implements DataAccessService<Training> {
     }
 
     @Override
-    public List<Training> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
+    public List<Training> getEntities(Map<String, String> searchCriteria) throws DataAccessServiceException {
         List<Training> trainings = new ArrayList<>();
-        long id = searchCriteria.get("id") == null ? 0 : Long.parseLong(searchCriteria.get("id").toString());
+        long id = searchCriteria.get("id") == null ? 0 : Long.parseLong(searchCriteria.get("id"));
         if (id == 13) {
             throw new DataAccessServiceException("Data access error!");
         }
         for (Training t : mockTrainingRepository) {
-            if (t.getGroup().equals((Group) searchCriteria.get("group"))) {
+            if (t.getGroup().equals(Util.convertJsonToEntity(searchCriteria.get("group"), Group.class))) {
                 trainings.add(t);
             }
         }

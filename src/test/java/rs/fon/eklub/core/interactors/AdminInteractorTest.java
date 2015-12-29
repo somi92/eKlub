@@ -70,14 +70,14 @@ public class AdminInteractorTest {
             }
 
             @Override
-            public List<Employee> getEntities(Map<String, Object> searchCriteria) throws DataAccessServiceException {
+            public List<Employee> getEntities(Map<String, String> searchCriteria) throws DataAccessServiceException {
                 List<Employee> employees = new ArrayList<>();
-                if(searchCriteria.get("username").toString().equals("admin13")) {
+                if(searchCriteria.get("username").equals("admin13")) {
                     throw new DataAccessServiceException("Data access error!");
                 }
                 for(Employee e : mockEmployeeRepository) {
-                    if(e.getUsername().equals(searchCriteria.get("username").toString()) 
-                            && e.getPassword().equals(searchCriteria.get("password").toString())) {
+                    if(e.getUsername().equals(searchCriteria.get("username")) 
+                            && e.getPassword().equals(searchCriteria.get("password"))) {
                         employees.add(e);
                     }
                 }

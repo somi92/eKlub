@@ -7,6 +7,7 @@ package rs.fon.eklub.controllers;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import rs.fon.eklub.core.entities.Training;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.TrainingService;
 import rs.fon.eklub.envelopes.ServiceResponse;
+import rs.fon.eklub.util.Util;
 
 /**
  *
@@ -74,7 +76,7 @@ public class TrainingController {
     @RequestMapping(value = ServiceAPI.Training.POST_SEARCH_TRAINING,
                     method = RequestMethod.POST,
                     headers = ServiceAPI.Headers.CONTENT_TYPE)
-    public ResponseEntity getTrainings(@RequestBody HashMap<String, Object> searchCriteria) throws ServiceException {
+    public ResponseEntity getTrainings(@RequestBody HashMap<String, String> searchCriteria) throws ServiceException {
         List<Training> trainings = interactor.getTrainings(searchCriteria);
         HttpStatus httpStatus = null;
         String responseMessage = null;
