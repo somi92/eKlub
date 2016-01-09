@@ -73,6 +73,12 @@ public class TrainingController {
         return new ResponseEntity<>(response, httpStatus);
     }
     
+    /***
+     * http://www.java-allandsundry.com/2014/09/customizing-httpmessageconverters-with.html
+     * http://www.cowtowncoder.com/blog/archives/2009/08/entry_305.html
+     * http://stackoverflow.com/questions/26529646/partial-json-serialization-of-rest-response-objects-in-spring-mvc
+     * http://stackoverflow.com/questions/19997909/disable-auto-serializations-for-spring-mvc
+     ***/
     @RequestMapping(value = ServiceAPI.Training.POST_SEARCH_TRAINING,
                     method = RequestMethod.POST,
                     headers = ServiceAPI.Headers.CONTENT_TYPE)

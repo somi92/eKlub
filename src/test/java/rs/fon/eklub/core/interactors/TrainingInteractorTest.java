@@ -59,12 +59,12 @@ public class TrainingInteractorTest {
     public void saveTrainingOkTest() throws ServiceException {
         Training t = new Training();
         t.setId(100);
-        Attendance a1 = new Attendance(1, new Member(3), t, true, 0);
-        Attendance a2 = new Attendance(2, new Member(2), t, true, 0);
-        List<Attendance> a = new ArrayList<>();
-        a.add(a1);
-        a.add(a2);
-        t.setAttendaces(a);
+//        Attendance a1 = new Attendance(1, new Member(3), t, true, 0);
+//        Attendance a2 = new Attendance(2, new Member(2), t, true, 0);
+//        List<Attendance> a = new ArrayList<>();
+//        a.add(a1);
+//        a.add(a2);
+//        t.setAttendaces(a);
         ts.saveTraining(t);
         assertTrue(dao.getAllEntities().contains(t));
     }
@@ -118,7 +118,7 @@ public class TrainingInteractorTest {
     @Test
     public void getTrainingsOkTest() throws ServiceException {
         Map<String, String> searchCriteria = new HashMap<>();
-        searchCriteria.put("group", Util.convertEntityToJson(new Group(1, null, null, null)));
+        searchCriteria.put("group", "1");
         List<Training> trainings = ts.getTrainings(searchCriteria);
         assertTrue(trainings.size() == 2);
     }
@@ -126,7 +126,7 @@ public class TrainingInteractorTest {
     @Test
     public void getTrainingsEmptyTest() throws ServiceException {
         Map<String, String> searchCriteria = new HashMap<>();
-        searchCriteria.put("group", Util.convertEntityToJson(new Group(3, null, null, null)));
+        searchCriteria.put("group", "3");
         List<Training> trainings = ts.getTrainings(searchCriteria);
         assertTrue(trainings.isEmpty());
     }

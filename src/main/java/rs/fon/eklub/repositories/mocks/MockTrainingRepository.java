@@ -14,7 +14,6 @@ import rs.fon.eklub.core.entities.Group;
 import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.entities.Training;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
-import rs.fon.eklub.util.Util;
 
 /**
  *
@@ -92,7 +91,7 @@ public class MockTrainingRepository implements DataAccessService<Training> {
             throw new DataAccessServiceException("Data access error!");
         }
         for (Training t : mockTrainingRepository) {
-            if (t.getGroup().equals(Util.convertJsonToEntity(searchCriteria.get("group"), Group.class))) {
+            if ((t.getGroup().getId()+"").equals(searchCriteria.get("group"))) {
                 trainings.add(t);
             }
         }

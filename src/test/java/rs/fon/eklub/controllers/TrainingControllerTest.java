@@ -151,20 +151,17 @@ public class TrainingControllerTest {
     @Test
     public void getTrainingsOkTest() throws Exception {
         Map<String, String> searchCriteria = new HashMap<>();
-        Map<String, Object> searchCriteriaJson = new HashMap<>();
-        Group g = new Group(1, null, null, null);
-        searchCriteria.put("group", Util.convertEntityToJson(g));
-        searchCriteriaJson.put("group", g);
+        searchCriteria.put("group", "1");
         List<Training> trainings = new MockTrainingRepository().getEntities(searchCriteria);
         Mockito.when(trainingService.getTrainings(searchCriteria)).thenReturn(trainings);
         mockMvc.perform(post(ServiceAPI.Training.POST_SEARCH_TRAINING)
                 .contentType(contentType)
-                .content(Util.convertEntityToJson(searchCriteriaJson)))
+                .content(Util.convertEntityToJson(searchCriteria)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", Is.is(HttpStatus.OK.toString())))
                 .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND)))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Training.POST_SEARCH_TRAINING)))
-                .andExpect(jsonPath("$.payload[0].group", Is.is(g)))
-                .andExpect(jsonPath("$.payload[1].group", Is.is(g)));
+                .andExpect(jsonPath("$.payload[0].group.id", Is.is(1)))
+                .andExpect(jsonPath("$.payload[1].group.id", Is.is(1)));
     }
 }
