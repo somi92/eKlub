@@ -8,12 +8,14 @@ package rs.fon.eklub.mixin;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import rs.fon.eklub.core.entities.Attendance;
+import rs.fon.eklub.core.entities.Training;
 
 /**
  *
  * @author EC
  */
-public interface TrainingDeserialization {
+public interface AttendanceSerialization {
     
-    @JsonIgnore List<Attendance> getAttendaces();
+//    @JsonIgnore List<Attendance> getAttendaces();
+    @JsonIgnore Training getTraining();
 }

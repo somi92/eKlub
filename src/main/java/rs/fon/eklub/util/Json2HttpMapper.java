@@ -1,0 +1,53 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package rs.fon.eklub.util;
+
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationConfig;
+import java.io.IOException;
+import java.util.List;
+import org.springframework.http.HttpOutputMessage;
+import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.stereotype.Component;
+import rs.fon.eklub.core.entities.Attendance;
+import rs.fon.eklub.core.entities.Member;
+import rs.fon.eklub.core.entities.Training;
+import rs.fon.eklub.envelopes.ServiceResponse;
+import rs.fon.eklub.mixin.AttendanceSerialization;
+import rs.fon.eklub.mixin.MemberSerialization;
+
+/**
+ *
+ * @author milos
+ */
+@Component
+public class Json2HttpMapper extends MappingJackson2HttpMessageConverter {
+
+    @Override
+    protected void writeInternal(Object object, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
+        
+        ObjectMapper mapper = getObjectMapper();
+        JsonGenerator jsonGenerator = mapper.getFactory().createGenerator(outputMessage.getBody());
+        
+        try {
+            
+            if(object instanceof ServiceResponse) {
+                mapper.addMixInAnnotations(Attendance.class, AttendanceSerialization.class);
+                mapper.addMixInAnnotations(Member.class, MemberSerialization.class);
+                mapper.writeValue(jsonGenerator, object);
+            } else if(object == null) {
+                jsonGenerator.writeNull();
+            } else {
+                mapper.writeValue(jsonGenerator, object);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

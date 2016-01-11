@@ -19,9 +19,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -30,12 +33,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import rs.fon.eklub.boot.Main;
 import rs.fon.eklub.constants.ServiceAPI;
 import rs.fon.eklub.core.entities.Group;
 import rs.fon.eklub.core.entities.Training;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.TrainingService;
 import rs.fon.eklub.repositories.mocks.MockTrainingRepository;
+import rs.fon.eklub.util.Json2HttpMapper;
 import rs.fon.eklub.util.Util;
 
 /**
@@ -68,7 +73,10 @@ public class TrainingControllerTest {
         WebMvcConfigurationSupport webMvcConfigurationSupport = new WebMvcConfigurationSupport();
         webMvcConfigurationSupport.setApplicationContext(staticApplicationContext);
         
-        mockMvc = MockMvcBuilders.standaloneSetup(new TrainingController(trainingService))
+        
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(new TrainingController(trainingService))
+                .setMessageConverters(new Json2HttpMapper())
                 .setHandlerExceptionResolvers(webMvcConfigurationSupport.handlerExceptionResolver())
                 .build();
     }
