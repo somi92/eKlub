@@ -19,6 +19,7 @@ import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.entities.Training;
 import rs.fon.eklub.envelopes.ServiceResponse;
 import rs.fon.eklub.mixin.AttendanceSerialization;
+import rs.fon.eklub.mixin.EntitySerializationMixin;
 import rs.fon.eklub.mixin.MemberSerialization;
 
 /**
@@ -37,8 +38,20 @@ public class Json2HttpMapper extends MappingJackson2HttpMessageConverter {
         try {
             
             if(object instanceof ServiceResponse) {
-                mapper.addMixInAnnotations(Attendance.class, AttendanceSerialization.class);
-                mapper.addMixInAnnotations(Member.class, MemberSerialization.class);
+                ServiceResponse res = (ServiceResponse) object;
+                Object payload = res.getPayload();
+                
+//                if(payload instanceof List<?>) {
+//                    
+//                } else {
+//                    
+//                }
+                    
+                
+//                mapper.addMixInAnnotations(Attendance.class, AttendanceSerialization.class);
+//                mapper.addMixInAnnotations(Member.class, MemberSerialization.class);
+                mapper.addMixInAnnotations(Attendance.class, EntitySerializationMixin.class);
+                mapper.addMixInAnnotations(Member.class, EntitySerializationMixin.class);
                 mapper.writeValue(jsonGenerator, object);
             } else if(object == null) {
                 jsonGenerator.writeNull();

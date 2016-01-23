@@ -7,7 +7,6 @@ package rs.fon.eklub.core.services;
 
 import java.util.List;
 import java.util.Map;
-import rs.fon.eklub.core.entities.MembershipFee;
 import rs.fon.eklub.core.entities.Payment;
 import rs.fon.eklub.core.exceptions.ServiceException;
 

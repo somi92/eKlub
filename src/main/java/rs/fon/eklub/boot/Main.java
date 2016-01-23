@@ -86,10 +86,10 @@ public class Main extends WebMvcConfigurationSupport {
 //    }
     
     
-    @Override
-    protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(new Json2HttpMapper());
-    }
+//    @Override
+//    protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        converters.add(new Json2HttpMapper());
+//    }
     
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);

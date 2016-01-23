@@ -76,7 +76,7 @@ public class TrainingControllerTest {
         
         mockMvc = MockMvcBuilders
                 .standaloneSetup(new TrainingController(trainingService))
-                .setMessageConverters(new Json2HttpMapper())
+//                .setMessageConverters(new Json2HttpMapper())
                 .setHandlerExceptionResolvers(webMvcConfigurationSupport.handlerExceptionResolver())
                 .build();
     }
