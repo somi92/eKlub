@@ -5,8 +5,6 @@
  */
 package rs.fon.eklub.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
@@ -19,12 +17,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -33,9 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import rs.fon.eklub.boot.Main;
 import rs.fon.eklub.constants.ServiceAPI;
-import rs.fon.eklub.core.entities.Group;
 import rs.fon.eklub.core.entities.Training;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.TrainingService;
@@ -76,7 +69,7 @@ public class TrainingControllerTest {
         
         mockMvc = MockMvcBuilders
                 .standaloneSetup(new TrainingController(trainingService))
-//                .setMessageConverters(new Json2HttpMapper())
+                .setMessageConverters(new Json2HttpMapper())
                 .setHandlerExceptionResolvers(webMvcConfigurationSupport.handlerExceptionResolver())
                 .build();
     }

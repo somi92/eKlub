@@ -78,7 +78,7 @@ public class TrainingController {
         List<Training> trainings = interactor.getTrainings(searchCriteria);
         HttpStatus httpStatus = null;
         String responseMessage = null;
-        if(trainings == null) {
+        if(trainings.size() <= 0) {
             httpStatus = HttpStatus.NOT_FOUND;
             responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND;
         } else {

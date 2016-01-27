@@ -20,6 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import rs.fon.eklub.core.interactors.CategoryInteractor;
 import rs.fon.eklub.core.interactors.GroupInteractor;
 import rs.fon.eklub.core.interactors.MemberInteractor;
+import rs.fon.eklub.core.interactors.MembershipFeeInteractor;
 import rs.fon.eklub.core.interactors.TrainingInteractor;
 import rs.fon.eklub.core.services.CategoryService;
 import rs.fon.eklub.core.validators.MockGroupValidator;
@@ -28,6 +29,7 @@ import rs.fon.eklub.core.validators.MockTrainingValidator;
 import rs.fon.eklub.repositories.mocks.MockCategoryRepository;
 import rs.fon.eklub.repositories.mocks.MockGroupRepository;
 import rs.fon.eklub.repositories.mocks.MockMemberRepository;
+import rs.fon.eklub.repositories.mocks.MockMembershipFeeRepository;
 import rs.fon.eklub.repositories.mocks.MockTrainingRepository;
 import rs.fon.eklub.util.Json2HttpMapper;
 
@@ -78,7 +80,12 @@ public class Main extends WebMvcConfigurationSupport {
         return new TrainingInteractor(new MockTrainingRepository(),
                 new MockTrainingValidator());
     }
-
+    
+    @Bean
+    public MembershipFeeInteractor getMembershipFeeInteractor() {
+        return new MembershipFeeInteractor(new MockMembershipFeeRepository());
+    }
+    
 //    @Bean
 //    public MappingJackson2HttpMessageConverter json2HttpMapper() {
 //        MappingJackson2HttpMessageConverter jsonConverter = new Json2HttpMapper();
@@ -86,10 +93,10 @@ public class Main extends WebMvcConfigurationSupport {
 //    }
     
     
-//    @Override
-//    protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//        converters.add(new Json2HttpMapper());
-//    }
+    @Override
+    protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new Json2HttpMapper());
+    }
     
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);

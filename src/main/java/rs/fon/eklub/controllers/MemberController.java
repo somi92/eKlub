@@ -99,7 +99,7 @@ public class MemberController {
         List<Member> members = interactor.getAllMembers();
         HttpStatus httpStatus = null;
         String responseMessage = null;
-        if(members == null) {
+        if(members.size() <= 0) {
             httpStatus = HttpStatus.NOT_FOUND;
             responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND;
         } else {
@@ -121,7 +121,7 @@ public class MemberController {
         List<Member> members = interactor.getMembers(searchCriteria);
         HttpStatus httpStatus = null;
         String responseMessage = null;
-        if(members == null) {
+        if(members.size() <= 0) {
             httpStatus = HttpStatus.NOT_FOUND;
             responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND;
         } else {

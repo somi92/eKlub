@@ -41,7 +41,7 @@ public class GroupController {
         List<Group> groups = interactor.getAllGroups();
         HttpStatus httpStatus = null;
         String responseMessage = null;
-        if(groups == null) {
+        if(groups.size() <= 0) {
             httpStatus = HttpStatus.NOT_FOUND;
             responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND;
         } else {

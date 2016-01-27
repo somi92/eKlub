@@ -48,10 +48,10 @@ public class Json2HttpMapper extends MappingJackson2HttpMessageConverter {
 //                }
                     
                 
-//                mapper.addMixInAnnotations(Attendance.class, AttendanceSerialization.class);
-//                mapper.addMixInAnnotations(Member.class, MemberSerialization.class);
-                mapper.addMixInAnnotations(Attendance.class, EntitySerializationMixin.class);
-                mapper.addMixInAnnotations(Member.class, EntitySerializationMixin.class);
+                mapper.addMixInAnnotations(Attendance.class, AttendanceSerialization.class);
+                mapper.addMixInAnnotations(Member.class, MemberSerialization.class);
+//                mapper.addMixInAnnotations(Attendance.class, EntitySerializationMixin.class);
+//                mapper.addMixInAnnotations(Member.class, EntitySerializationMixin.class);
                 mapper.writeValue(jsonGenerator, object);
             } else if(object == null) {
                 jsonGenerator.writeNull();

@@ -8,6 +8,8 @@ package rs.fon.eklub.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNull;
 import org.junit.Before;
@@ -84,13 +86,13 @@ public class GroupControllerTest {
     
     @Test
     public void getAllGroupsNotFoundTest() throws Exception {
-        Mockito.when(groupService.getAllGroups()).thenReturn(null);
+        Mockito.when(groupService.getAllGroups()).thenReturn(new ArrayList<>());
         mockMvc.perform(get(ServiceAPI.Group.GET_ALL_GROUPS))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
                 .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND)))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Group.GET_ALL_GROUPS)))
-                .andExpect(jsonPath("$.payload", Is.is(IsNull.nullValue())));
+                .andExpect(jsonPath("$.payload", Matchers.hasSize(0)));
     }
     
     @Test

@@ -40,7 +40,7 @@ public class CategoryController {
         List<Category> categories = interactor.getAllCategories();
         HttpStatus httpStatus = null;
         String responseMessage = null;
-        if(categories == null) {
+        if(categories.size() <= 0) {
             httpStatus = HttpStatus.NOT_FOUND;
             responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND;
         } else {

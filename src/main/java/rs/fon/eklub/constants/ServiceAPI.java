@@ -49,4 +49,8 @@ public class ServiceAPI {
         public static final String GET_TRAINING_BY_ID = "/trainings/{id}";
         public static final String POST_SEARCH_TRAINING = "/trainings/search";
     }
+    
+    public class MembershipFee {
+        public static final String GET_ALL_MEMBERSHIP_FEES = "/fees";
+    }
 }

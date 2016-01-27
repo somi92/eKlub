@@ -5,12 +5,12 @@
  */
 package rs.fon.eklub.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNull;
 import org.junit.Before;
@@ -198,13 +198,13 @@ public class MemberControllerTest {
     
     @Test
     public void getAllMembersNotFoundTest() throws Exception {
-        Mockito.when(memberService.getAllMembers()).thenReturn(null);
+        Mockito.when(memberService.getAllMembers()).thenReturn(new ArrayList<>());
         mockMvc.perform(get(ServiceAPI.Member.GET_ALL_MEMBERS))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
                 .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND)))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.GET_ALL_MEMBERS)))
-                .andExpect(jsonPath("$.payload", IsNull.nullValue()));
+                .andExpect(jsonPath("$.payload", Matchers.hasSize(0)));
     }
     
     @Test
@@ -239,7 +239,7 @@ public class MemberControllerTest {
     public void getMembersNotFoundTest() throws Exception {
         Map<String, String> searchCriteria = new HashMap<>();
         searchCriteria.put("gender", "X");
-        Mockito.when(memberService.getMembers(searchCriteria)).thenReturn(null);
+        Mockito.when(memberService.getMembers(searchCriteria)).thenReturn(new ArrayList<>());
         mockMvc.perform(post(ServiceAPI.Member.POST_SEARCH_MEMBERS)
                 .contentType(contentType)
                 .content(Util.convertEntityToJson(searchCriteria)))
@@ -247,7 +247,7 @@ public class MemberControllerTest {
                 .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
                 .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND)))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.POST_SEARCH_MEMBERS)))
-                .andExpect(jsonPath("$.payload", Is.is(IsNull.nullValue())));
+                .andExpect(jsonPath("$.payload", Matchers.hasSize(0)));
     }
     
     @Test

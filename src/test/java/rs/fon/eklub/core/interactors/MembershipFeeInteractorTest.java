@@ -17,6 +17,8 @@ import rs.fon.eklub.core.entities.MembershipFee;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.MembershipFeeService;
+import rs.fon.eklub.repositories.mocks.MockMembershipFeeExceptionRepository;
+import rs.fon.eklub.repositories.mocks.MockMembershipFeeRepository;
 
 /**
  *
@@ -29,95 +31,14 @@ public class MembershipFeeInteractorTest {
     private DataAccessService<MembershipFee> dao;
     private DataAccessService<MembershipFee> daoAllEntitiesError;
     
-    private List<MembershipFee> mockMembershipFeeRepository;
-    
     public MembershipFeeInteractorTest() {
     }
     
     @Before
     public void setUp() {
         
-        mockMembershipFeeRepository = new ArrayList<>();
-        
-        Calendar c1 = Calendar.getInstance();
-        c1.set(2015, Calendar.OCTOBER, 1);
-        Calendar c2 = Calendar.getInstance();
-        c2.set(2015, Calendar.OCTOBER, 31);
-        MembershipFee mf1 = new MembershipFee(1, c1.getTime(), c2.getTime(), null);
-        
-        Calendar c3 = Calendar.getInstance();
-        c3.set(2015, Calendar.SEPTEMBER, 1);
-        Calendar c4 = Calendar.getInstance();
-        c4.set(2015, Calendar.SEPTEMBER, 30);
-        MembershipFee mf2 = new MembershipFee(2, c3.getTime(), c4.getTime(), null);
-        
-        Calendar c5 = Calendar.getInstance();
-        c5.set(2015, Calendar.AUGUST, 1);
-        Calendar c6 = Calendar.getInstance();
-        c6.set(2015, Calendar.AUGUST, 31);
-        MembershipFee mf3 = new MembershipFee(3, c5.getTime(), c6.getTime(), null);
-        
-        mockMembershipFeeRepository.add(mf1);
-        mockMembershipFeeRepository.add(mf2);
-        mockMembershipFeeRepository.add(mf3);
-        
-        dao = new DataAccessService<MembershipFee>() {
-
-            @Override
-            public MembershipFee getEntity(long id) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public List<MembershipFee> getAllEntities() throws DataAccessServiceException {
-                List<MembershipFee> fees = mockMembershipFeeRepository;
-                return fees;
-            }
-
-            @Override
-            public List<MembershipFee> getEntities(Map<String, String> searchCriteria) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void insertOrUpdateEntity(MembershipFee entity) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public boolean deleteEntity(long id) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-        
-        daoAllEntitiesError = new DataAccessService<MembershipFee>() {
-
-            @Override
-            public MembershipFee getEntity(long id) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public List<MembershipFee> getAllEntities() throws DataAccessServiceException {
-                throw new DataAccessServiceException("Data access error!");
-            }
-
-            @Override
-            public List<MembershipFee> getEntities(Map<String, String> searchCriteria) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void insertOrUpdateEntity(MembershipFee entity) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public boolean deleteEntity(long id) throws DataAccessServiceException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-        
+        dao = new MockMembershipFeeRepository();
+        daoAllEntitiesError = new MockMembershipFeeExceptionRepository();
         mfs = new MembershipFeeInteractor(dao);
     }
     
@@ -131,7 +52,7 @@ public class MembershipFeeInteractorTest {
     public void getAllMembershipFeesOkTest() throws ServiceException {
         List<MembershipFee> fees = mfs.getAllMembershipFees();
         assertNotNull(fees);
-        assertArrayEquals(mockMembershipFeeRepository.toArray(), fees.toArray());
+        assertArrayEquals(dao.getAllEntities().toArray(), fees.toArray());
     }
     
     @Test(expected = DataAccessServiceException.class)
