@@ -18,7 +18,8 @@ import org.junit.runners.Suite;
     rs.fon.eklub.controllers.GroupControllerTest.class,
     rs.fon.eklub.controllers.MemberControllerTest.class,
     rs.fon.eklub.controllers.TrainingControllerTest.class,
-    rs.fon.eklub.controllers.MembershipFeeControllerTest.class
+    rs.fon.eklub.controllers.MembershipFeeControllerTest.class,
+    rs.fon.eklub.controllers.PaymentControllerTest.class
 })
 public class EKlubControllersTestSuite {
     

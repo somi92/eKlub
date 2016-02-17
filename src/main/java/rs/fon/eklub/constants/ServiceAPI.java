@@ -50,6 +50,11 @@ public class ServiceAPI {
         public static final String POST_SEARCH_TRAINING = "/trainings/search";
     }
     
+    public class Payment {
+        public static final String POST_SAVE_PAYMENTS = "/payments";
+        public static final String GET_PAYMENTS = "/payments";
+    }
+    
     public class MembershipFee {
         public static final String GET_ALL_MEMBERSHIP_FEES = "/fees";
     }
