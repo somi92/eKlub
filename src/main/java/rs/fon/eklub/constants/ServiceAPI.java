@@ -58,4 +58,8 @@ public class ServiceAPI {
     public class MembershipFee {
         public static final String GET_ALL_MEMBERSHIP_FEES = "/fees";
     }
+    
+    public class Admin {
+        public static final String POST_GET_ADMIN = "/admin";
+    }
 }

@@ -5,13 +5,10 @@
  */
 package rs.fon.eklub.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
-import org.hamcrest.core.IsNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
