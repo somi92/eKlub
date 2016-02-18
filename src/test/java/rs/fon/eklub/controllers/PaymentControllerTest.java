@@ -9,7 +9,10 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +35,7 @@ import rs.fon.eklub.core.entities.MembershipFee;
 import rs.fon.eklub.core.entities.Payment;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.PaymentService;
+import rs.fon.eklub.repositories.mocks.MockPaymentRepository;
 import rs.fon.eklub.util.Util;
 
 /**
@@ -115,5 +119,53 @@ public class PaymentControllerTest {
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("Payments not saved.")))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Payment.POST_SAVE_PAYMENTS)));
+    }
+    
+    @Test
+    public void getPaymentsOkTest() throws Exception {
+        Map<String, String> searchCriteria = new HashMap<>();
+        searchCriteria.put("amount", "2000");
+        List<Payment> payments = new MockPaymentRepository().getEntities(searchCriteria);
+        Mockito.when(paymentService.getPayments(searchCriteria)).thenReturn(payments);
+        mockMvc.perform(post(ServiceAPI.Payment.POST_SEARCH_PAYMENTS)
+                .contentType(contentType)
+                .content(Util.convertEntityToJson(searchCriteria)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.OK.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Payment.POST_SEARCH_PAYMENTS)))
+                .andExpect(jsonPath("$.payload[0].amount", Is.is(2000.0)))
+                .andExpect(jsonPath("$.payload[1].amount", Is.is(2000.0)));
+    }
+    
+    @Test
+    public void getPaymentsNotFoundTest() throws Exception {
+        Map<String, String> searchCriteria = new HashMap<>();
+        searchCriteria.put("amount", "2300");
+        List<Payment> payments = new MockPaymentRepository().getEntities(searchCriteria);
+        Mockito.when(paymentService.getPayments(searchCriteria)).thenReturn(payments);
+        mockMvc.perform(post(ServiceAPI.Payment.POST_SEARCH_PAYMENTS)
+                .contentType(contentType)
+                .content(Util.convertEntityToJson(searchCriteria)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Payment.POST_SEARCH_PAYMENTS)))
+                .andExpect(jsonPath("$.payload", Matchers.hasSize(0)));
+    }
+    
+    @Test
+    public void getPaymentsExceptionTest() throws Exception {
+        Map<String, String> searchCriteria = new HashMap<>();
+        searchCriteria.put("amount", "2300");
+        Mockito.when(paymentService.getPayments(searchCriteria)).thenThrow(new ServiceException("PaymentsException"));
+        mockMvc.perform(post(ServiceAPI.Payment.POST_SEARCH_PAYMENTS)
+                .contentType(contentType)
+                .content(Util.convertEntityToJson(searchCriteria)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
+                .andExpect(jsonPath("$.errorMessage", Is.is("PaymentsException")))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Payment.POST_SEARCH_PAYMENTS)));
     }
 }

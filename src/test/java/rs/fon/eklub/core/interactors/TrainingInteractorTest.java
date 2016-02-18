@@ -5,7 +5,6 @@
  */
 package rs.fon.eklub.core.interactors;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +12,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import rs.fon.eklub.core.dal.DataAccessService;
-import rs.fon.eklub.core.entities.Attendance;
-import rs.fon.eklub.core.entities.Group;
-import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.entities.Training;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.core.exceptions.ServiceException;
@@ -24,7 +20,6 @@ import rs.fon.eklub.core.services.TrainingService;
 import rs.fon.eklub.core.validators.EntityValidator;
 import rs.fon.eklub.core.validators.MockTrainingValidator;
 import rs.fon.eklub.repositories.mocks.MockTrainingRepository;
-import rs.fon.eklub.util.Util;
 
 /**
  *
@@ -59,12 +54,6 @@ public class TrainingInteractorTest {
     public void saveTrainingOkTest() throws ServiceException {
         Training t = new Training();
         t.setId(100);
-//        Attendance a1 = new Attendance(1, new Member(3), t, true, 0);
-//        Attendance a2 = new Attendance(2, new Member(2), t, true, 0);
-//        List<Attendance> a = new ArrayList<>();
-//        a.add(a1);
-//        a.add(a2);
-//        t.setAttendaces(a);
         ts.saveTraining(t);
         assertTrue(dao.getAllEntities().contains(t));
     }

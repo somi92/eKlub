@@ -5,6 +5,7 @@
  */
 package rs.fon.eklub.controllers;
 
+import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,5 +47,27 @@ public class PaymentController {
         response.setRequestUri(ServiceAPI.Payment.POST_SAVE_PAYMENTS);
         response.setPayload(payments.size() + " payments saved");
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = ServiceAPI.Payment.POST_SEARCH_PAYMENTS,
+                    method = RequestMethod.POST,
+                    headers = ServiceAPI.Headers.CONTENT_TYPE)
+    public ResponseEntity getPayments(@RequestBody HashMap<String, String> searchCriteria) throws ServiceException {
+        List<Payment> payments = interactor.getPayments(searchCriteria);
+        HttpStatus httpStatus = null;
+        String responseMessage = null;
+        if(payments.size() <= 0) {
+            httpStatus = HttpStatus.NOT_FOUND;
+            responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND;
+        } else {
+            httpStatus = HttpStatus.OK;
+            responseMessage = ServiceAPI.DefaultResponseMessages.RESOURCE_FOUND;
+        }
+        ServiceResponse<List<Payment>> response = new ServiceResponse<>();
+        response.setStatus(httpStatus.toString());
+        response.setMessage(responseMessage);
+        response.setRequestUri(ServiceAPI.Payment.POST_SEARCH_PAYMENTS);
+        response.setPayload(payments);
+        return new ResponseEntity<>(response, httpStatus);
     }
 }

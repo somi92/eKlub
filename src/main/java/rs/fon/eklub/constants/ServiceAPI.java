@@ -52,7 +52,7 @@ public class ServiceAPI {
     
     public class Payment {
         public static final String POST_SAVE_PAYMENTS = "/payments";
-        public static final String GET_PAYMENTS = "/payments";
+        public static final String POST_SEARCH_PAYMENTS = "/payments/search";
     }
     
     public class MembershipFee {
