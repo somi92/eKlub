@@ -60,7 +60,9 @@ public class PaymentInteractor implements PaymentService {
 
     @Override
     public List<Payment> getPayments(Map<String, String> searchCriteria) throws ServiceException {
-        List<Payment> payments = dao.getEntities(searchCriteria);
-        return payments;
+        if(searchCriteria == null) {
+            return dao.getAllEntities();
+        }
+        return dao.getEntities(searchCriteria);
     }
 }
