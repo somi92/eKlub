@@ -30,7 +30,7 @@ import rs.fon.eklub.constants.ServiceAPI;
 import rs.fon.eklub.core.entities.Group;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.GroupService;
-import rs.fon.eklub.repositories.mocks.MockGroupRepository;
+import rs.fon.eklub.dao.mock.MockGroupRepository;
 import rs.fon.eklub.util.Util;
 
 /**

@@ -12,13 +12,13 @@ import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import rs.fon.eklub.core.dal.DataAccessService;
+import rs.fon.eklub.core.data.DataAccessService;
 import rs.fon.eklub.core.entities.MembershipFee;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.MembershipFeeService;
-import rs.fon.eklub.repositories.mocks.MockMembershipFeeExceptionRepository;
-import rs.fon.eklub.repositories.mocks.MockMembershipFeeRepository;
+import rs.fon.eklub.dao.mock.MockMembershipFeeExceptionRepository;
+import rs.fon.eklub.dao.mock.MockMembershipFeeRepository;
 
 /**
  *

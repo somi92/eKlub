@@ -32,7 +32,7 @@ import rs.fon.eklub.constants.ServiceAPI;
 import rs.fon.eklub.core.entities.Training;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.TrainingService;
-import rs.fon.eklub.repositories.mocks.MockTrainingRepository;
+import rs.fon.eklub.dao.mock.MockTrainingRepository;
 import rs.fon.eklub.util.Json2HttpMapper;
 import rs.fon.eklub.util.Util;
 

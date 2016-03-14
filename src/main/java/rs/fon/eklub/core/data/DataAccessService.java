@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.fon.eklub.core.dal;
+package rs.fon.eklub.core.data;
 
 import java.util.List;
 import java.util.Map;

@@ -3,11 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.fon.eklub.repositories.mocks;
+package rs.fon.eklub.dao.implementation;
 
 import java.util.List;
 import java.util.Map;
-import rs.fon.eklub.core.dal.DataAccessService;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
+import rs.fon.eklub.core.data.DataAccessService;
 import rs.fon.eklub.core.entities.Category;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 
@@ -15,7 +19,17 @@ import rs.fon.eklub.core.exceptions.DataAccessServiceException;
  *
  * @author milos
  */
-public class MockCategoryExceptionRepository implements DataAccessService<Category> {
+@Repository
+public class CategoryRepository implements DataAccessService<Category> {
+    
+    private SessionFactory sessionFactory;
+
+    public CategoryRepository() {
+    }
+
+    public CategoryRepository(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public Category getEntity(long id) throws DataAccessServiceException {
@@ -24,7 +38,22 @@ public class MockCategoryExceptionRepository implements DataAccessService<Catego
 
     @Override
     public List<Category> getAllEntities() throws DataAccessServiceException {
-        throw new DataAccessServiceException("Data access error!");
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            List<Category> categories = session.createQuery("FROM Category").list();
+            tx.commit();
+            return categories;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            throw new DataAccessServiceException(e.getMessage());
+        } finally {
+            session.close();
+        }
     }
 
     @Override
@@ -41,6 +70,5 @@ public class MockCategoryExceptionRepository implements DataAccessService<Catego
     public boolean deleteEntity(long id) throws DataAccessServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
+
 }

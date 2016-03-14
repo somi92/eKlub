@@ -11,7 +11,7 @@ import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import rs.fon.eklub.core.dal.DataAccessService;
+import rs.fon.eklub.core.data.DataAccessService;
 import rs.fon.eklub.core.entities.Training;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.core.exceptions.ServiceException;
@@ -19,7 +19,7 @@ import rs.fon.eklub.core.exceptions.ValidationException;
 import rs.fon.eklub.core.services.TrainingService;
 import rs.fon.eklub.core.validators.EntityValidator;
 import rs.fon.eklub.core.validators.MockTrainingValidator;
-import rs.fon.eklub.repositories.mocks.MockTrainingRepository;
+import rs.fon.eklub.dao.mock.MockTrainingRepository;
 
 /**
  *

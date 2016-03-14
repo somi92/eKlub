@@ -9,13 +9,13 @@ import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import rs.fon.eklub.core.dal.DataAccessService;
+import rs.fon.eklub.core.data.DataAccessService;
 import rs.fon.eklub.core.entities.Category;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.CategoryService;
-import rs.fon.eklub.repositories.mocks.MockCategoryExceptionRepository;
-import rs.fon.eklub.repositories.mocks.MockCategoryRepository;
+import rs.fon.eklub.dao.mock.MockCategoryExceptionRepository;
+import rs.fon.eklub.dao.mock.MockCategoryRepository;
 
 /**
  *

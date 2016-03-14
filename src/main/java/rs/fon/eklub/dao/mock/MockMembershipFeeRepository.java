@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.fon.eklub.repositories.mocks;
+package rs.fon.eklub.dao.mock;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import rs.fon.eklub.core.dal.DataAccessService;
+import rs.fon.eklub.core.data.DataAccessService;
 import rs.fon.eklub.core.entities.MembershipFee;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 

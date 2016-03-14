@@ -35,7 +35,7 @@ import rs.fon.eklub.constants.ServiceAPI;
 import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.MemberService;
-import rs.fon.eklub.repositories.mocks.MockMemberRepository;
+import rs.fon.eklub.dao.mock.MockMemberRepository;
 import rs.fon.eklub.util.Util;
 
 /**

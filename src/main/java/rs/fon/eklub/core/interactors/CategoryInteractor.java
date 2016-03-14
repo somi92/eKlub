@@ -6,7 +6,7 @@
 package rs.fon.eklub.core.interactors;
 
 import java.util.List;
-import rs.fon.eklub.core.dal.DataAccessService;
+import rs.fon.eklub.core.data.DataAccessService;
 import rs.fon.eklub.core.entities.Category;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.CategoryService;

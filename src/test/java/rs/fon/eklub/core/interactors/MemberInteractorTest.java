@@ -12,7 +12,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import rs.fon.eklub.core.dal.DataAccessService;
+import rs.fon.eklub.core.data.DataAccessService;
 import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.core.exceptions.ServiceException;
@@ -20,8 +20,8 @@ import rs.fon.eklub.core.exceptions.ValidationException;
 import rs.fon.eklub.core.services.MemberService;
 import rs.fon.eklub.core.validators.EntityValidator;
 import rs.fon.eklub.core.validators.MockMemberValidator;
-import rs.fon.eklub.repositories.mocks.MockMemberExceptionRepository;
-import rs.fon.eklub.repositories.mocks.MockMemberRepository;
+import rs.fon.eklub.dao.mock.MockMemberExceptionRepository;
+import rs.fon.eklub.dao.mock.MockMemberRepository;
 
 /**
  *

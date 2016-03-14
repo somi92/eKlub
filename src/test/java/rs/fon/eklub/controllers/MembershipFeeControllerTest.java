@@ -26,7 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import rs.fon.eklub.constants.ServiceAPI;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.MembershipFeeService;
-import rs.fon.eklub.repositories.mocks.MockMembershipFeeRepository;
+import rs.fon.eklub.dao.mock.MockMembershipFeeRepository;
 
 /**
  *

@@ -35,7 +35,7 @@ import rs.fon.eklub.core.entities.MembershipFee;
 import rs.fon.eklub.core.entities.Payment;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.PaymentService;
-import rs.fon.eklub.repositories.mocks.MockPaymentRepository;
+import rs.fon.eklub.dao.mock.MockPaymentRepository;
 import rs.fon.eklub.util.Util;
 
 /**

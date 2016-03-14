@@ -9,7 +9,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
-import rs.fon.eklub.core.dal.DataAccessService;
+import rs.fon.eklub.core.data.DataAccessService;
 import rs.fon.eklub.core.entities.Category;
 import rs.fon.eklub.core.entities.Group;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
@@ -18,8 +18,8 @@ import rs.fon.eklub.core.exceptions.ValidationException;
 import rs.fon.eklub.core.services.GroupService;
 import rs.fon.eklub.core.validators.EntityValidator;
 import rs.fon.eklub.core.validators.MockGroupValidator;
-import rs.fon.eklub.repositories.mocks.MockGroupExceptionRepository;
-import rs.fon.eklub.repositories.mocks.MockGroupRepository;
+import rs.fon.eklub.dao.mock.MockGroupExceptionRepository;
+import rs.fon.eklub.dao.mock.MockGroupRepository;
 
 /**
  *

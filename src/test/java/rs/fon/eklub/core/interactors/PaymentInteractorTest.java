@@ -13,7 +13,7 @@ import java.util.Map;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import rs.fon.eklub.core.dal.DataAccessService;
+import rs.fon.eklub.core.data.DataAccessService;
 import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.entities.MembershipFee;
 import rs.fon.eklub.core.entities.Payment;
@@ -23,7 +23,7 @@ import rs.fon.eklub.core.exceptions.ValidationException;
 import rs.fon.eklub.core.services.PaymentService;
 import rs.fon.eklub.core.validators.EntityValidator;
 import rs.fon.eklub.core.validators.MockPaymentValidator;
-import rs.fon.eklub.repositories.mocks.MockPaymentRepository;
+import rs.fon.eklub.dao.mock.MockPaymentRepository;
 
 /**
  *

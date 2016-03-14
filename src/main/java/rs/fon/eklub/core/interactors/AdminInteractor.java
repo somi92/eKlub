@@ -8,7 +8,7 @@ package rs.fon.eklub.core.interactors;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import rs.fon.eklub.core.dal.DataAccessService;
+import rs.fon.eklub.core.data.DataAccessService;
 import rs.fon.eklub.core.entities.Employee;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.AdminService;
