@@ -20,14 +20,14 @@ import rs.fon.eklub.core.exceptions.DataAccessServiceException;
  * @author milos
  */
 @Repository
-public class CategoryRepository implements DataAccessService<Category> {
+public class CategoryDao implements DataAccessService<Category> {
     
     private SessionFactory sessionFactory;
 
-    public CategoryRepository() {
+    public CategoryDao() {
     }
 
-    public CategoryRepository(SessionFactory sessionFactory) {
+    public CategoryDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -42,7 +42,7 @@ public class CategoryRepository implements DataAccessService<Category> {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            List<Category> categories = session.createQuery("FROM Category").list();
+            List<Category> categories = session.createQuery("from Category c").list();
             tx.commit();
             return categories;
         } catch (Exception e) {

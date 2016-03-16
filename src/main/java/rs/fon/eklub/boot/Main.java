@@ -39,7 +39,8 @@ import rs.fon.eklub.core.validators.MockGroupValidator;
 import rs.fon.eklub.core.validators.MockMemberValidator;
 import rs.fon.eklub.core.validators.MockPaymentValidator;
 import rs.fon.eklub.core.validators.MockTrainingValidator;
-import rs.fon.eklub.dao.implementation.CategoryRepository;
+import rs.fon.eklub.dao.implementation.CategoryDao;
+import rs.fon.eklub.dao.implementation.MemberDao;
 import rs.fon.eklub.dao.mock.MockAdminRepository;
 import rs.fon.eklub.dao.mock.MockCategoryRepository;
 import rs.fon.eklub.dao.mock.MockGroupRepository;
@@ -76,18 +77,20 @@ public class Main extends WebMvcConfigurationSupport {
     @Autowired
     @Bean
     public CategoryService getCategoryInteractor(SessionFactory sessionFactory) {
-        return new CategoryInteractor(new CategoryRepository(sessionFactory));
+        return new CategoryInteractor(new CategoryDao(sessionFactory));
     }
  
+    @Autowired
     @Bean
     public GroupInteractor getGroupInteractor() {
         return new GroupInteractor(new MockGroupRepository(),
                 new MockGroupValidator());
     }
 
+    @Autowired
     @Bean
-    public MemberInteractor getMemberInteractor() {
-        return new MemberInteractor(new MockMemberRepository(),
+    public MemberInteractor getMemberInteractor(SessionFactory sessionFactory) {
+        return new MemberInteractor(new MemberDao(sessionFactory),
                 new MockMemberValidator());
     }
 
@@ -129,6 +132,8 @@ public class Main extends WebMvcConfigurationSupport {
         LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
         sessionBuilder.addProperties(getHibernateProperties());
         sessionBuilder.addResource("mappings/Category.hbm.xml");
+        sessionBuilder.addResource("mappings/Member.hbm.xml");
+        sessionBuilder.addResource("mappings/Group.hbm.xml");
         return sessionBuilder.buildSessionFactory();
     }
 
