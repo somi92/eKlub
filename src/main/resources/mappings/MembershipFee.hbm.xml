@@ -2,13 +2,16 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="rs.fon.eklub.core.entities">
   
-    <class name="Category" table="Category">
-        <id name="id" column="idCategory">
+    <class name="MembershipFee" table="MembershipFee">
+        <id name="id" column="idMembershipFee">
             <generator class="native"/>
         </id>
-        <property name="name" column="name" />
+        <property name="dateFrom" column="dateFrom" />
+        <property name="dateTo" column="dateTo" />
         <property name="remark" column="remark" />
-    </class>
+    </class> 
     
 </hibernate-mapping>
+
+
 

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import rs.fon.eklub.core.data.DataAccessService;
 import rs.fon.eklub.core.entities.Member;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
+import rs.fon.eklub.util.Util;
 
 /**
  *
@@ -78,7 +79,7 @@ public class MemberDao implements DataAccessService<Member> {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String whereClause = generateHibernateWhereClause(searchCriteria);
+            String whereClause = Util.generateHibernateWhereClause(searchCriteria);
             List<Member> members = session.createQuery("from Member m " + whereClause).list();
             tx.commit();
             return members;
@@ -133,19 +134,4 @@ public class MemberDao implements DataAccessService<Member> {
             session.close();
         }
     }
-
-    // TODO: consider implementing date filtering
-    private String generateHibernateWhereClause(Map<String, String> searchCriteria) {
-        boolean first = true;
-        String whereClause = "";
-        for(String key : searchCriteria.keySet()) {
-            whereClause = " " + key + " like '%" + searchCriteria.get(key) + "%'";
-            if(!first) {
-                whereClause = " or" + whereClause;
-                first = false;
-            }
-        }
-        return " where " + whereClause;
-    }
-    
 }

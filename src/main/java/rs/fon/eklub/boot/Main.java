@@ -40,7 +40,9 @@ import rs.fon.eklub.core.validators.MockMemberValidator;
 import rs.fon.eklub.core.validators.MockPaymentValidator;
 import rs.fon.eklub.core.validators.MockTrainingValidator;
 import rs.fon.eklub.dao.implementation.CategoryDao;
+import rs.fon.eklub.dao.implementation.GroupDao;
 import rs.fon.eklub.dao.implementation.MemberDao;
+import rs.fon.eklub.dao.implementation.MembershipFeeDao;
 import rs.fon.eklub.dao.mock.MockAdminRepository;
 import rs.fon.eklub.dao.mock.MockCategoryRepository;
 import rs.fon.eklub.dao.mock.MockGroupRepository;
@@ -82,8 +84,8 @@ public class Main extends WebMvcConfigurationSupport {
  
     @Autowired
     @Bean
-    public GroupInteractor getGroupInteractor() {
-        return new GroupInteractor(new MockGroupRepository(),
+    public GroupInteractor getGroupInteractor(SessionFactory sessionFactory) {
+        return new GroupInteractor(new GroupDao(sessionFactory),
                 new MockGroupValidator());
     }
 
@@ -100,9 +102,10 @@ public class Main extends WebMvcConfigurationSupport {
                 new MockTrainingValidator());
     }
 
+    @Autowired
     @Bean
-    public MembershipFeeInteractor getMembershipFeeInteractor() {
-        return new MembershipFeeInteractor(new MockMembershipFeeRepository());
+    public MembershipFeeInteractor getMembershipFeeInteractor(SessionFactory sessionFactory) {
+        return new MembershipFeeInteractor(new MembershipFeeDao(sessionFactory));
     }
 
     @Bean
@@ -134,6 +137,7 @@ public class Main extends WebMvcConfigurationSupport {
         sessionBuilder.addResource("mappings/Category.hbm.xml");
         sessionBuilder.addResource("mappings/Member.hbm.xml");
         sessionBuilder.addResource("mappings/Group.hbm.xml");
+        sessionBuilder.addResource("mappings/MembershipFee.hbm.xml");
         return sessionBuilder.buildSessionFactory();
     }
 
@@ -147,7 +151,9 @@ public class Main extends WebMvcConfigurationSupport {
     private Properties getHibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.show_sql", "true");
+        properties.put("hibernate.format_sql", "true");
         properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        properties.put("hibernate.globally_quoted_identifiers", "true");
         return properties;
     }
 

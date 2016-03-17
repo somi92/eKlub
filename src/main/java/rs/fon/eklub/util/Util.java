@@ -8,6 +8,7 @@ package rs.fon.eklub.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,5 +36,19 @@ public class Util {
             Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }
+    
+    // TODO: consider implementing date filtering
+    public static String generateHibernateWhereClause(Map<String, String> searchCriteria) {
+        boolean first = true;
+        String whereClause = "";
+        for(String key : searchCriteria.keySet()) {
+            whereClause = " " + key + " like '%" + searchCriteria.get(key) + "%'";
+            if(!first) {
+                whereClause = " or" + whereClause;
+                first = false;
+            }
+        }
+        return " where " + whereClause;
     }
 }

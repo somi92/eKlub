@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="rs.fon.eklub.core.entities">
-  <class name="Group" table="Group">
+  
+    <class name="Group" table="Group">
         <id name="id" column="idGroup">
             <generator class="native"/>
         </id>
         <property name="name" column="name" />
         <property name="remark" column="remark" />
-        
+        <many-to-one name="category" column="idCategory" 
+            class="Category" not-null="true" lazy="false" />
     </class> 
+    
 </hibernate-mapping>
 
 
