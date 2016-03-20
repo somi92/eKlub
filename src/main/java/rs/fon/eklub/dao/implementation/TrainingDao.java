@@ -7,13 +7,12 @@ package rs.fon.eklub.dao.implementation;
 
 import java.util.List;
 import java.util.Map;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import rs.fon.eklub.core.data.DataAccessService;
-import rs.fon.eklub.core.entities.Member;
+import rs.fon.eklub.core.entities.Training;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.util.Util;
 
@@ -22,26 +21,26 @@ import rs.fon.eklub.util.Util;
  * @author milos
  */
 @Repository
-public class MemberDao implements DataAccessService<Member> {
+public class TrainingDao implements DataAccessService<Training> {
 
     private SessionFactory sessionFactory;
 
-    public MemberDao() {
+    public TrainingDao() {
     }
 
-    public MemberDao(SessionFactory sessionFactory) {
+    public TrainingDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
     
     @Override
-    public Member getEntity(long id) throws DataAccessServiceException {
+    public Training getEntity(long id) throws DataAccessServiceException {
         Session session = sessionFactory.openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            Member member = session.get(Member.class, id);
+            Training training = session.get(Training.class, id);
             tx.commit();
-            return member;
+            return training;
         } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
@@ -54,14 +53,14 @@ public class MemberDao implements DataAccessService<Member> {
     }
 
     @Override
-    public List<Member> getAllEntities() throws DataAccessServiceException {
+    public List<Training> getAllEntities() throws DataAccessServiceException {
         Session session = sessionFactory.openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            List<Member> members = session.createQuery("from Member m").list();
+            List<Training> trainings = session.createQuery("from Training t").list();
             tx.commit();
-            return members;
+            return trainings;
         } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
@@ -74,15 +73,15 @@ public class MemberDao implements DataAccessService<Member> {
     }
 
     @Override
-    public List<Member> getEntities(Map<String, String> searchCriteria) throws DataAccessServiceException {
+    public List<Training> getEntities(Map<String, String> searchCriteria) throws DataAccessServiceException {
         Session session = sessionFactory.openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
             String whereClause = Util.generateHibernateLikeClause(searchCriteria);
-            List<Member> members = session.createQuery("from Member m " + whereClause).list();
+            List<Training> trainings = session.createQuery("from Training t " + whereClause).list();
             tx.commit();
-            return members;
+            return trainings;
         } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
@@ -95,7 +94,7 @@ public class MemberDao implements DataAccessService<Member> {
     }
 
     @Override
-    public void insertOrUpdateEntity(Member entity) throws DataAccessServiceException {
+    public void insertOrUpdateEntity(Training entity) throws DataAccessServiceException {
         Session session = sessionFactory.openSession();
         Transaction tx = null;
         try {
@@ -115,23 +114,7 @@ public class MemberDao implements DataAccessService<Member> {
 
     @Override
     public boolean deleteEntity(long id) throws DataAccessServiceException {
-        Session session = sessionFactory.openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
-            Query query = session.createQuery("delete from Member where id = :ID");
-            query.setParameter("ID", id);
-            int result = query.executeUpdate();
-            tx.commit();
-            return result > 0;
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-            throw new DataAccessServiceException(e.getMessage());
-        } finally {
-            session.close();
-        }
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
 }

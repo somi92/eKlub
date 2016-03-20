@@ -13,6 +13,7 @@ import java.util.Objects;
  */
 public class EmployeeEngagement {
     
+    private long id;
     private Group group;
     private Employee employee;
     private String role;
@@ -20,6 +21,14 @@ public class EmployeeEngagement {
     public EmployeeEngagement() {
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+    
     public Group getGroup() {
         return group;
     }
@@ -69,6 +78,4 @@ public class EmployeeEngagement {
         }
         return true;
     }
-    
-    
 }

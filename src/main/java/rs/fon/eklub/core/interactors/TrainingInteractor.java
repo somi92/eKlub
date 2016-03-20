@@ -49,7 +49,7 @@ public class TrainingInteractor implements TrainingService {
     @Override
     public void saveTraining(Training training) throws ServiceException {
         if(training == null) {
-            throw new ServiceException("Payments null or empty!");
+            throw new ServiceException("Training null or empty.");
         }
         if(validator.validateEntity(training)) {
             dao.insertOrUpdateEntity(training);

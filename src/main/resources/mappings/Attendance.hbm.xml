@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="rs.fon.eklub.core.entities">
+  
+    <class name="Attendance" table="Attendance">
+        <id name="id" column="idAttendance">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="training" column="idTraining" 
+            class="Training" not-null="true" lazy="false" />
+        <many-to-one name="member" column="idMember" 
+            class="Member" not-null="true" lazy="false" />
+        <property name="isAttendant" column="isAttendant" />
+        <property name="lateMin" column="lateMin" />        
+    </class> 
+    
+</hibernate-mapping>

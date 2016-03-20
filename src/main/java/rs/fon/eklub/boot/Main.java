@@ -5,7 +5,6 @@
  */
 package rs.fon.eklub.boot;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Properties;
 import javax.servlet.ServletContextEvent;
@@ -19,14 +18,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-import rs.fon.eklub.core.data.DataAccessService;
-import rs.fon.eklub.core.entities.Category;
 import rs.fon.eklub.core.interactors.AdminInteractor;
 import rs.fon.eklub.core.interactors.CategoryInteractor;
 import rs.fon.eklub.core.interactors.GroupInteractor;
@@ -40,16 +34,12 @@ import rs.fon.eklub.core.validators.MockMemberValidator;
 import rs.fon.eklub.core.validators.MockPaymentValidator;
 import rs.fon.eklub.core.validators.MockTrainingValidator;
 import rs.fon.eklub.dao.implementation.CategoryDao;
+import rs.fon.eklub.dao.implementation.EmployeeDao;
 import rs.fon.eklub.dao.implementation.GroupDao;
 import rs.fon.eklub.dao.implementation.MemberDao;
 import rs.fon.eklub.dao.implementation.MembershipFeeDao;
-import rs.fon.eklub.dao.mock.MockAdminRepository;
-import rs.fon.eklub.dao.mock.MockCategoryRepository;
-import rs.fon.eklub.dao.mock.MockGroupRepository;
-import rs.fon.eklub.dao.mock.MockMemberRepository;
-import rs.fon.eklub.dao.mock.MockMembershipFeeRepository;
-import rs.fon.eklub.dao.mock.MockPaymentRepository;
-import rs.fon.eklub.dao.mock.MockTrainingRepository;
+import rs.fon.eklub.dao.implementation.PaymentDao;
+import rs.fon.eklub.dao.implementation.TrainingDao;
 import rs.fon.eklub.util.Json2HttpMapper;
 
 /**
@@ -96,9 +86,10 @@ public class Main extends WebMvcConfigurationSupport {
                 new MockMemberValidator());
     }
 
+    @Autowired
     @Bean
-    public TrainingInteractor getTrainingInteractor() {
-        return new TrainingInteractor(new MockTrainingRepository(),
+    public TrainingInteractor getTrainingInteractor(SessionFactory sessionFactory) {
+        return new TrainingInteractor(new TrainingDao(sessionFactory),
                 new MockTrainingValidator());
     }
 
@@ -108,15 +99,17 @@ public class Main extends WebMvcConfigurationSupport {
         return new MembershipFeeInteractor(new MembershipFeeDao(sessionFactory));
     }
 
+    @Autowired
     @Bean
-    public PaymentInteractor getPaymentInteractor() {
-        return new PaymentInteractor(new MockPaymentRepository(),
+    public PaymentInteractor getPaymentInteractor(SessionFactory sessionFactory) {
+        return new PaymentInteractor(new PaymentDao(sessionFactory),
                 new MockPaymentValidator());
     }
 
+    @Autowired
     @Bean
-    public AdminInteractor getAdminInteractor() {
-        return new AdminInteractor(new MockAdminRepository());
+    public AdminInteractor getAdminInteractor(SessionFactory sessionFactory) {
+        return new AdminInteractor(new EmployeeDao(sessionFactory));
     }
 
     @Bean(name = "dataSource")
@@ -138,6 +131,11 @@ public class Main extends WebMvcConfigurationSupport {
         sessionBuilder.addResource("mappings/Member.hbm.xml");
         sessionBuilder.addResource("mappings/Group.hbm.xml");
         sessionBuilder.addResource("mappings/MembershipFee.hbm.xml");
+        sessionBuilder.addResource("mappings/Training.hbm.xml");
+        sessionBuilder.addResource("mappings/Payment.hbm.xml");
+        sessionBuilder.addResource("mappings/Attendance.hbm.xml");
+        sessionBuilder.addResource("mappings/Employee.hbm.xml");
+        sessionBuilder.addResource("mappings/EmployeeEngagement.hbm.xml");
         return sessionBuilder.buildSessionFactory();
     }
 
@@ -162,6 +160,7 @@ public class Main extends WebMvcConfigurationSupport {
 //        MappingJackson2HttpMessageConverter jsonConverter = new Json2HttpMapper();
 //        return jsonConverter;
 //    }
+    
     @Override
     protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(new Json2HttpMapper());

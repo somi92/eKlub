@@ -39,13 +39,31 @@ public class Util {
     }
     
     // TODO: consider implementing date filtering
-    public static String generateHibernateWhereClause(Map<String, String> searchCriteria) {
+    public static String generateHibernateLikeClause(Map<String, String> searchCriteria) {
+        return generateHibernateLikeClause(searchCriteria, false);
+    }
+    
+    public static String generateHibernateLikeClause(Map<String, String> searchCriteria, boolean isAndCondition) {
         boolean first = true;
+        String conditionRelation = isAndCondition ? " and" : " or";
         String whereClause = "";
         for(String key : searchCriteria.keySet()) {
             whereClause = " " + key + " like '%" + searchCriteria.get(key) + "%'";
             if(!first) {
-                whereClause = " or" + whereClause;
+                whereClause = conditionRelation + whereClause;
+                first = false;
+            }
+        }
+        return " where " + whereClause;
+    }
+    
+    public static String generateHibernateWhereClause(Map<String, String> searchCriteria) {
+        boolean first = true;
+        String whereClause = "";
+        for(String key : searchCriteria.keySet()) {
+            whereClause = " " + key + " = '" + searchCriteria.get(key) + "'";
+            if(!first) {
+                whereClause = " and" + whereClause;
                 first = false;
             }
         }

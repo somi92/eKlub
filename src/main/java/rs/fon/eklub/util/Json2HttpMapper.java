@@ -45,7 +45,7 @@ public class Json2HttpMapper extends MappingJackson2HttpMessageConverter {
         try {
             
             if(object instanceof ServiceResponse) {
-                ServiceResponse res = (ServiceResponse) object;
+//                ServiceResponse res = (ServiceResponse) object;
 //                Object payload = res.getPayload();
 //                if(payload instanceof List<?>) {
 //                    
@@ -53,8 +53,8 @@ public class Json2HttpMapper extends MappingJackson2HttpMessageConverter {
 //                    
 //                }
                 
-//                mapper.addMixInAnnotations(Attendance.class, AttendanceSerialization.class);
-//                mapper.addMixInAnnotations(Member.class, MemberSerialization.class);
+                mapper.addMixInAnnotations(Attendance.class, AttendanceSerialization.class);
+                mapper.addMixInAnnotations(Member.class, MemberSerialization.class);
                 mapper.addMixInAnnotations(Attendance.class, EntitySerializationMixin.class);
                 mapper.addMixInAnnotations(Category.class, EntitySerializationMixin.class);
                 mapper.addMixInAnnotations(Employee.class, EntitySerializationMixin.class);
