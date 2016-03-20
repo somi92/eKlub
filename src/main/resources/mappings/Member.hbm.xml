@@ -15,8 +15,16 @@
         <property column="dateOfBirth" name="dateOfBirth"/>
         <property column="dateOfMembership" name="dateOfMembership"/>
         <property column="remark" name="remark"/>
-        <!--        <many-to-one name="group" column="idGroup" 
-        class="Address" not-null="true"/>-->
+        <many-to-one name="group" column="idGroup" 
+            class="Group" not-null="true" lazy="false" />
+        <bag name="attendances" cascade="all" lazy="false" >
+            <key column="idMember"/>
+            <one-to-many class="Attendance" />
+        </bag>
+        <bag name="payments" cascade="all" lazy="false" >
+            <key column="idMember"/>
+            <one-to-many class="Payment" />
+        </bag>
     </class>
   
 </hibernate-mapping>
