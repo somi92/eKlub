@@ -21,6 +21,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import rs.fon.eklub.constants.ConfigKeys;
 import rs.fon.eklub.core.interactors.AdminInteractor;
 import rs.fon.eklub.core.interactors.CategoryInteractor;
 import rs.fon.eklub.core.interactors.GroupInteractor;
@@ -40,6 +41,7 @@ import rs.fon.eklub.dao.implementation.MemberDao;
 import rs.fon.eklub.dao.implementation.MembershipFeeDao;
 import rs.fon.eklub.dao.implementation.PaymentDao;
 import rs.fon.eklub.dao.implementation.TrainingDao;
+import rs.fon.eklub.util.Config;
 import rs.fon.eklub.util.Json2HttpMapper;
 
 /**
@@ -115,10 +117,10 @@ public class Main extends WebMvcConfigurationSupport {
     @Bean(name = "dataSource")
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/eKlub?zeroDateTimeBehavior=convertToNull");
-        dataSource.setUsername("eklub");
-        dataSource.setPassword("basketball@2016");
+        dataSource.setDriverClassName(Config.getInstance().getValue(ConfigKeys.DatabaseConfigKeys.DB_DRIVER));
+        dataSource.setUrl(Config.getInstance().getValue(ConfigKeys.DatabaseConfigKeys.DB_CONNECTION_STRING));
+        dataSource.setUsername(Config.getInstance().getValue(ConfigKeys.DatabaseConfigKeys.DB_USER));
+        dataSource.setPassword(Config.getInstance().getValue(ConfigKeys.DatabaseConfigKeys.DB_PASSWORD));
         return dataSource;
     }
 
