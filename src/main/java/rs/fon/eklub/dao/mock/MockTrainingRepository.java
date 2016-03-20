@@ -47,17 +47,17 @@ public class MockTrainingRepository implements DataAccessService<Training> {
         List<Attendance> a1 = new ArrayList<>();
         a1.add(a11);
         a1.add(a12);
-        t1.setAttendaces(a1);
+        t1.setAttendances(a1);
 
         List<Attendance> a2 = new ArrayList<>();
         a2.add(a21);
         a2.add(a22);
-        t2.setAttendaces(a2);
+        t2.setAttendances(a2);
 
         List<Attendance> a3 = new ArrayList<>();
         a3.add(a31);
         a3.add(a32);
-        t3.setAttendaces(a3);
+        t3.setAttendances(a3);
 
         mockTrainingRepository.add(t1);
         mockTrainingRepository.add(t2);

@@ -11,6 +11,10 @@
         <property name="description" column="description" />
         <many-to-one name="group" column="idGroup" 
             class="Group" not-null="true" lazy="false" />
+        <bag name="attendances" cascade="all" lazy="false" >
+            <key column="idTraining"/>
+            <one-to-many class="Attendance" />
+        </bag>
     </class> 
     
 </hibernate-mapping>

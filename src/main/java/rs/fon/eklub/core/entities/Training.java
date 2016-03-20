@@ -19,7 +19,7 @@ public class Training {
     private int durationMinutes;
     private String description;
     private Group group;
-    private List<Attendance> attendaces;
+    private List<Attendance> attendances;
 
     public Training() {
     }
@@ -64,12 +64,12 @@ public class Training {
         this.group = group;
     }
     
-    public List<Attendance> getAttendaces() {
-        return attendaces;
+    public List<Attendance> getAttendances() {
+        return attendances;
     }
 
-    public void setAttendaces(List<Attendance> attendaces) {
-        this.attendaces = attendaces;
+    public void setAttendances(List<Attendance> attendances) {
+        this.attendances = attendances;
     }
 
     @Override
