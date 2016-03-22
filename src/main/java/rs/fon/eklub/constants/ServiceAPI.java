@@ -28,11 +28,13 @@ public class ServiceAPI {
     }
     
     public class Group {
+        public static final String GROUP_ROOT = "/groups";
         public static final String GET_ALL_GROUPS = "/groups";
         public static final String POST_SAVE_GROUP = "/groups";
     }
     
     public class Member {
+        public static final String MEMBER_ROOT = "/members";
         public static final String GET_MEMBER_BY_ID = "/members/{id}";
         public static final String DELETE_MEMBER_BY_ID = "/members/{id}";
         public static final String GET_ALL_MEMBERS = "/members";
@@ -41,25 +43,30 @@ public class ServiceAPI {
     }
     
     public class Category {
+        public static final String CATEGORIES_ROOT = "/categories";
         public static final String GET_ALL_CATEGORIES = "/categories";
     }
     
     public class Training {
+        public static final String TRAINING_ROOT = "/trainings";
         public static final String POST_SAVE_TRAINING = "/trainings";
         public static final String GET_TRAINING_BY_ID = "/trainings/{id}";
         public static final String POST_SEARCH_TRAINING = "/trainings/search";
     }
     
     public class Payment {
+        public static final String PAYMENT_ROOT = "/payments";
         public static final String POST_SAVE_PAYMENTS = "/payments";
         public static final String POST_SEARCH_PAYMENTS = "/payments/search";
     }
     
     public class MembershipFee {
+        public static final String MEMBERSHIP_FEES_ROOT = "/fees";
         public static final String GET_ALL_MEMBERSHIP_FEES = "/fees";
     }
     
     public class Admin {
+        public static final String ADMIN_ROOT = "/admin";
         public static final String POST_GET_ADMIN = "/admin";
     }
 }

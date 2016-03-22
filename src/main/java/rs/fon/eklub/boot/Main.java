@@ -42,7 +42,7 @@ import rs.fon.eklub.dao.implementation.MembershipFeeDao;
 import rs.fon.eklub.dao.implementation.PaymentDao;
 import rs.fon.eklub.dao.implementation.TrainingDao;
 import rs.fon.eklub.util.Config;
-import rs.fon.eklub.util.Json2HttpMapper;
+import rs.fon.eklub.json.converters.JsonHttpConverter;
 
 /**
  *
@@ -159,13 +159,13 @@ public class Main extends WebMvcConfigurationSupport {
 
 //    @Bean
 //    public MappingJackson2HttpMessageConverter json2HttpMapper() {
-//        MappingJackson2HttpMessageConverter jsonConverter = new Json2HttpMapper();
+//        MappingJackson2HttpMessageConverter jsonConverter = new JsonHttpConverter();
 //        return jsonConverter;
 //    }
     
     @Override
     protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(new Json2HttpMapper());
+        converters.add(new JsonHttpConverter());
     }
 
     public static void main(String[] args) {

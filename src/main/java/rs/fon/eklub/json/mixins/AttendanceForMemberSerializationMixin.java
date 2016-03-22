@@ -3,16 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.fon.eklub.mixin;
+package rs.fon.eklub.json.mixins;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import rs.fon.eklub.core.entities.Member;
 
 /**
  *
- * @author milos
+ * @author EC
  */
-public interface CollectionSerializationMixin {
+//@JsonFilter("attendanceFilter")
+public interface AttendanceForMemberSerializationMixin {
     
     @JsonIgnore Member getMember();
 }

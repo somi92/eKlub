@@ -6,9 +6,11 @@
 package rs.fon.eklub.controllers;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNull;
 import org.junit.Before;
@@ -33,7 +35,7 @@ import rs.fon.eklub.core.entities.Training;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.TrainingService;
 import rs.fon.eklub.dao.mock.MockTrainingRepository;
-import rs.fon.eklub.util.Json2HttpMapper;
+import rs.fon.eklub.json.converters.JsonHttpConverter;
 import rs.fon.eklub.util.Util;
 
 /**
@@ -69,7 +71,7 @@ public class TrainingControllerTest {
         
         mockMvc = MockMvcBuilders
                 .standaloneSetup(new TrainingController(trainingService))
-                .setMessageConverters(new Json2HttpMapper())
+                .setMessageConverters(new JsonHttpConverter())
                 .setHandlerExceptionResolvers(webMvcConfigurationSupport.handlerExceptionResolver())
                 .build();
     }
@@ -164,5 +166,35 @@ public class TrainingControllerTest {
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Training.POST_SEARCH_TRAINING)))
                 .andExpect(jsonPath("$.payload[0].group.id", Is.is(1)))
                 .andExpect(jsonPath("$.payload[1].group.id", Is.is(1)));
+    }
+    
+    @Test
+    public void getTrainingsNotFoundTest() throws Exception {
+        Map<String, String> searchCriteria = new HashMap<>();
+        searchCriteria.put("group", "100");
+        Mockito.when(trainingService.getTrainings(searchCriteria)).thenReturn(new ArrayList<>());
+        mockMvc.perform(post(ServiceAPI.Training.POST_SEARCH_TRAINING)
+                .contentType(contentType)
+                .content(Util.convertEntityToJson(searchCriteria)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(jsonPath("$.message", Is.is(ServiceAPI.DefaultResponseMessages.RESOURCE_NOT_FOUND)))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Training.POST_SEARCH_TRAINING)))
+                .andExpect(jsonPath("$.payload", Matchers.hasSize(0)));
+    }
+    
+    @Test
+    public void getTrainingsExceptionTest() throws Exception {
+        Map<String, String> searchCriteria = new HashMap<>();
+        searchCriteria.put("group", "100");
+        Mockito.when(trainingService.getTrainings(searchCriteria)).thenThrow(new ServiceException("TrainingsException"));
+        mockMvc.perform(post(ServiceAPI.Training.POST_SEARCH_TRAINING)
+                .contentType(contentType)
+                .content(Util.convertEntityToJson(searchCriteria)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
+                .andExpect(jsonPath("$.errorMessage", Is.is("TrainingsException")))
+                .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Training.POST_SEARCH_TRAINING)));
     }
 }
