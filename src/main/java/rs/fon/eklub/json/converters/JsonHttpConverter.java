@@ -16,11 +16,13 @@ import org.springframework.stereotype.Component;
 import rs.fon.eklub.constants.ServiceAPI;
 import rs.fon.eklub.core.entities.Attendance;
 import rs.fon.eklub.core.entities.Member;
+import rs.fon.eklub.core.entities.Payment;
 import rs.fon.eklub.core.entities.Training;
 import rs.fon.eklub.envelopes.ServiceResponse;
 import rs.fon.eklub.json.mixins.AttendanceForMemberSerializationMixin;
 import rs.fon.eklub.json.mixins.AttendanceForTrainingSerializationMixin;
 import rs.fon.eklub.json.mixins.MemberSerializationMixin;
+import rs.fon.eklub.json.mixins.PaymentSerializationMixin;
 import rs.fon.eklub.json.mixins.TrainingSerializationMixin;
 
 /**
@@ -43,6 +45,7 @@ public class JsonHttpConverter extends MappingJackson2HttpMessageConverter {
                 
                 if(requestUri.startsWith(ServiceAPI.Member.MEMBER_ROOT)) {
                     mapper.addMixIn(Attendance.class, AttendanceForMemberSerializationMixin.class);
+                    mapper.addMixIn(Payment.class, PaymentSerializationMixin.class);
                     mapper.addMixIn(Training.class, TrainingSerializationMixin.class);
                 }
                 if(requestUri.startsWith(ServiceAPI.Training.TRAINING_ROOT)) {

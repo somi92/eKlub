@@ -5,7 +5,6 @@
  */
 package rs.fon.eklub.json.mixins;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import rs.fon.eklub.core.entities.Attendance;
@@ -16,7 +15,6 @@ import rs.fon.eklub.core.entities.Payment;
  *
  * @author milos
  */
-//@JsonFilter("memberFilter")
 public interface MemberSerializationMixin {
     
     @JsonIgnore List<Attendance> getAttendances();

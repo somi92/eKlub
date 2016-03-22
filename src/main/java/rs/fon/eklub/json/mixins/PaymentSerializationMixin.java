@@ -10,9 +10,9 @@ import rs.fon.eklub.core.entities.Member;
 
 /**
  *
- * @author EC
+ * @author milos
  */
-public interface AttendanceForMemberSerializationMixin {
+public interface PaymentSerializationMixin {
     
     @JsonIgnore Member getMember();
 }
