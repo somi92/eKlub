@@ -5,10 +5,16 @@
  */
 package rs.fon.eklub.boot;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Properties;
+import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.ServletException;
 import javax.sql.DataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +23,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Conventions;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
+import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import rs.fon.eklub.constants.ConfigKeys;
 import rs.fon.eklub.core.interactors.AdminInteractor;
@@ -41,6 +49,7 @@ import rs.fon.eklub.dao.implementation.MemberDao;
 import rs.fon.eklub.dao.implementation.MembershipFeeDao;
 import rs.fon.eklub.dao.implementation.PaymentDao;
 import rs.fon.eklub.dao.implementation.TrainingDao;
+import rs.fon.eklub.filters.CORSFilter;
 import rs.fon.eklub.util.Config;
 import rs.fon.eklub.json.converters.JsonHttpConverter;
 
@@ -51,8 +60,21 @@ import rs.fon.eklub.json.converters.JsonHttpConverter;
 @Configuration
 @ComponentScan(basePackages = "rs.fon.eklub")
 @EnableAutoConfiguration
-public class Main extends WebMvcConfigurationSupport {
+public class Main extends WebMvcConfigurationSupport implements WebApplicationInitializer {
 
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        registerServletFilter(servletContext, new CORSFilter());
+    }
+    
+    protected FilterRegistration.Dynamic registerServletFilter(ServletContext servletContext, Filter filter) {
+        String filterName = Conventions.getVariableName(filter);
+        FilterRegistration.Dynamic registration = servletContext.addFilter(filterName, filter);
+        registration.setAsyncSupported(true);
+        registration.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
+        return registration;
+      }
+    
     @Bean
     protected ServletContextListener listener() {
         return new ServletContextListener() {
