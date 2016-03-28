@@ -62,7 +62,7 @@ DROP TABLE IF EXISTS `Employee`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Employee` (
   `idEmployee` int(11) NOT NULL AUTO_INCREMENT,
-  `nameSurname` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nameSurname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `phone` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `address` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE `Group` (
   `idGroup` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `remark` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `idCategory` int(11) DEFAULT NULL,
+  `idCategory` int(11) NOT NULL,
   PRIMARY KEY (`idGroup`),
   KEY `fk_Group_1_idx` (`idCategory`),
   CONSTRAINT `fk_Group_1` FOREIGN KEY (`idCategory`) REFERENCES `Category` (`idCategory`) ON UPDATE CASCADE
@@ -122,20 +122,20 @@ DROP TABLE IF EXISTS `Member`;
 CREATE TABLE `Member` (
   `idMember` int(11) NOT NULL AUTO_INCREMENT,
   `idCard` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `nameSurname` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `gender` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nameSurname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `gender` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `address` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `phone` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `dateOfBirth` date DEFAULT NULL,
   `dateOfMembership` date DEFAULT NULL,
   `remark` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `idGroup` int(11) DEFAULT NULL,
+  `idGroup` int(11) NOT NULL,
   PRIMARY KEY (`idMember`),
   UNIQUE KEY `idCard_UNIQUE` (`idCard`),
   KEY `fk_Member_1_idx` (`idGroup`),
   CONSTRAINT `fk_Member_1` FOREIGN KEY (`idGroup`) REFERENCES `Group` (`idGroup`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -166,7 +166,7 @@ CREATE TABLE `Payment` (
   `idMembershipFee` int(11) NOT NULL,
   `idMember` int(11) NOT NULL,
   `amount` double NOT NULL,
-  `date` datetime NOT NULL,
+  `date` date NOT NULL,
   PRIMARY KEY (`idPayment`),
   KEY `fk_Payment_1_idx` (`idMembershipFee`),
   KEY `fk_Payment_2_idx` (`idMember`),
@@ -203,4 +203,4 @@ CREATE TABLE `Training` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-20 14:56:59
+-- Dump completed on 2016-03-28 21:31:07
