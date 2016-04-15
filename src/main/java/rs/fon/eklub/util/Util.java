@@ -48,11 +48,12 @@ public class Util {
         String conditionRelation = isAndCondition ? " and" : " or";
         String whereClause = "";
         for(String key : searchCriteria.keySet()) {
-            whereClause = " " + key + " like '%" + searchCriteria.get(key) + "%'";
             if(!first) {
                 whereClause = conditionRelation + whereClause;
                 first = false;
             }
+            whereClause = " " + key + " like '%" + searchCriteria.get(key) + "%'" + whereClause;
+            first = false;
         }
         return " where " + whereClause;
     }
