@@ -12,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import rs.fon.eklub.core.data.DataAccessService;
+import rs.fon.eklub.core.entities.Attendance;
 import rs.fon.eklub.core.entities.Training;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.util.Util;
@@ -98,6 +99,9 @@ public class TrainingDao implements DataAccessService<Training> {
         Session session = sessionFactory.openSession();
         Transaction tx = null;
         try {
+            for(Attendance attendance : entity.getAttendances()) {
+                attendance.setTraining(entity);
+            }
             tx = session.beginTransaction();
             session.saveOrUpdate(entity);
             tx.commit();
@@ -111,10 +115,18 @@ public class TrainingDao implements DataAccessService<Training> {
             session.close();
         }
     }
-
+  
     @Override
     public boolean deleteEntity(long id) throws DataAccessServiceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private void saveAttendances(Session session, Training training) {
+        if(training.getAttendances() == null) return;
+        for(Attendance attendance : training.getAttendances()) {
+            attendance.setTraining(training);
+            session.saveOrUpdate(attendance);
+        }
     }
     
 }

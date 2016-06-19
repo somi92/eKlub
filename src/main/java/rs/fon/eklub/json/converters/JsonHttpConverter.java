@@ -56,7 +56,7 @@ public class JsonHttpConverter extends MappingJackson2HttpMessageConverter {
                     mapper.addMixIn(Member.class, MemberSerializationMixin.class);
                 }
                 
-                mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+                mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
                 mapper.writeValue(jsonGenerator, object);
             } else if(object == null) {
                 jsonGenerator.writeNull();
