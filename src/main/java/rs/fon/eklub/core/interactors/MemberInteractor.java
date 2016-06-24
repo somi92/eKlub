@@ -76,7 +76,7 @@ public class MemberInteractor implements MemberService {
 
     @Override
     public List<Member> getMembers(Map<String, String> searchCriteria) throws ServiceException {
-        if(searchCriteria == null) {
+        if(searchCriteria.isEmpty()) {
             return dao.getAllEntities();
         }
         return dao.getEntities(searchCriteria);

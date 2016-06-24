@@ -64,7 +64,7 @@ public class TrainingInteractor implements TrainingService {
 
     @Override
     public List<Training> getTrainings(Map<String, String> searchCriteria) throws ServiceException {
-        if(searchCriteria == null) {
+        if(searchCriteria.isEmpty()) {
             return dao.getAllEntities();
         }
         return dao.getEntities(searchCriteria);
