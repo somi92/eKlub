@@ -79,9 +79,8 @@ public class PaymentControllerTest {
                 new GregorianCalendar(2016, 1, 17).getTime(), "fee1");
         MembershipFee fee2 = new MembershipFee(1, new GregorianCalendar(2016, 1, 17).getTime(), 
                 new GregorianCalendar(2016, 2, 17).getTime(), "fee2");
-        Member member = new Member(1);
-        Payment p1 = new Payment(1, fee1, 2000, new GregorianCalendar(2016, 0, 17).getTime(), member);
-        Payment p2 = new Payment(2, fee2, 2000, new GregorianCalendar(2016, 1, 17).getTime(), member);
+        Payment p1 = new Payment(1, fee1, 2000, new GregorianCalendar(2016, 0, 17).getTime(), 1);
+        Payment p2 = new Payment(2, fee2, 2000, new GregorianCalendar(2016, 1, 17).getTime(), 1);
         List<Payment> payments = new ArrayList<>();
         payments.add(p1);
         payments.add(p2);
@@ -103,9 +102,8 @@ public class PaymentControllerTest {
                 new GregorianCalendar(2016, 1, 17).getTime(), "fee1");
         MembershipFee fee2 = new MembershipFee(1, new GregorianCalendar(2016, 1, 17).getTime(), 
                 new GregorianCalendar(2016, 2, 17).getTime(), "fee2");
-        Member member = new Member(1);
-        Payment p1 = new Payment(1, fee1, 2000, new GregorianCalendar(2016, 0, 17).getTime(), member);
-        Payment p2 = new Payment(2, fee2, 2000, new GregorianCalendar(2016, 1, 17).getTime(), member);
+        Payment p1 = new Payment(1, fee1, 2000, new GregorianCalendar(2016, 0, 17).getTime(), 1);
+        Payment p2 = new Payment(2, fee2, 2000, new GregorianCalendar(2016, 1, 17).getTime(), 1);
         List<Payment> payments = new ArrayList<>();
         payments.add(p1);
         payments.add(p2);

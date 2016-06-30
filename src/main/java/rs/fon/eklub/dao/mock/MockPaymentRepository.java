@@ -29,9 +29,9 @@ public class MockPaymentRepository implements DataAccessService<Payment> {
         Calendar c2 = Calendar.getInstance();
         c2.set(2015, Calendar.OCTOBER, 31);
         MembershipFee mf1 = new MembershipFee(1, c1.getTime(), c2.getTime(), null);
-        Payment p11 = new Payment(1, mf1, 1000, null, new Member(3));
-        Payment p12 = new Payment(2, mf1, 2000, null, new Member(2));
-        Payment p13 = new Payment(3, mf1, 2000, null, new Member(1));
+        Payment p11 = new Payment(1, mf1, 1000, null, 3);
+        Payment p12 = new Payment(2, mf1, 2000, null, 3);
+        Payment p13 = new Payment(3, mf1, 2000, null, 3);
         mockPaymentsRepository.add(p11);
         mockPaymentsRepository.add(p12);
         mockPaymentsRepository.add(p13);
@@ -41,9 +41,9 @@ public class MockPaymentRepository implements DataAccessService<Payment> {
         Calendar c4 = Calendar.getInstance();
         c4.set(2015, Calendar.SEPTEMBER, 30);
         MembershipFee mf2 = new MembershipFee(2, c3.getTime(), c4.getTime(), null);
-        Payment p21 = new Payment(4, mf2, 1000, null, new Member(4));
-        Payment p22 = new Payment(5, mf2, 1000, null, new Member(5));
-        Payment p23 = new Payment(6, mf2, 2000, null, new Member(5));
+        Payment p21 = new Payment(4, mf2, 1000, null, 3);
+        Payment p22 = new Payment(5, mf2, 1000, null, 3);
+        Payment p23 = new Payment(6, mf2, 2000, null, 3);
         mockPaymentsRepository.add(p21);
         mockPaymentsRepository.add(p22);
         mockPaymentsRepository.add(p23);

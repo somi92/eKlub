@@ -51,12 +51,14 @@ public class JsonHttpConverter extends MappingJackson2HttpMessageConverter {
                 if(requestUri.startsWith(ServiceAPI.Training.TRAINING_ROOT)) {
                     mapper.addMixIn(Attendance.class, AttendanceForTrainingSerializationMixin.class);
                     mapper.addMixIn(Member.class, MemberSerializationMixin.class);
+                    mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
+                } else {
+                    mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
                 }
                 if(requestUri.startsWith(ServiceAPI.Payment.PAYMENT_ROOT)) {
                     mapper.addMixIn(Member.class, MemberSerializationMixin.class);
                 }
                 
-                mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
                 mapper.writeValue(jsonGenerator, object);
             } else if(object == null) {
                 jsonGenerator.writeNull();

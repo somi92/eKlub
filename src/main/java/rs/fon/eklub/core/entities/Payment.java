@@ -18,17 +18,17 @@ public class Payment {
     private MembershipFee fee;
     private double amount;
     private Date dateOfPayment;
-    private Member member;
+    private long memberId;
 
     public Payment() {
     }
 
-    public Payment(long id, MembershipFee fee, double amount, Date dateOfPayment, Member member) {
+    public Payment(long id, MembershipFee fee, double amount, Date dateOfPayment, long memberId) {
         this.id = id;
         this.fee = fee;
         this.amount = amount;
         this.dateOfPayment = dateOfPayment;
-        this.member = member;
+        this.memberId = memberId;
     }
     
     public long getId() {
@@ -63,12 +63,12 @@ public class Payment {
         this.dateOfPayment = dateOfPayment;
     }
 
-    public Member getMember() {
-        return member;
+    public long getMemberId() {
+        return memberId;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setMemberId(long memberId) {
+        this.memberId = memberId;
     }
 
     @Override

@@ -66,9 +66,9 @@ public class PaymentInteractorTest {
         c4.set(2015, Calendar.SEPTEMBER, 30);
         MembershipFee mf1 = new MembershipFee(1, c1.getTime(), c2.getTime(), null);
         MembershipFee mf2 = new MembershipFee(2, c3.getTime(), c4.getTime(), null);
-        Payment p1 = new Payment(7, mf2, 2000, null, new Member(10));
-        Payment p2 = new Payment(8, mf1, 2000, null, new Member(20));
-        Payment p3 = new Payment(9, mf1, 2000, null, new Member(30));
+        Payment p1 = new Payment(7, mf2, 2000, null, 10);
+        Payment p2 = new Payment(8, mf1, 2000, null, 20);
+        Payment p3 = new Payment(9, mf1, 2000, null, 30);
         List<Payment> payments = new ArrayList<>();
         payments.add(p1);
         payments.add(p2);
@@ -89,7 +89,7 @@ public class PaymentInteractorTest {
     @Test(expected = DataAccessServiceException.class)
     public void savePaymentsDataExceptionTest() throws ServiceException {
         List<Payment> payments = new ArrayList<>();
-        Payment p = new Payment(13, null, 2000, null, new Member(10));
+        Payment p = new Payment(13, null, 2000, null, 10);
         payments.add(p);
         ps.savePayments(payments);
         assertFalse(dao.getAllEntities().contains(p));
@@ -98,7 +98,7 @@ public class PaymentInteractorTest {
     @Test(expected = ValidationException.class)
     public void savePaymentsValidationExceptionTest() throws ServiceException {
         List<Payment> payments = new ArrayList<>();
-        Payment p = new Payment(13, null, -2000, null, new Member(10));
+        Payment p = new Payment(13, null, -2000, null, 10);
         payments.add(p);
         ps.savePayments(payments);
         assertFalse(dao.getAllEntities().contains(p));

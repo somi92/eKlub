@@ -8,8 +8,7 @@
         </id>
         <many-to-one name="fee" column="idMembershipFee" 
             class="MembershipFee" not-null="true" lazy="false" />
-        <many-to-one name="member" column="idMember" 
-            class="Member" not-null="true" lazy="false" />
+        <property name="memberId" column="idMember" />
         <property name="amount" column="amount" />
         <property name="dateOfPayment" column="date" />        
     </class> 
