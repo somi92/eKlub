@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +35,7 @@ public class CategoryController {
         this.interactor = interactor;
     }
     
+    @PreAuthorize("#oauth2.hasScope('read')")
     @RequestMapping(value = ServiceAPI.Category.GET_ALL_CATEGORIES,
                     method = RequestMethod.GET)
     public ResponseEntity getAllCategories() throws ServiceException {

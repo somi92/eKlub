@@ -23,12 +23,17 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.Conventions;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import rs.fon.eklub.constants.ConfigKeys;
 import rs.fon.eklub.core.interactors.AdminInteractor;
 import rs.fon.eklub.core.interactors.CategoryInteractor;
@@ -52,14 +57,19 @@ import rs.fon.eklub.dao.implementation.TrainingDao;
 import rs.fon.eklub.filters.CORSFilter;
 import rs.fon.eklub.util.Config;
 import rs.fon.eklub.json.converters.JsonHttpConverter;
+import rs.fon.eklub.security.MethodSecurityConfig;
+import rs.fon.eklub.security.OAuth2ResourceConfig;
 
 /**
  *
  * @author milos
  */
-@Configuration
-@ComponentScan(basePackages = "rs.fon.eklub")
 @EnableAutoConfiguration
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, /*securedEnabled = true,*/ proxyTargetClass = true)
+@Import({ OAuth2ResourceConfig.class, MethodSecurityConfig.class })
+@ComponentScan(basePackages = "rs.fon.eklub")
 public class Main extends WebMvcConfigurationSupport implements WebApplicationInitializer {
 
     @Override
