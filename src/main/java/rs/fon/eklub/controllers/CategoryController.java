@@ -35,7 +35,7 @@ public class CategoryController {
         this.interactor = interactor;
     }
     
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize(value = "#oauth2.hasScope('read')")
     @RequestMapping(value = ServiceAPI.Category.GET_ALL_CATEGORIES,
                     method = RequestMethod.GET)
     public ResponseEntity getAllCategories() throws ServiceException {
