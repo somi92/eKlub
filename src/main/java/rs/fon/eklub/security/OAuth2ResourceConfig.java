@@ -54,12 +54,19 @@ public class OAuth2ResourceConfig extends ResourceServerConfigurerAdapter {
             protected void doFilterInternal(HttpServletRequest request,
                     HttpServletResponse response, FilterChain filterChain)
                     throws ServletException, IOException {
-				// We don't want to allow access to a resource with no token so clear
-                // the security context in case it is actually an OAuth2Authentication
-                if (tokenExtractor.extract(request) == null) {
-                    SecurityContextHolder.clearContext();
+
+                HttpServletResponse res = (HttpServletResponse) response;
+                res.setHeader("Access-Control-Allow-Origin", "*");
+                res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+                res.setHeader("Access-Control-Max-Age", "3600");
+                res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization");
+
+                if (!request.getMethod().equals("OPTIONS")) {
+                    if (tokenExtractor.extract(request) == null) {
+                        SecurityContextHolder.clearContext();
+                    }
+                    filterChain.doFilter(request, response);
                 }
-                filterChain.doFilter(request, response);
             }
         }, AbstractPreAuthenticatedProcessingFilter.class);
         http.csrf().disable();
@@ -70,7 +77,7 @@ public class OAuth2ResourceConfig extends ResourceServerConfigurerAdapter {
     public void configure(final ResourceServerSecurityConfigurer config) {
         config.tokenServices(tokenServices());
     }
-    
+
     @Bean
     @Primary
     public DefaultTokenServices tokenServices() {
@@ -78,7 +85,7 @@ public class OAuth2ResourceConfig extends ResourceServerConfigurerAdapter {
         defaultTokenServices.setTokenStore(tokenStore());
         return defaultTokenServices;
     }
-    
+
     @Bean
     public TokenStore tokenStore() {
         return new JdbcTokenStore(dataSource);

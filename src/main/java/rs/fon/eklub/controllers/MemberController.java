@@ -11,6 +11,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +39,7 @@ public class MemberController {
         this.interactor = interactor;
     }
     
+    @PreAuthorize(value = "#oauth2.hasScope('write')")
     @RequestMapping(value = ServiceAPI.Member.POST_SAVE_MEMBER,
                     method = RequestMethod.POST,
                     headers = {ServiceAPI.Headers.CONTENT_TYPE})
@@ -51,6 +53,7 @@ public class MemberController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
+    @PreAuthorize(value = "#oauth2.hasScope('read')")
     @RequestMapping(value = ServiceAPI.Member.GET_MEMBER_BY_ID,
                     method = RequestMethod.GET)
     public ResponseEntity getMemberById(@PathVariable long id) throws ServiceException {
@@ -72,6 +75,7 @@ public class MemberController {
         return new ResponseEntity<>(response, httpStatus);
     }
     
+    @PreAuthorize(value = "#oauth2.hasScope('write')")
     @RequestMapping(value = ServiceAPI.Member.DELETE_MEMBER_BY_ID,
                     method = RequestMethod.DELETE)
     public ResponseEntity deleteMemberById(@PathVariable long id) throws ServiceException {
@@ -93,6 +97,7 @@ public class MemberController {
         return new ResponseEntity<>(response, httpStatus);
     }
     
+    @PreAuthorize(value = "#oauth2.hasScope('read')")
     @RequestMapping(value = ServiceAPI.Member.GET_ALL_MEMBERS,
                     method = RequestMethod.GET)
     public ResponseEntity getAllMembers() throws ServiceException {
@@ -114,6 +119,7 @@ public class MemberController {
         return new ResponseEntity<>(response, httpStatus);
     }
     
+    @PreAuthorize(value = "#oauth2.hasScope('read')")
     @RequestMapping(value = ServiceAPI.Member.POST_SEARCH_MEMBERS,
                     method = RequestMethod.POST,
                     headers = ServiceAPI.Headers.CONTENT_TYPE)

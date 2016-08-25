@@ -8,6 +8,7 @@ package rs.fon.eklub.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,7 @@ public class AdminController {
         this.interactor = interactor;
     }
     
+    @PreAuthorize(value = "#oauth2.hasScope('read')")
     @RequestMapping(value = ServiceAPI.Admin.POST_GET_ADMIN,
                     headers = ServiceAPI.Headers.CONTENT_TYPE,
                     method = RequestMethod.POST)

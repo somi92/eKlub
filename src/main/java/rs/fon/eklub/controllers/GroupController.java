@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,7 @@ public class GroupController {
         this.interactor = interactor;
     }
     
+    @PreAuthorize(value = "#oauth2.hasScope('read')")
     @RequestMapping(value = ServiceAPI.Group.GET_ALL_GROUPS,
                     method = RequestMethod.GET)
     public ResponseEntity getAllGroups() throws ServiceException {
@@ -56,6 +58,7 @@ public class GroupController {
         return new ResponseEntity<>(response, httpStatus);
     }
     
+    @PreAuthorize(value = "#oauth2.hasScope('write')")
     @RequestMapping(value = ServiceAPI.Group.POST_SAVE_GROUP,
                     method = RequestMethod.POST,
                     headers = {ServiceAPI.Headers.CONTENT_TYPE})

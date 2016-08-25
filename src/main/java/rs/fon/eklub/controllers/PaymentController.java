@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,7 @@ public class PaymentController {
         this.interactor = interactor;
     }
     
+    @PreAuthorize(value = "#oauth2.hasScope('write')")
     @RequestMapping(value = ServiceAPI.Payment.POST_SAVE_PAYMENTS,
                     method = RequestMethod.POST,
                     headers = {ServiceAPI.Headers.CONTENT_TYPE})
@@ -49,6 +51,7 @@ public class PaymentController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
+    @PreAuthorize(value = "#oauth2.hasScope('read')")
     @RequestMapping(value = ServiceAPI.Payment.POST_SEARCH_PAYMENTS,
                     method = RequestMethod.POST,
                     headers = ServiceAPI.Headers.CONTENT_TYPE)
