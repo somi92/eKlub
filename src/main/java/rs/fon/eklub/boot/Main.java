@@ -62,7 +62,7 @@ import rs.fon.eklub.security.OAuth2ResourceConfig;
  */
 @EnableAutoConfiguration
 @Configuration
-@Import({ OAuth2ResourceConfig.class, MethodSecurityConfig.class })
+@Import({OAuth2ResourceConfig.class, MethodSecurityConfig.class})
 @ComponentScan(basePackages = "rs.fon.eklub")
 public class Main extends WebMvcConfigurationSupport implements WebApplicationInitializer {
 
@@ -70,15 +70,15 @@ public class Main extends WebMvcConfigurationSupport implements WebApplicationIn
     public void onStartup(ServletContext servletContext) throws ServletException {
         registerServletFilter(servletContext, new CORSFilter());
     }
-    
+
     protected FilterRegistration.Dynamic registerServletFilter(ServletContext servletContext, Filter filter) {
         String filterName = Conventions.getVariableName(filter);
         FilterRegistration.Dynamic registration = servletContext.addFilter(filterName, filter);
         registration.setAsyncSupported(true);
         registration.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), false, "/*");
         return registration;
-      }
-    
+    }
+
     @Bean
     protected ServletContextListener listener() {
         return new ServletContextListener() {
@@ -93,13 +93,13 @@ public class Main extends WebMvcConfigurationSupport implements WebApplicationIn
             }
         };
     }
-  
+
     @Autowired
     @Bean
     public CategoryService getCategoryInteractor(SessionFactory sessionFactory) {
         return new CategoryInteractor(new CategoryDao(sessionFactory));
     }
- 
+
     @Autowired
     @Bean
     public GroupInteractor getGroupInteractor(SessionFactory sessionFactory) {
@@ -173,7 +173,6 @@ public class Main extends WebMvcConfigurationSupport implements WebApplicationIn
 //        HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
 //        return transactionManager;
 //    }
-
     private Properties getHibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.show_sql", "true");
@@ -188,7 +187,6 @@ public class Main extends WebMvcConfigurationSupport implements WebApplicationIn
 //        MappingJackson2HttpMessageConverter jsonConverter = new JsonHttpConverter();
 //        return jsonConverter;
 //    }
-    
     @Override
     protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(new JsonHttpConverter());

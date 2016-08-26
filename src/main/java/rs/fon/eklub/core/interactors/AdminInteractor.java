@@ -37,10 +37,9 @@ public class AdminInteractor implements AdminService {
     }
 
     @Override
-    public Employee getAdmin(String username, String password) throws ServiceException {
+    public Employee getAdmin(String username) throws ServiceException {
         Map<String, String> searchCriteria = new HashMap<>();
         searchCriteria.put("username", username);
-        searchCriteria.put("password", password);
         List<Employee> employees = dao.getEntities(searchCriteria);
         if(employees == null || employees.isEmpty()) {
             return null;

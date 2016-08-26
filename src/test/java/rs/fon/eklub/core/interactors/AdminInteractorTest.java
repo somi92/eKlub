@@ -5,10 +5,6 @@
  */
 package rs.fon.eklub.core.interactors;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -16,7 +12,6 @@ import rs.fon.eklub.core.data.DataAccessService;
 import rs.fon.eklub.core.entities.Employee;
 import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.core.exceptions.ServiceException;
-import rs.fon.eklub.core.exceptions.ValidationException;
 import rs.fon.eklub.core.services.AdminService;
 import rs.fon.eklub.core.validators.EntityValidator;
 import rs.fon.eklub.core.validators.MockAdminValidator;
@@ -53,21 +48,21 @@ public class AdminInteractorTest {
     
     @Test
     public void getAdminOkTest() throws ServiceException {
-        Employee employee = as.getAdmin("admin3", "password3");
+        Employee employee = as.getAdmin("admin3");
         assertNotNull(employee);
         assertTrue(dao.getAllEntities().contains(employee));
     }
     
     @Test
     public void getAdminNotFoundTest() throws ServiceException {
-        Employee employee = as.getAdmin("admin2", "password3");
+        Employee employee = as.getAdmin("admin2");
         assertNull(employee);
         assertFalse(dao.getAllEntities().contains(employee));
     }
     
     @Test(expected = DataAccessServiceException.class)
     public void getAdminDataExceptionTest() throws ServiceException {
-        Employee employee = as.getAdmin("admin13", "password13");
+        Employee employee = as.getAdmin("admin13");
         assertNull(employee);
         assertFalse(dao.getAllEntities().contains(employee));
     }

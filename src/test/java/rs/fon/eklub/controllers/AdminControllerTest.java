@@ -70,9 +70,8 @@ public class AdminControllerTest {
         Employee e = new Employee();
         e.setId(3);
         e.setUsername("admin3");
-        e.setPassword("password3");
         String json = Util.convertEntityToJson(e);
-        Mockito.when(adminService.getAdmin(e.getUsername(), e.getPassword())).thenReturn(e);
+        Mockito.when(adminService.getAdmin(e.getUsername())).thenReturn(e);
         mockMvc.perform(post(ServiceAPI.Admin.POST_GET_ADMIN)
                 .contentType(contentType)
                 .content(json))
@@ -89,9 +88,8 @@ public class AdminControllerTest {
         Employee e = new Employee();
         e.setId(3);
         e.setUsername("admin4");
-        e.setPassword("password4");
         String json = Util.convertEntityToJson(e);
-        Mockito.when(adminService.getAdmin(e.getUsername(), e.getPassword())).thenReturn(null);
+        Mockito.when(adminService.getAdmin(e.getUsername())).thenReturn(null);
         mockMvc.perform(post(ServiceAPI.Admin.POST_GET_ADMIN)
                 .contentType(contentType)
                 .content(json))
@@ -107,10 +105,9 @@ public class AdminControllerTest {
         Employee e = new Employee();
         e.setId(3);
         e.setUsername("admin4");
-        e.setPassword("password4");
         String json = Util.convertEntityToJson(e);
         Mockito.doThrow(new ServiceException("Get admin error.")).when(adminService)
-                .getAdmin(e.getUsername(), e.getPassword());
+                .getAdmin(e.getUsername());
         mockMvc.perform(post(ServiceAPI.Admin.POST_GET_ADMIN)
                 .contentType(contentType)
                 .content(json))

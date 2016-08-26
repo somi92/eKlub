@@ -14,5 +14,5 @@ import rs.fon.eklub.core.exceptions.ServiceException;
  */
 public interface AdminService {
     
-    public Employee getAdmin(String username, String password) throws ServiceException;
+    public Employee getAdmin(String username) throws ServiceException;
 }

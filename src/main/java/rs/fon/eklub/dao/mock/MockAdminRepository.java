@@ -25,17 +25,12 @@ public class MockAdminRepository implements DataAccessService<Employee> {
         e1.setId(1);
         e1.setUsername("admin1");
         e1.setPassword("password1");
-        Employee e2 = new Employee();
-        e2.setId(2);
-        e2.setUsername("admin2");
-        e2.setPassword("password2");
         Employee e3 = new Employee();
         e3.setId(3);
         e3.setUsername("admin3");
         e3.setPassword("password3");
 
         mockEmployeeRepository.add(e1);
-        mockEmployeeRepository.add(e2);
         mockEmployeeRepository.add(e3);
     }
 
@@ -56,8 +51,7 @@ public class MockAdminRepository implements DataAccessService<Employee> {
             throw new DataAccessServiceException("Data access error!");
         }
         for (Employee e : mockEmployeeRepository) {
-            if (e.getUsername().equals(searchCriteria.get("username"))
-                    && e.getPassword().equals(searchCriteria.get("password"))) {
+            if (e.getUsername().equals(searchCriteria.get("username"))) {
                 employees.add(e);
             }
         }

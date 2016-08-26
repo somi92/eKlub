@@ -40,7 +40,7 @@ public class AdminController {
                     headers = ServiceAPI.Headers.CONTENT_TYPE,
                     method = RequestMethod.POST)
     public ResponseEntity getAdmin(@RequestBody Employee admin) throws ServiceException {
-        Employee employee = interactor.getAdmin(admin.getUsername(), admin.getPassword());
+        Employee employee = interactor.getAdmin(admin.getUsername());
         HttpStatus httpStatus = null;
         String responseMessage = null;
         if(employee == null) {
