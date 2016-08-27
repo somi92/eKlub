@@ -38,7 +38,7 @@ public class TrainingController {
         this.interactor = interactor;
     }
     
-    @PreAuthorize(value = "#oauth2.hasScope('write')")
+    @PreAuthorize(value = "#oauth2.hasScope('read')")
     @RequestMapping(value = ServiceAPI.Training.POST_SAVE_TRAINING,
                     method = RequestMethod.POST,
                     headers = {ServiceAPI.Headers.CONTENT_TYPE})

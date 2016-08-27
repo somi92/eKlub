@@ -58,7 +58,7 @@ public class GroupController {
         return new ResponseEntity<>(response, httpStatus);
     }
     
-    @PreAuthorize(value = "#oauth2.hasScope('write')")
+    @PreAuthorize(value = "#oauth2.hasScope('read')")
     @RequestMapping(value = ServiceAPI.Group.POST_SAVE_GROUP,
                     method = RequestMethod.POST,
                     headers = {ServiceAPI.Headers.CONTENT_TYPE})

@@ -39,7 +39,7 @@ public class MemberController {
         this.interactor = interactor;
     }
     
-    @PreAuthorize(value = "#oauth2.hasScope('write')")
+    @PreAuthorize(value = "#oauth2.hasScope('read')")
     @RequestMapping(value = ServiceAPI.Member.POST_SAVE_MEMBER,
                     method = RequestMethod.POST,
                     headers = {ServiceAPI.Headers.CONTENT_TYPE})
@@ -75,7 +75,7 @@ public class MemberController {
         return new ResponseEntity<>(response, httpStatus);
     }
     
-    @PreAuthorize(value = "#oauth2.hasScope('write')")
+    @PreAuthorize(value = "#oauth2.hasScope('read')")
     @RequestMapping(value = ServiceAPI.Member.DELETE_MEMBER_BY_ID,
                     method = RequestMethod.DELETE)
     public ResponseEntity deleteMemberById(@PathVariable long id) throws ServiceException {
