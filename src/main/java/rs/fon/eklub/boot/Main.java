@@ -37,6 +37,7 @@ import rs.fon.eklub.core.interactors.GroupInteractor;
 import rs.fon.eklub.core.interactors.MemberInteractor;
 import rs.fon.eklub.core.interactors.MembershipFeeInteractor;
 import rs.fon.eklub.core.interactors.PaymentInteractor;
+import rs.fon.eklub.core.interactors.StatInteractor;
 import rs.fon.eklub.core.interactors.TrainingInteractor;
 import rs.fon.eklub.core.services.CategoryService;
 import rs.fon.eklub.core.validators.MockGroupValidator;
@@ -49,6 +50,7 @@ import rs.fon.eklub.dao.implementation.GroupDao;
 import rs.fon.eklub.dao.implementation.MemberDao;
 import rs.fon.eklub.dao.implementation.MembershipFeeDao;
 import rs.fon.eklub.dao.implementation.PaymentDao;
+import rs.fon.eklub.dao.implementation.StatDao;
 import rs.fon.eklub.dao.implementation.TrainingDao;
 import rs.fon.eklub.filters.CORSFilter;
 import rs.fon.eklub.util.Config;
@@ -138,6 +140,12 @@ public class Main extends WebMvcConfigurationSupport implements WebApplicationIn
     @Bean
     public AdminInteractor getAdminInteractor(SessionFactory sessionFactory) {
         return new AdminInteractor(new EmployeeDao(sessionFactory));
+    }
+    
+    @Autowired
+    @Bean
+    public StatInteractor getStatInteractor(SessionFactory sessionFactory) {
+        return new StatInteractor(new StatDao(sessionFactory));
     }
 
     @Bean(name = "dataSource")

@@ -69,4 +69,9 @@ public class ServiceAPI {
         public static final String ADMIN_ROOT = "/admin";
         public static final String POST_GET_ADMIN = "/admin";
     }
+    
+    public class Stat {
+        public static final String STATS_ROOT = "/stats";
+        public static final String GET_STATS = "/stats/{target}";
+    }
 }
