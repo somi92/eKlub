@@ -38,7 +38,7 @@ public class TrainingController {
         this.interactor = interactor;
     }
     
-    @PreAuthorize(value = "#oauth2.hasScope('read')")
+    @PreAuthorize(value = "#oauth2.hasAnyScope('global', 'mobile')")
     @RequestMapping(value = ServiceAPI.Training.POST_SAVE_TRAINING,
                     method = RequestMethod.POST,
                     headers = {ServiceAPI.Headers.CONTENT_TYPE})
@@ -52,7 +52,7 @@ public class TrainingController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
-    @PreAuthorize(value = "#oauth2.hasScope('read')")
+    @PreAuthorize(value = "#oauth2.hasAnyScope('global', 'mobile')")
     @RequestMapping(value = ServiceAPI.Training.GET_TRAINING_BY_ID,
                     method = RequestMethod.GET)
     public ResponseEntity getTrainingById(@PathVariable long id) throws ServiceException {
@@ -74,7 +74,7 @@ public class TrainingController {
         return new ResponseEntity<>(response, httpStatus);
     }
     
-    @PreAuthorize(value = "#oauth2.hasScope('read')")
+    @PreAuthorize(value = "#oauth2.hasAnyScope('global', 'mobile')")
     @RequestMapping(value = ServiceAPI.Training.POST_SEARCH_TRAINING,
                     method = RequestMethod.POST,
                     headers = ServiceAPI.Headers.CONTENT_TYPE)

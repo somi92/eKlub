@@ -35,7 +35,7 @@ public class AdminController {
         this.interactor = interactor;
     }
     
-    @PreAuthorize(value = "#oauth2.hasScope('read')")
+    @PreAuthorize(value = "#oauth2.hasAnyScope('global')")
     @RequestMapping(value = ServiceAPI.Admin.POST_GET_ADMIN,
                     headers = ServiceAPI.Headers.CONTENT_TYPE,
                     method = RequestMethod.POST)

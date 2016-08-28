@@ -36,7 +36,7 @@ public class GroupController {
         this.interactor = interactor;
     }
     
-    @PreAuthorize(value = "#oauth2.hasScope('read')")
+    @PreAuthorize(value = "#oauth2.hasAnyScope('global', 'mobile')")
     @RequestMapping(value = ServiceAPI.Group.GET_ALL_GROUPS,
                     method = RequestMethod.GET)
     public ResponseEntity getAllGroups() throws ServiceException {
@@ -58,7 +58,7 @@ public class GroupController {
         return new ResponseEntity<>(response, httpStatus);
     }
     
-    @PreAuthorize(value = "#oauth2.hasScope('read')")
+    @PreAuthorize(value = "#oauth2.hasAnyScope('global')")
     @RequestMapping(value = ServiceAPI.Group.POST_SAVE_GROUP,
                     method = RequestMethod.POST,
                     headers = {ServiceAPI.Headers.CONTENT_TYPE})

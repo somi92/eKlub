@@ -36,7 +36,7 @@ public class MembershipFeeController {
         this.interactor = interactor;
     }
     
-    @PreAuthorize(value = "#oauth2.hasScope('read')")
+    @PreAuthorize(value = "#oauth2.hasAnyScope('global')")
     @RequestMapping(value = ServiceAPI.MembershipFee.GET_ALL_MEMBERSHIP_FEES,
                     method = RequestMethod.GET)
     public ResponseEntity getAllMembershipFees() throws ServiceException {

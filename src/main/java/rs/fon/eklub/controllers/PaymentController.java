@@ -37,7 +37,7 @@ public class PaymentController {
         this.interactor = interactor;
     }
     
-    @PreAuthorize(value = "#oauth2.hasScope('read')")
+    @PreAuthorize(value = "#oauth2.hasAnyScope('global')")
     @RequestMapping(value = ServiceAPI.Payment.POST_SAVE_PAYMENTS,
                     method = RequestMethod.POST,
                     headers = {ServiceAPI.Headers.CONTENT_TYPE})
@@ -51,7 +51,7 @@ public class PaymentController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
-    @PreAuthorize(value = "#oauth2.hasScope('read')")
+    @PreAuthorize(value = "#oauth2.hasAnyScope('global')")
     @RequestMapping(value = ServiceAPI.Payment.POST_SEARCH_PAYMENTS,
                     method = RequestMethod.POST,
                     headers = ServiceAPI.Headers.CONTENT_TYPE)
