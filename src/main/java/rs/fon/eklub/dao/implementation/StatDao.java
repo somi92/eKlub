@@ -55,7 +55,7 @@ public class StatDao implements StatAccessService<Stat> {
     }
     
     @Override
-    public List<Stat> getMembersByCategoryStats() throws DataAccessServiceException {
+    public List<Stat> getAttendanceStats() throws DataAccessServiceException {
         Session session = sessionFactory.openSession();
         Transaction tx = null;
         try {
@@ -83,7 +83,7 @@ public class StatDao implements StatAccessService<Stat> {
     }
     
     @Override
-    public List<Stat> getAttendanceStats() throws DataAccessServiceException {
+    public List<Stat> getMembersByCategoryStats() throws DataAccessServiceException {
         Session session = sessionFactory.openSession();
         Transaction tx = null;
         try {
