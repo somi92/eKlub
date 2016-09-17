@@ -111,8 +111,8 @@ public class AdminControllerTest {
         mockMvc.perform(post(ServiceAPI.Admin.POST_GET_ADMIN)
                 .contentType(contentType)
                 .content(json))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("Get admin error.")))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Admin.POST_GET_ADMIN)));

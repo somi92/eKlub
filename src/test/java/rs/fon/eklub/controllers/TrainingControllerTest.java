@@ -101,8 +101,8 @@ public class TrainingControllerTest {
         mockMvc.perform(post(ServiceAPI.Training.POST_SAVE_TRAINING)
                 .contentType(contentType)
                 .content(jsonTraining))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("Training not saved.")))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Training.POST_SAVE_TRAINING)));
@@ -144,8 +144,8 @@ public class TrainingControllerTest {
         t.setDescription("Training description");
         Mockito.doThrow(new ServiceException("Get training by id error.")).when(trainingService).getTrainingById(10);
         mockMvc.perform(get("/trainings/10"))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("Get training by id error.")))
                 .andExpect(jsonPath("$.requestUri", Is.is(("/trainings/10"))));
@@ -191,8 +191,8 @@ public class TrainingControllerTest {
         mockMvc.perform(post(ServiceAPI.Training.POST_SEARCH_TRAINING)
                 .contentType(contentType)
                 .content(Util.convertEntityToJson(searchCriteria)))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("TrainingsException")))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Training.POST_SEARCH_TRAINING)));

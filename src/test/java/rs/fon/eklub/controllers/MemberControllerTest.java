@@ -98,8 +98,8 @@ public class MemberControllerTest {
         mockMvc.perform(post(ServiceAPI.Member.POST_SAVE_MEMBER)
                 .contentType(contentType)
                 .content(jsonMember))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("Member not saved.")))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.POST_SAVE_MEMBER)));
@@ -141,8 +141,8 @@ public class MemberControllerTest {
         m.setNameSurname("Petar Petrovic");
         Mockito.doThrow(new ServiceException("Get member by id error.")).when(memberService).getMemberById(10);
         mockMvc.perform(get("/members/10"))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("Get member by id error.")))
                 .andExpect(jsonPath("$.requestUri", Is.is("/members/10")));
@@ -176,8 +176,8 @@ public class MemberControllerTest {
     public void deleteMemberExceptionTest() throws Exception {
         Mockito.doThrow(new ServiceException("Delete member exception")).when(memberService).deleteMember(100);
         mockMvc.perform(delete("/members/100"))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("Delete member exception")))
                 .andExpect(jsonPath("$.requestUri", Is.is("/members/100")));
@@ -211,8 +211,8 @@ public class MemberControllerTest {
     public void getAllMembersExceptionTest() throws Exception {
          Mockito.when(memberService.getAllMembers()).thenThrow(new ServiceException("MembersException"));
          mockMvc.perform(get(ServiceAPI.Member.GET_ALL_MEMBERS))
-                 .andExpect(status().isNotFound())
-                 .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                 .andExpect(status().isInternalServerError())
+                 .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
                  .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                  .andExpect(jsonPath("$.errorMessage", Is.is("MembersException")))
                  .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.GET_ALL_MEMBERS)));
@@ -258,8 +258,8 @@ public class MemberControllerTest {
         mockMvc.perform(post(ServiceAPI.Member.POST_SEARCH_MEMBERS)
                 .contentType(contentType)
                 .content(Util.convertEntityToJson(searchCriteria)))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("MembersException")))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Member.POST_SEARCH_MEMBERS)));

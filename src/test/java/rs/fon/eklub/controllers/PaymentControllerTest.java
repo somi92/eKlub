@@ -112,8 +112,8 @@ public class PaymentControllerTest {
         mockMvc.perform(post(ServiceAPI.Payment.POST_SAVE_PAYMENTS)
                 .contentType(contentType)
                 .content(jsonPayments))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("Payments not saved.")))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Payment.POST_SAVE_PAYMENTS)));
@@ -160,8 +160,8 @@ public class PaymentControllerTest {
         mockMvc.perform(post(ServiceAPI.Payment.POST_SEARCH_PAYMENTS)
                 .contentType(contentType)
                 .content(Util.convertEntityToJson(searchCriteria)))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("PaymentsException")))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.Payment.POST_SEARCH_PAYMENTS)));

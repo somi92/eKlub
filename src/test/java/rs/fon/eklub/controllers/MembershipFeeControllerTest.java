@@ -87,8 +87,8 @@ public class MembershipFeeControllerTest {
     public void getAllMembershipFeesExceptionTest() throws Exception {
         Mockito.when(membershipFeeService.getAllMembershipFees()).thenThrow(new ServiceException("MembershipFeesException"));
         mockMvc.perform(get(ServiceAPI.MembershipFee.GET_ALL_MEMBERSHIP_FEES))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status", Is.is(HttpStatus.NOT_FOUND.toString())))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.status", Is.is(HttpStatus.INTERNAL_SERVER_ERROR.toString())))
                 .andExpect(jsonPath("$.errorType", Is.is("rs.fon.eklub.core.exceptions.ServiceException")))
                 .andExpect(jsonPath("$.errorMessage", Is.is("MembershipFeesException")))
                 .andExpect(jsonPath("$.requestUri", Is.is(ServiceAPI.MembershipFee.GET_ALL_MEMBERSHIP_FEES)));
