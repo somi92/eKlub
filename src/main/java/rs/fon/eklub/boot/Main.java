@@ -40,10 +40,10 @@ import rs.fon.eklub.core.interactors.PaymentInteractor;
 import rs.fon.eklub.core.interactors.StatInteractor;
 import rs.fon.eklub.core.interactors.TrainingInteractor;
 import rs.fon.eklub.core.services.CategoryService;
-import rs.fon.eklub.core.validators.mock.MockGroupValidator;
-import rs.fon.eklub.core.validators.mock.MockMemberValidator;
-import rs.fon.eklub.core.validators.mock.MockPaymentValidator;
-import rs.fon.eklub.core.validators.mock.MockTrainingValidator;
+import rs.fon.eklub.core.validators.GroupValidator;
+import rs.fon.eklub.core.validators.MemberValidator;
+import rs.fon.eklub.core.validators.PaymentValidator;
+import rs.fon.eklub.core.validators.TrainingValidator;
 import rs.fon.eklub.dao.implementation.CategoryDao;
 import rs.fon.eklub.dao.implementation.EmployeeDao;
 import rs.fon.eklub.dao.implementation.GroupDao;
@@ -106,21 +106,21 @@ public class Main extends WebMvcConfigurationSupport implements WebApplicationIn
     @Bean
     public GroupInteractor getGroupInteractor(SessionFactory sessionFactory) {
         return new GroupInteractor(new GroupDao(sessionFactory),
-                new MockGroupValidator());
+                new GroupValidator());
     }
 
     @Autowired
     @Bean
     public MemberInteractor getMemberInteractor(SessionFactory sessionFactory) {
         return new MemberInteractor(new MemberDao(sessionFactory),
-                new MockMemberValidator());
+                new MemberValidator());
     }
 
     @Autowired
     @Bean
     public TrainingInteractor getTrainingInteractor(SessionFactory sessionFactory) {
         return new TrainingInteractor(new TrainingDao(sessionFactory),
-                new MockTrainingValidator());
+                new TrainingValidator());
     }
 
     @Autowired
@@ -133,7 +133,7 @@ public class Main extends WebMvcConfigurationSupport implements WebApplicationIn
     @Bean
     public PaymentInteractor getPaymentInteractor(SessionFactory sessionFactory) {
         return new PaymentInteractor(new PaymentDao(sessionFactory),
-                new MockPaymentValidator());
+                new PaymentValidator());
     }
 
     @Autowired
