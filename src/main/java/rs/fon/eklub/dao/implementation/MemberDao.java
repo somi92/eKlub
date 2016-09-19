@@ -32,7 +32,7 @@ public class MemberDao implements DataAccessService<Member> {
     public MemberDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-    
+
     @Override
     public Member getEntity(long id) throws DataAccessServiceException {
         Session session = sessionFactory.openSession();
@@ -100,7 +100,21 @@ public class MemberDao implements DataAccessService<Member> {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.saveOrUpdate(entity);
+            Member persistentMember = session.get(Member.class, new Long(entity.getId()));
+            if (persistentMember == null) {
+                session.save(entity);
+            } else {
+                persistentMember.setAddress(entity.getAddress());
+                persistentMember.setDateOfBirth(entity.getDateOfBirth());
+                persistentMember.setDateOfMembership(entity.getDateOfMembership());
+                persistentMember.setEmail(entity.getEmail());
+                persistentMember.setGender(entity.getGender());
+                persistentMember.setGroup(entity.getGroup());
+                persistentMember.setIdCard(entity.getIdCard());
+                persistentMember.setNameSurname(entity.getNameSurname());
+                persistentMember.setPhone(entity.getPhone());
+                persistentMember.setRemark(entity.getRemark());
+            }
             tx.commit();
         } catch (Exception e) {
             if (tx != null) {

@@ -15,13 +15,18 @@ import rs.fon.eklub.core.exceptions.ValidationException;
 public class TrainingValidator implements EntityValidator<Training> {
 
     @Override
-    public boolean validateEntity(Training entity) throws ValidationException {
+    public boolean validateEntityBeforeInsert(Training entity) throws ValidationException {
         boolean isValid = true;
         if (entity.getDurationMinutes() <= 0
                 || entity.getGroup() == null) {
             throw new ValidationException("Validation exception, 'Training' entity not valid");
         }
         return isValid;
+    }
+
+    @Override
+    public boolean validateEntityBeforeDelete(Training entity) throws ValidationException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

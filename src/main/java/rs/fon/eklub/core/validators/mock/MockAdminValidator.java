@@ -16,7 +16,12 @@ import rs.fon.eklub.core.validators.EntityValidator;
 public class MockAdminValidator implements EntityValidator<Employee> {
 
     @Override
-    public boolean validateEntity(Employee entity) throws ValidationException {
+    public boolean validateEntityBeforeInsert(Employee entity) throws ValidationException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean validateEntityBeforeDelete(Employee entity) throws ValidationException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

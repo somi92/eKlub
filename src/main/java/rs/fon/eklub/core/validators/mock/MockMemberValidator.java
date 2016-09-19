@@ -16,10 +16,15 @@ import rs.fon.eklub.core.validators.EntityValidator;
 public class MockMemberValidator implements EntityValidator<Member> {
     
     @Override
-    public boolean validateEntity(Member entity) throws ValidationException {
+    public boolean validateEntityBeforeInsert(Member entity) throws ValidationException {
         if (entity.getId() == 113) {
             throw new ValidationException("Validation exception!");
         }
+        return true;
+    }
+
+    @Override
+    public boolean validateEntityBeforeDelete(Member entity) throws ValidationException {
         return true;
     }
 }

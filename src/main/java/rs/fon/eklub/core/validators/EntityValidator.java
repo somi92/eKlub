@@ -13,5 +13,6 @@ import rs.fon.eklub.core.exceptions.ValidationException;
  */
 public interface EntityValidator<T> {
     
-    public boolean validateEntity(T entity) throws ValidationException;
+    public boolean validateEntityBeforeInsert(T entity) throws ValidationException;
+    public boolean validateEntityBeforeDelete(T entity) throws ValidationException;
 }

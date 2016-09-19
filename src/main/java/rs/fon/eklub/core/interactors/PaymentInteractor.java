@@ -52,7 +52,7 @@ public class PaymentInteractor implements PaymentService {
             throw new ServiceException("Payments null or empty!");
         }
         for(Payment p : payments) {
-            if(validator.validateEntity(p)) {
+            if(validator.validateEntityBeforeInsert(p)) {
                 dao.insertOrUpdateEntity(p);
             }
         }

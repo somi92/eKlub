@@ -16,10 +16,15 @@ import rs.fon.eklub.core.validators.EntityValidator;
 public class MockGroupValidator implements EntityValidator<Group> {
     
     @Override
-    public boolean validateEntity(Group entity) throws ValidationException {
+    public boolean validateEntityBeforeInsert(Group entity) throws ValidationException {
         if (entity.getId() == 113) {
             throw new ValidationException("Validation exception!");
         }
         return true;
+    }
+
+    @Override
+    public boolean validateEntityBeforeDelete(Group entity) throws ValidationException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

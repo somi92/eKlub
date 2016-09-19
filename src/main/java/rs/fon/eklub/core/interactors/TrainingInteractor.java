@@ -51,7 +51,7 @@ public class TrainingInteractor implements TrainingService {
         if(training == null) {
             throw new ServiceException("Training null or empty.");
         }
-        if(validator.validateEntity(training)) {
+        if(validator.validateEntityBeforeInsert(training)) {
             dao.insertOrUpdateEntity(training);
         }
     }

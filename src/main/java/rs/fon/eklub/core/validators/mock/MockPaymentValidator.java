@@ -16,11 +16,16 @@ import rs.fon.eklub.core.validators.EntityValidator;
 public class MockPaymentValidator implements EntityValidator<Payment> {
 
     @Override
-    public boolean validateEntity(Payment entity) throws ValidationException {
+    public boolean validateEntityBeforeInsert(Payment entity) throws ValidationException {
         if (entity.getAmount() < 0) {
             throw new ValidationException("Validation exception!");
         }
         return true;
+    }
+
+    @Override
+    public boolean validateEntityBeforeDelete(Payment entity) throws ValidationException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

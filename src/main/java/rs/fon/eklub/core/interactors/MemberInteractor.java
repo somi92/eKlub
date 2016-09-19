@@ -52,7 +52,7 @@ public class MemberInteractor implements MemberService {
         if(member == null) {
             throw new ServiceException("Member entity null!");
         }
-        if(validator.validateEntity(member)) {
+        if(validator.validateEntityBeforeInsert(member)) {
             dao.insertOrUpdateEntity(member);
         }
     }
@@ -65,7 +65,11 @@ public class MemberInteractor implements MemberService {
 
     @Override
     public boolean deleteMember(long id) throws ServiceException {
-        return dao.deleteEntity(id);
+        Member member = dao.getEntity(id);
+        if(validator.validateEntityBeforeDelete(member)) {
+            return dao.deleteEntity(id);
+        }
+        return false;
     }
 
     @Override

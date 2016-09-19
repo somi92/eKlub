@@ -50,7 +50,7 @@ public class GroupInteractor implements GroupService {
         if(group == null) {
             throw new ServiceException("Group entity null!");
         }
-        if(validator.validateEntity(group)) {
+        if(validator.validateEntityBeforeInsert(group)) {
             dao.insertOrUpdateEntity(group);
         } 
     }

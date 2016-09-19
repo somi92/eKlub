@@ -15,15 +15,25 @@ import rs.fon.eklub.core.exceptions.ValidationException;
 public class MemberValidator implements EntityValidator<Member> {
 
     @Override
-    public boolean validateEntity(Member entity) throws ValidationException {
+    public boolean validateEntityBeforeInsert(Member entity) throws ValidationException {
         boolean isValid = true;
         if (entity.getIdCard() == null
                 || entity.getNameSurname() == null
-                || entity.getGender() != 'M' || entity.getGender() != 'Ž'
+                || entity.getGender() != 'M' && entity.getGender() != 'Ž'
                 || entity.getAddress() == null
                 || entity.getPhone() == null
                 || entity.getDateOfMembership().before(entity.getDateOfBirth())
                 || entity.getGroup() == null) {
+            throw new ValidationException("Validation exception, 'Member' entity not valid");
+        }
+        return isValid;
+    }
+
+    @Override
+    public boolean validateEntityBeforeDelete(Member entity) throws ValidationException {
+        boolean isValid = true;
+        if (entity.getAttendances() != null && entity.getAttendances().size() > 0
+                || entity.getPayments() != null && entity.getPayments().size() > 0) {
             throw new ValidationException("Validation exception, 'Member' entity not valid");
         }
         return isValid;

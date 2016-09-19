@@ -15,15 +15,20 @@ import rs.fon.eklub.core.exceptions.ValidationException;
 public class PaymentValidator implements EntityValidator<Payment> {
 
     @Override
-    public boolean validateEntity(Payment entity) throws ValidationException {
+    public boolean validateEntityBeforeInsert(Payment entity) throws ValidationException {
         boolean isValid = true;
         if (entity.getFee() == null
-                || entity.getMemberId() > 0
-                || entity.getAmount() > 0
+                || entity.getMemberId() <= 0
+                || entity.getAmount() <= 0
                 || entity.getDateOfPayment() == null) {
             throw new ValidationException("Validation exception, 'Payment' entity not valid");
         }
         return isValid;
+    }
+
+    @Override
+    public boolean validateEntityBeforeDelete(Payment entity) throws ValidationException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
