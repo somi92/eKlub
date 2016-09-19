@@ -14,7 +14,7 @@ import rs.fon.eklub.core.exceptions.DataAccessServiceException;
 import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.services.AdminService;
 import rs.fon.eklub.core.validators.EntityValidator;
-import rs.fon.eklub.core.validators.MockAdminValidator;
+import rs.fon.eklub.core.validators.mock.MockAdminValidator;
 import rs.fon.eklub.dao.mock.MockAdminRepository;
 
 /**

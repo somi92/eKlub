@@ -19,7 +19,7 @@ import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.exceptions.ValidationException;
 import rs.fon.eklub.core.services.MemberService;
 import rs.fon.eklub.core.validators.EntityValidator;
-import rs.fon.eklub.core.validators.MockMemberValidator;
+import rs.fon.eklub.core.validators.mock.MockMemberValidator;
 import rs.fon.eklub.dao.mock.MockMemberExceptionRepository;
 import rs.fon.eklub.dao.mock.MockMemberRepository;
 

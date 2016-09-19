@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rs.fon.eklub.core.validators;
+package rs.fon.eklub.core.validators.mock;
 
 import rs.fon.eklub.core.entities.Employee;
 import rs.fon.eklub.core.exceptions.ValidationException;
+import rs.fon.eklub.core.validators.EntityValidator;
 
 /**
  *

@@ -22,7 +22,7 @@ import rs.fon.eklub.core.exceptions.ServiceException;
 import rs.fon.eklub.core.exceptions.ValidationException;
 import rs.fon.eklub.core.services.PaymentService;
 import rs.fon.eklub.core.validators.EntityValidator;
-import rs.fon.eklub.core.validators.MockPaymentValidator;
+import rs.fon.eklub.core.validators.mock.MockPaymentValidator;
 import rs.fon.eklub.dao.mock.MockPaymentRepository;
 
 /**
